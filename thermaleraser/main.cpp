@@ -113,7 +113,7 @@ int main(int argc, const char * argv[])
             localSystem.currentState = localSystem.startingBitString & 1 ? &StateA1 : &StateA0;
             
             while(localSystem.bitPosition<BIT_STREAM_LENGTH) {
-                double rate1 = localSystem.currentState->rate2(localSystem.constants.epsilon);
+                double rate1 = localSystem.currentState->rate1(localSystem.constants.epsilon);
                 
                 double rate2 = localSystem.currentState->rate2(localSystem.constants.epsilon);
                 
