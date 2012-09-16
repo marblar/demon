@@ -179,8 +179,9 @@ int main(int argc, const char * argv[])
 unsigned int randomShortIntWithBitDistribution(double delta,gsl_rng *randomNumberGenerator) {
     int bits=0;
     for(int k=0; k<BIT_STREAM_LENGTH; k++) {
-        int bit = delta > gsl_rng_uniform(randomNumberGenerator);
-        bits&=(bit<<k);
+        double randomNumber = gsl_rng_uniform(randomNumberGenerator);
+        int bit = delta > randomNumber;
+        bits|=(bit<<k);
     }
     return bits;
 }
