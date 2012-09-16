@@ -1,10 +1,10 @@
 //
 //  main.cpp
-//  FSM
+//  thermaleraser
 //
 //  Created by Mark Larus on 9/8/12.
 //  Copyright (c) 2012 Kenyon College. All rights reserved.
-//
+//  
 
 #include <iostream>
 #include <gsl/gsl_randist.h>
@@ -15,8 +15,6 @@
 #include <map>
 
 #include "States.h"
-
-#define BIT_STREAM_LENGTH 16
 
 struct Constants {
     double delta;
@@ -46,9 +44,18 @@ gsl_rng *GSLRandomNumberGenerator();
 int main(int argc, const char * argv[])
 {
     gsl_rng *globalRNG = GSLRandomNumberGenerator();
+    
+    /*! This call sets up our state machine for the wheel. Each state (i.e. "A0", "C1") is 
+     represented by an object with pointers to the next states and the bit-flip states. The
+     transition probabilities are computed using ^block objects, so we will need to use a
+     compiler with that extension. */
     setupStates();
-    randomShortIntWithBitDistribution(.5,globalRNG);
+    
     Constants constants;
+    
+    /*! The delta used here is NOT, at this point, the delta used in the paper. This is the 
+     ratio of ones to zeroes in the bit stream. Probably worth changing the name, but
+     calculating this at runtime is just an invitation for bugs. */
     constants.delta = .5;
     constants.epsilon = 0;
     constants.tau = .1;
@@ -58,16 +65,27 @@ int main(int argc, const char * argv[])
     system.timeSinceLastBit = 0;
     system.constants = constants;
     
+    /*! The tape/bitstream is packed into two integers, starting and ending. Bitwise operations
+     are used to retrieve starting bits and write the ending bits. This makes our system space 
+     the integers from 0 to 2^BIT_STREAM_LENGTH-1, which is handy for storage. */
+    
     system.startingBitString = randomShortIntWithBitDistribution(system.constants.delta,globalRNG);
     system.endingBitString = 0;
     system.mass = 0;
     
     time_t start_time = time(NULL);
     
+    /*! Use this to change the number of times the tape is simulated */
     unsigned int iterations = 1<<27;
+    
+    /*! Use this to change the length of the tape. */
+    #define BIT_STREAM_LENGTH 16
 
+    /*! The probability of a race condition here is infinitesimal, but so are the performance costs
+     of this semaphore. */
     dispatch_semaphore_t histogramSemaphore = dispatch_semaphore_create(1);
-
+    
+    /*! Putting histograms on the heap protects us from stack overflows when we scale up. */
     int *histogram = new int[1<<BIT_STREAM_LENGTH];
     int *startingHistogram = new int[1<<BIT_STREAM_LENGTH];
     
@@ -77,10 +95,14 @@ int main(int argc, const char * argv[])
         
         gsl_rng *localRNG = GSLRandomNumberGenerator();
         
+        /* Each thread maintains it's own histogram and reduces them at the end of 
+         the simulation. */
         int *localHistogram = new int[1<<BIT_STREAM_LENGTH];
         int *localStartingHistogram = new int[1<<BIT_STREAM_LENGTH];
+        
         #pragma omp for
         for (int k=0; k<iterations; ++k) {
+            //Reset the system for the start of the new array.
             localSystem.bitPosition=0;
             localSystem.timeSinceLastBit=0;
             localSystem.mass=0;
@@ -93,9 +115,15 @@ int main(int argc, const char * argv[])
                 
                 double rate2 = localSystem.currentState->rate2(localSystem.constants.epsilon);
                 
+                /*! The minimum of two exponentials is an exponential with their combined rates. Since there's a
+                 call to log() in this function, we want to use it as few times as possible. So we simply figure out
+                 when the next state switch is going ot happen, and if needed we roll again to see
+                 which came first. */
                 double fastestTime = gsl_ran_exponential(localRNG, rate1+rate2);
                 
                 if(fastestTime+localSystem.timeSinceLastBit>constants.tau) {
+                    /*! In this case, the next transition would happen after the bit stream moved.*/
+                    
                     localSystem.timeSinceLastBit = 0;
                     
                     int currentBit = localSystem.currentState->bit;
@@ -108,35 +136,40 @@ int main(int argc, const char * argv[])
                         localSystem.currentState = localSystem.currentState->bitFlipState;
                     }
                 } else {
+                    /*! The wheel state changed first.*/
                     double probabilityThatState1CameFirst = rate1/(rate1+rate2);
                     
                     SystemState *nextState = probabilityThatState1CameFirst > gsl_rng_uniform(localRNG) ? localSystem.currentState->nextState1 : localSystem.currentState->nextState2;
                     
+                    //Currently the mass is unused...
                     localSystem.mass += localSystem.currentState->bit-nextState->bit;
                     
                     localSystem.currentState = nextState;
+                    
+                    //It's important to keep this up to date.
                     localSystem.timeSinceLastBit+=fastestTime;
+                    
                     localHistogram[localSystem.endingBitString]++;
                     localStartingHistogram[localSystem.startingBitString]++;
                 }//End if
             }//End while
-            
-
-            
         }//End for
+        
+        /* Here we combine the local histogram into the global histogram. In practice, threads
+         almost never reach this phase at the same time. The semaphore protects them from
+         potentially colliding and modifying the same bits. */
         dispatch_semaphore_wait(histogramSemaphore, DISPATCH_TIME_FOREVER);
         for(int k=0; k<(1<<BIT_STREAM_LENGTH); k++) {
             histogram[localSystem.endingBitString]+=localHistogram[k];
             startingHistogram[localSystem.startingBitString]+=localStartingHistogram[k];
         }
-        
         dispatch_semaphore_signal(histogramSemaphore);
     }//End parallel
-        
     time_t stop_time = time(NULL);
     
     std::clog<<"Time elapsed: "<<(stop_time-start_time)<<std::endl;
     
+    //Uncomment this to view the ending histogram.
     //for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
     //    std::cout<<k<<","<<histogram[k]<<std::endl;
     //}
