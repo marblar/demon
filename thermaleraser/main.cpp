@@ -8,11 +8,8 @@
 
 #include <iostream>
 #include <gsl/gsl_randist.h>
-#include <gsl/gsl_sf_gamma.h>
-#include <assert.h>
 #include <time.h>
-#include <dispatch/dispatch.h>
-#include <map>
+#include <semaphore.h>
 
 #include "States.h"
 
@@ -83,7 +80,12 @@ int main(int argc, const char * argv[])
 
     /*! The probability of a race condition here is infinitesimal, but so are the performance costs
      of this semaphore. */
-    dispatch_semaphore_t histogramSemaphore = dispatch_semaphore_create(1);
+    sem_t histogramMutex;
+    int ERROR = !sem_init(&histogramMutex, 1, 1);
+    if(ERROR) {
+        std::cerr<<"Could not create semaphore.\n";
+        exit(0);
+    }
     
     /*! Putting histograms on the heap protects us from stack overflows when we scale up. */
     int *histogram = new int[1<<BIT_STREAM_LENGTH];
@@ -158,12 +160,12 @@ int main(int argc, const char * argv[])
         /* Here we combine the local histogram into the global histogram. In practice, threads
          almost never reach this phase at the same time. The semaphore protects them from
          potentially colliding and modifying the same bits. */
-        dispatch_semaphore_wait(histogramSemaphore, DISPATCH_TIME_FOREVER);
+        sem_wait(&histogramMutex);
         for(int k=0; k<(1<<BIT_STREAM_LENGTH); k++) {
             histogram[localSystem.endingBitString]+=localHistogram[k];
             startingHistogram[localSystem.startingBitString]+=localStartingHistogram[k];
         }
-        dispatch_semaphore_signal(histogramSemaphore);
+        sem_post(&histogramMutex);
     }//End parallel
     time_t stop_time = time(NULL);
     
