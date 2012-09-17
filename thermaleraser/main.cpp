@@ -35,6 +35,7 @@ struct System {
 };
 
 unsigned int randomShortIntWithBitDistribution(double ratioOfOnesToZeroes, gsl_rng* generator);
+int bitCount(unsigned int k);
 
 gsl_rng *GSLRandomNumberGenerator();
 
@@ -174,13 +175,98 @@ int main(int argc, const char * argv[])
     time_t stop_time = time(NULL);
     
     std::clog<<"Time elapsed: "<<(stop_time-start_time)<<std::endl;
-		
-    /*! Uncomment this to view the ending histogram. */
+    
+    double *p = new double[1<<BIT_STREAM_LENGTH];
+    double *p_prime = new double[1<<BIT_STREAM_LENGTH];
     for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
-        std::cout<<k<<","<<histogram[k]<<std::endl;
+        p[k] = gsl_ran_binomial_pdf(bitCount(k), system.constants.delta, BIT_STREAM_LENGTH);
+        p_prime[k]=static_cast<double>(histogram[k])/iterations;
     }
     
+    double sum = 0;
+    
+    #pragma omp parallel default(shared)
+    {
+        System localSystem = system;
+        
+        gsl_rng *localRNG = GSLRandomNumberGenerator();
+        
+        /* Each thread maintains it's own histogram and reduces them at the end of
+         the simulation. */
+        int *localHistogram = new int[1<<BIT_STREAM_LENGTH];
+        int *localStartingHistogram = new int[1<<BIT_STREAM_LENGTH];
+        
+        #pragma omp for reduction(+:sum)
+        for (int k=0; k<iterations; ++k) {
+            //Reset the system for the start of the new array.
+            localSystem.bitPosition=0;
+            localSystem.timeSinceLastBit=0;
+            localSystem.mass=0;
+            localSystem.endingBitString=0;
+            localSystem.startingBitString = randomShortIntWithBitDistribution(localSystem.constants.delta,localRNG);
+            localSystem.currentState = localSystem.startingBitString & 1 ? &StateA1 : &StateA0;
+            
+            while(localSystem.bitPosition<BIT_STREAM_LENGTH) {
+                /*This line is getting awful ugly. Let me explain: The transition rate is always 1, except
+                 when the bit is changing. A transition for which the bit decreases has rate 1-epsilon. A
+                 transition where the bit increases is 1 + epsilon. Implementing this with ^blocks was too slow,
+                 and subclassing using virtual functions wasn't much better. So I'm doing it inline.*/
+                SystemState *currentState = localSystem.currentState;
+                double rate1 = 1 + (currentState->nextState1->bit-currentState->bit)*localSystem.constants.epsilon;
+                double rate2 = 1 + (currentState->nextState2->bit-currentState->bit)*localSystem.constants.epsilon;
+                
+                /*! The minimum of two exponentials is an exponential with their combined rates. Since there's a
+                 call to log() in this function, we want to use it as few times as possible. So we simply figure out
+                 when the next state switch is going ot happen, and if needed we roll again to see
+                 which came first. */
+                double fastestTime = gsl_ran_exponential(localRNG, rate1+rate2);
+                
+                if(fastestTime+localSystem.timeSinceLastBit>localSystem.constants.tau) {
+                    /*! The tape moved first */
+                    
+                    localSystem.timeSinceLastBit = 0;
+                    
+                    int currentBit = localSystem.currentState->bit;
+                    localSystem.endingBitString|=(currentBit<<localSystem.bitPosition);
+                    
+                    ++localSystem.bitPosition;
+                    
+                    int newBit = (localSystem.startingBitString >> localSystem.bitPosition) & 1;
+                    if(newBit!=localSystem.currentState->bit) {
+                        localSystem.currentState = localSystem.currentState->bitFlipState;
+                    }
+                    
+                } else {
+                    /*! The wheel state changed first.*/
+                    double probabilityThatState1CameFirst = rate1/(rate1+rate2);
+                    
+                    SystemState *nextState = probabilityThatState1CameFirst > gsl_rng_uniform(localRNG) ? localSystem.currentState->nextState1 : localSystem.currentState->nextState2;
+                    
+                    //Currently the mass is unused...
+                    localSystem.mass += localSystem.currentState->bit-nextState->bit;
+                    
+                    localSystem.currentState = nextState;
+                    
+                    //It's important to keep this up to date.
+                    localSystem.timeSinceLastBit+=fastestTime;
+                }//End if
+            }//End while
+            sum+=p_prime[system.endingBitString]/p[system.startingBitString];
+        }//End for
+    }//End parallel
+    std::cout<<sum/iterations;
 }
+
+int bitCount(unsigned int k) {
+    unsigned int v; // count the number of bits set in v
+    unsigned int c; // c accumulates the total bits set in v
+    for (c = 0; v; c++)
+    {
+        v &= v - 1; // clear the least significant bit set
+    }
+    return c;
+}
+
 
 unsigned int randomShortIntWithBitDistribution(double delta,gsl_rng *randomNumberGenerator) {
     int bits=0;

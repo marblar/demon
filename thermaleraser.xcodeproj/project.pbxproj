@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1699,7 +1699,7 @@
 				ORGANIZATIONNAME = "Kenyon College";
 			};
 			buildConfigurationList = 4DD182E91605213000353837 /* Build configuration list for PBXProject "thermaleraser" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
