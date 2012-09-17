@@ -141,6 +141,7 @@ int main(int argc, const char * argv[])
                     if(newBit!=localSystem.currentState->bit) {
                         localSystem.currentState = localSystem.currentState->bitFlipState;
                     }
+                    
                 } else {
                     /*! The wheel state changed first.*/
                     double probabilityThatState1CameFirst = rate1/(rate1+rate2);
@@ -154,11 +155,10 @@ int main(int argc, const char * argv[])
                     
                     //It's important to keep this up to date.
                     localSystem.timeSinceLastBit+=fastestTime;
-                    
-                    localHistogram[localSystem.endingBitString]++;
-                    localStartingHistogram[localSystem.startingBitString]++;
                 }//End if
             }//End while
+            localHistogram[localSystem.endingBitString]++;
+            localStartingHistogram[localSystem.startingBitString]++;
         }//End for
         
         /* Here we combine the local histogram into the global histogram. In practice, threads
@@ -175,10 +175,10 @@ int main(int argc, const char * argv[])
     
     std::clog<<"Time elapsed: "<<(stop_time-start_time)<<std::endl;
     
-    //Uncomment this to view the ending histogram.
-    //for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
-    //    std::cout<<k<<","<<histogram[k]<<std::endl;
-    //}
+    /*! Uncomment this to view the ending histogram. */
+    for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
+        std::cout<<k<<","<<histogram[k]<<std::endl;
+    }
     
 }
 
