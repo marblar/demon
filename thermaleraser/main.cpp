@@ -73,7 +73,7 @@ int main(int argc, const char * argv[])
     time_t start_time = time(NULL);
     
     /*! Use this to change the number of times the tape is simulated */
-    unsigned int iterations = 1<<27;
+    unsigned int iterations = 1<<29;
     
     /*! Use this to change the length of the tape. */
     #define BIT_STREAM_LENGTH 16
@@ -91,7 +91,7 @@ int main(int argc, const char * argv[])
     int *histogram = new int[1<<BIT_STREAM_LENGTH];
     int *startingHistogram = new int[1<<BIT_STREAM_LENGTH];
     
-    #pragma omp parallel
+    #pragma omp parallel default(shared)
     {
         System localSystem = system;
         
@@ -165,16 +165,16 @@ int main(int argc, const char * argv[])
          almost never reach this phase at the same time. The semaphore protects them from
          potentially colliding and modifying the same bits. */
         sem_wait(&histogramMutex);
-        for(int k=0; k<(1<<BIT_STREAM_LENGTH); k++) {
-            histogram[localSystem.endingBitString]+=localHistogram[k];
-            startingHistogram[localSystem.startingBitString]+=localStartingHistogram[k];
+        for(int index=0; index<(1<<BIT_STREAM_LENGTH); index++) {
+            histogram[index]+=localHistogram[index];
+            startingHistogram[index]+=localStartingHistogram[index];
         }
         sem_post(&histogramMutex);
     }//End parallel
     time_t stop_time = time(NULL);
     
     std::clog<<"Time elapsed: "<<(stop_time-start_time)<<std::endl;
-    
+		
     /*! Uncomment this to view the ending histogram. */
     for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
         std::cout<<k<<","<<histogram[k]<<std::endl;
