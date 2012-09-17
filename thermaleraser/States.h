@@ -11,13 +11,10 @@
 
 #include <iostream>
 
-typedef double(^rateBlock)(double epsilon);
 struct SystemState {
     SystemState *nextState1;
     SystemState *nextState2;
     SystemState *bitFlipState;
-    rateBlock rate1;
-    rateBlock rate2;
     int bit;
     char letter;
 };

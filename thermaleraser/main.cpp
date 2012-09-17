@@ -113,9 +113,13 @@ int main(int argc, const char * argv[])
             localSystem.currentState = localSystem.startingBitString & 1 ? &StateA1 : &StateA0;
             
             while(localSystem.bitPosition<BIT_STREAM_LENGTH) {
-                double rate1 = localSystem.currentState->rate1(localSystem.constants.epsilon);
-                
-                double rate2 = localSystem.currentState->rate2(localSystem.constants.epsilon);
+                /*This line is getting awful ugly. Let me explain: The transition rate is always 1, except
+                 when the bit is changing. A transition for which the bit decreases has rate 1-epsilon. A
+                 transition where the bit increases is 1 + epsilon. Implementing this with ^blocks was too slow,
+                 and subclassing using virtual functions wasn't much better. So I'm doing it inline.*/
+                SystemState *currentState = localSystem.currentState;
+                double rate1 = 1 + (currentState->nextState1->bit-currentState->bit)*localSystem.constants.epsilon;
+                double rate2 = 1 + (currentState->nextState2->bit-currentState->bit)*localSystem.constants.epsilon;
                 
                 /*! The minimum of two exponentials is an exponential with their combined rates. Since there's a
                  call to log() in this function, we want to use it as few times as possible. So we simply figure out
@@ -123,8 +127,8 @@ int main(int argc, const char * argv[])
                  which came first. */
                 double fastestTime = gsl_ran_exponential(localRNG, rate1+rate2);
                 
-                if(fastestTime+localSystem.timeSinceLastBit>constants.tau) {
-                    /*! In this case, the next transition would happen after the bit stream moved.*/
+                if(fastestTime+localSystem.timeSinceLastBit>localSystem.constants.tau) {
+                    /*! The tape moved first */
                     
                     localSystem.timeSinceLastBit = 0;
                     
