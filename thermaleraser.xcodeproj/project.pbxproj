@@ -55,6 +55,8 @@
 		4D3D84781605274F0000C593 /* libutils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9C2B391605270D001FA974 /* libutils.a */; };
 		4D3D847D160527D90000C593 /* libgsl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9C2B0B1605270D001FA974 /* libgsl.a */; };
 		4D3D847E160527DC0000C593 /* libGSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D291802160523F600C0167A /* libGSL.a */; };
+		4D611D0116406A2F008FB029 /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
+		4D611D0516406ADE008FB029 /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
 		4D9C29AD16052439001FA974 /* bessel.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D291680160523C200C0167A /* bessel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D9C29AE16052439001FA974 /* bessel_amp_phase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D291681160523C200C0167A /* bessel_amp_phase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D9C29AF16052439001FA974 /* bessel_olver.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D291682160523C200C0167A /* bessel_olver.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -753,6 +755,10 @@
 		4D2917CC160523C200C0167A /* tridiag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tridiag.h; sourceTree = "<group>"; };
 		4D2917CD160523C200C0167A /* view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = view.h; sourceTree = "<group>"; };
 		4D291802160523F600C0167A /* libGSL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGSL.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D611CFF16406A2F008FB029 /* System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = System.cpp; sourceTree = "<group>"; };
+		4D611D0016406A2F008FB029 /* System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = System.h; sourceTree = "<group>"; };
+		4D611D0316406ADE008FB029 /* Utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
+		4D611D0416406ADE008FB029 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		4D9C2AFF160524A9001FA974 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4D9C2B00160524A9001FA974 /* States.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = States.cpp; sourceTree = "<group>"; };
 		4D9C2B01160524A9001FA974 /* States.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = States.h; sourceTree = "<group>"; };
@@ -1300,9 +1306,13 @@
 			isa = PBXGroup;
 			children = (
 				4DD182F51605213000353837 /* thermaleraser.1 */,
-				4D9C2AFF160524A9001FA974 /* main.cpp */,
-				4D9C2B00160524A9001FA974 /* States.cpp */,
+				4D611D0416406ADE008FB029 /* Utilities.h */,
+				4D611D0016406A2F008FB029 /* System.h */,
 				4D9C2B01160524A9001FA974 /* States.h */,
+				4D9C2AFF160524A9001FA974 /* main.cpp */,
+				4D611D0316406ADE008FB029 /* Utilities.cpp */,
+				4D611CFF16406A2F008FB029 /* System.cpp */,
+				4D9C2B00160524A9001FA974 /* States.cpp */,
 			);
 			path = thermaleraser;
 			sourceTree = "<group>";
@@ -1730,6 +1740,8 @@
 			files = (
 				4D9C2B02160524A9001FA974 /* main.cpp in Sources */,
 				4D9C2B03160524A9001FA974 /* States.cpp in Sources */,
+				4D611D0116406A2F008FB029 /* System.cpp in Sources */,
+				4D611D0516406ADE008FB029 /* Utilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1759,6 +1771,7 @@
 		4D291805160523F600C0167A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COPY_PHASE_STRIP = YES;
 				EXECUTABLE_PREFIX = lib;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
