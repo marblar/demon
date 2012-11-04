@@ -8,6 +8,8 @@
 
 #include "Utilities.h"
 #include "gsl_rng.h"
+#include <semaphore.h>
+#include <sqlite3.h>
 
 int bitCount(unsigned int number, int nbits) {
     int setBits = 0;
@@ -28,8 +30,13 @@ unsigned int randomShortIntWithBitDistribution(double delta, int nbits, gsl_rng 
 }
 
 gsl_rng *GSLRandomNumberGenerator() {
-    gsl_rng *gen = gsl_rng_alloc(gsl_rng_mt19937);
-    long seed = time(NULL)*getpid()*rand();
-    gsl_rng_set(gen, seed);
+    gsl_rng *gen;
+#pragma omp critical
+    {
+        gen = gsl_rng_alloc(gsl_rng_mt19937);
+        long seed = time(NULL)*getpid()*rand();
+        gsl_rng_set(gen, seed);
+    }
     return gen;
 }
+

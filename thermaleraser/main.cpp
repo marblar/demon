@@ -12,8 +12,8 @@
 #include <time.h>
 #include <semaphore.h>
 #include <algorithm>
-#include <getopt.h>
 #include <math.h>
+#include <sqlite3.h>
 
 #include "States.h"
 #include "System.h"
@@ -30,20 +30,22 @@ int main(int argc, const char * argv[])
     /*! The delta used here is NOT, at this point, the delta used in the paper. This is the 
      ratio of ones to zeroes in the bit stream. Probably worth changing the name, but
      calculating this at runtime is just an invitation for bugs. */
-    constants.delta = .7;
-    constants.epsilon = .7;
-    constants.tau = 10;
+    constants.delta = .5;
+    constants.epsilon = .5;
+    constants.tau = 1;
     
     /*! Use this to change the number of times the tape is simulated */
-    int iterations = 1<<25;
+    int iterations = 1<<22;
     
     /*! Use this to change the length of the tape. */
     #define BIT_STREAM_LENGTH 16
     
     System *systems = new System[iterations]();
     time_t start_time = time(NULL);
+    
     #pragma omp parallel default(shared)
     {
+        //TODO: Move this into a semaphore in the utility function
         gsl_rng *localRNG = GSLRandomNumberGenerator();
 
         #pragma omp for
@@ -57,6 +59,7 @@ int main(int argc, const char * argv[])
         }
         gsl_rng_free(localRNG);
     }//End parallel
+    
     time_t stop_time = time(NULL);
     
     std::clog<<"Time elapsed: "<<(stop_time-start_time)<<std::endl;
@@ -65,10 +68,6 @@ int main(int argc, const char * argv[])
     long double *p_prime = new long double[1<<BIT_STREAM_LENGTH];
     
     int *histogram = new int[1<<BIT_STREAM_LENGTH];
-    
-    std::fill_n(histogram,1<<BIT_STREAM_LENGTH,0);
-    std::fill_n(p, 1<<BIT_STREAM_LENGTH, 0);
-    std::fill_n(p_prime,1<<BIT_STREAM_LENGTH,0);
     
     for(int k=0; k<iterations; k++) {
         System *currentSystem = systems+k;
@@ -81,15 +80,19 @@ int main(int argc, const char * argv[])
         p_prime[k]=static_cast<long double>(histogram[k])/iterations;
     }
     
-    long double sum = 0;
-
+    delete histogram;
     delete systems;
-
+    
+    long double sum = 0;
     
     const long double beta = log((1+constants.epsilon)/(1-constants.epsilon));
+    long double max_surprise = 0;
+    
     #pragma omp parallel
     {
+        //Make sure we don't accidentally share a seed.
         gsl_rng *localRNG = GSLRandomNumberGenerator();
+        
         #pragma omp for reduction(+ : sum)
         for(int k=0; k<iterations; k++) {
             System *currentSystem = new System();
@@ -99,10 +102,12 @@ int main(int argc, const char * argv[])
             evolveSystem(currentSystem, localRNG);
             
             long double surprise = expl(-beta*currentSystem->mass)*p_prime[currentSystem->endingBitString]/p[currentSystem->startingBitString];
+            max_surprise = surprise > max_surprise ? surprise : max_surprise;
             sum = sum + surprise;
             delete currentSystem;
         }
     }
     
-    std::cout<<sum/iterations;
+    std::cout<<"Average: "<<sum/iterations<<std::endl;
+    std::cout<<"max_J/sum: "<<max_surprise/sum<<std::endl;
 }

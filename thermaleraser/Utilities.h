@@ -10,7 +10,8 @@
 #define __thermaleraser__Utilities__
 
 #include <iostream>
-#include "gsl_rng.h"
+#include <gsl_rng.h>
+#include <sqlite3.h>
 
 unsigned int randomShortIntWithBitDistribution(double ratioOfOnesToZeroes, int nbits, gsl_rng* generator);
 int bitCount(unsigned int number, int nbits);
