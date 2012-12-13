@@ -25,13 +25,17 @@ System::System() {
     this->currentState = randomState();
 }
 
-void evolveSystem(System *currentSystem, gsl_rng *localRNG) {
+void evolveDiscreteSystem(System *currentSystem, gsl_rng *localRNG) {
+    //Schumacher's stuff goes here.
+}
+
+void evolveSystem(System *currentSystem, gsl_rng *localRNG, bool discrete_system) {
+    
     currentSystem->startingBitString = randomShortIntWithBitDistribution(currentSystem->constants.delta, currentSystem->nbits, localRNG);
     
     if (currentSystem->currentState->bit != (currentSystem->startingBitString & 1)) {
         currentSystem->currentState=currentSystem->currentState->bitFlipState;
     }
-    
     while (currentSystem->bitPosition<currentSystem->nbits) {
         /*This line is getting awful ugly. Let me explain: The transition rate is always 1, except
          when the bit is changing. A transition for which the bit decreases has rate 1-epsilon. A
@@ -45,7 +49,7 @@ void evolveSystem(System *currentSystem, gsl_rng *localRNG) {
          call to log() in this function, we want to use it as few times as possible. So we simply figure out
          when the next state switch is going ot happen, and if needed we roll again to see
          which came first. */
-        double fastestTime = gsl_ran_exponential(localRNG, rate1+rate2);
+        double fastestTime = gsl_ran_exponential(localRNG, 1/(1/rate1+1/rate2));
         
         if (fastestTime+currentSystem->timeSinceLastBit>currentSystem->constants.tau) {
             /*! The tape moved first */
@@ -68,14 +72,9 @@ void evolveSystem(System *currentSystem, gsl_rng *localRNG) {
             
             SystemState *nextState = probabilityThatState1CameFirst < gsl_rng_uniform(localRNG) ? currentSystem->currentState->nextState1 : currentSystem->currentState->nextState2;
             
-            //Currently the mass is unused...
-            currentSystem->mass += currentSystem->currentState->bit - nextState->bit;
-            
+            currentSystem->mass -= currentSystem->currentState->bit - nextState->bit;
             currentSystem->currentState = nextState;
-            
-            //It's important to keep this up to date.
             currentSystem->timeSinceLastBit+=fastestTime;
         }//End if
     }//End while
-
 }

@@ -21,6 +21,9 @@ struct Constants {
     
     double tau;
     //The duration of the interaction with each bit in the stream.
+    
+    int nBits;
+    //The number of bits the tape interacts with.
 };
 
 struct System {
@@ -38,6 +41,6 @@ struct System {
 
 SystemState *randomState();
 
-void evolveSystem(System *system, gsl_rng *rng);
+void evolveSystem(System *system, gsl_rng *rng, bool discrete_system = false);
 
 #endif /* defined(__thermaleraser__System__) */

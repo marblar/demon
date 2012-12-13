@@ -7,7 +7,7 @@
 //
 
 #include "Utilities.h"
-#include "gsl_rng.h"
+#include "gsl_randist.h"
 #include <semaphore.h>
 #include <sqlite3.h>
 
@@ -31,12 +31,20 @@ unsigned int randomShortIntWithBitDistribution(double delta, int nbits, gsl_rng 
 
 gsl_rng *GSLRandomNumberGenerator() {
     gsl_rng *gen;
-#pragma omp critical
+    #pragma omp critical
     {
-        gen = gsl_rng_alloc(gsl_rng_mt19937);
-        long seed = time(NULL)*getpid()*rand();
+        gen = gsl_rng_alloc(gsl_rng_ranlux389);
+        long seed = clock()*getpid()*rand();
         gsl_rng_set(gen, seed);
     }
+    
     return gen;
 }
+
+double mbl_ran_exponential(const gsl_rng *r, double rate) {
+    return gsl_ran_exponential(r,1/rate);
+}
+
+
+
 

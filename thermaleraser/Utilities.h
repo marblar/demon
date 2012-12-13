@@ -18,4 +18,6 @@ int bitCount(unsigned int number, int nbits);
 
 gsl_rng *GSLRandomNumberGenerator();
 
+double mbl_ran_exponential(const gsl_rng *r, double rate);
+
 #endif /* defined(__thermaleraser__Utilities__) */
