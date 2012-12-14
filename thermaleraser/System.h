@@ -43,4 +43,7 @@ SystemState *randomState();
 
 void evolveSystem(System *system, gsl_rng *rng, bool discrete_system = false);
 
+long packResult(System *system);
+System *unpackResult(long long value);
+
 #endif /* defined(__thermaleraser__System__) */

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D2B2F2C167AA86200A932E8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9C2AFF160524A9001FA974 /* main.cpp */; };
 		4D35ECB61677BB3000DDF748 /* libMLi3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35ECB51677BB3000DDF748 /* libMLi3.a */; };
 		4D35ECB81677BB8800DDF748 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */; };
 		4D3D844B1605274F0000C593 /* libgslblas.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9C2B0C1605270D001FA974 /* libgslblas.a */; };
@@ -1797,6 +1798,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D2B2F2C167AA86200A932E8 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1916,7 +1918,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_OPENMP_SUPPORT = NO;
+				ENABLE_OPENMP_SUPPORT = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;

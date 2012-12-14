@@ -10,6 +10,7 @@
 #include "gsl_randist.h"
 #include <semaphore.h>
 #include <sqlite3.h>
+#include <assert.h>
 
 int bitCount(unsigned int number, int nbits) {
     int setBits = 0;
@@ -44,7 +45,3 @@ gsl_rng *GSLRandomNumberGenerator() {
 double mbl_ran_exponential(const gsl_rng *r, double rate) {
     return gsl_ran_exponential(r,1/rate);
 }
-
-
-
-

@@ -9,6 +9,8 @@
 #include "System.h"
 #include "Utilities.h"
 #include "gsl_randist.h"
+#include <assert.h>
+#include <math.h>
 
 SystemState *randomState() {
     int index = rand()%6;
@@ -77,4 +79,48 @@ void evolveSystem(System *currentSystem, gsl_rng *localRNG, bool discrete_system
             currentSystem->timeSinceLastBit+=fastestTime;
         }//End if
     }//End while
+}
+
+int fourSignificantDecimalDigits(double x) {
+    assert(x<=1);
+    assert(x>=0);
+    
+    int value = (int)(floor(x*1000));
+
+    assert(value<1000);
+    assert(value>0);
+    
+    return value;
+}
+
+long packResult(System *system) {
+    long result = 0;
+    int offset = 0;
+    
+    bool too_many_bits = ((~0)<<16 & system->startingBitString);
+    assert(!too_many_bits);
+    
+    too_many_bits = ((~0)<<16 & system->startingBitString);
+    assert(!too_many_bits);
+    
+    result|=system->startingBitString;
+    offset-=16;
+    
+    result|=system->endingBitString<<offset;
+    offset-=16;
+    
+    result|=fourSignificantDecimalDigits(system->constants.delta)<<offset;
+    offset-=10;
+
+    result|=fourSignificantDecimalDigits(system->constants.epsilon)<<offset;
+    offset-=10;
+    
+    assert(offset<64);
+    return result;
+}
+
+System *unpackResult(long value) {
+    int sixteen_bits = ~((~0)<<16);
+    int ten_bits = ~((~0)<<10);
+    
 }
