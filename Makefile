@@ -2,7 +2,7 @@ VPATH = thermaleraser:GSL/libs/
 INC = -I$(HOME)/local/include -I/usr/local/include
 LIB = -L$(HOME)/local/lib/ -L/usr/local/lib
 
-COMPILE_OPTS = $(INC) $(LIB) -fopenmp
+COMPILE_OPTS = $(INC) $(LIB) -fopenmp -Wall
 LINK_OPTS = -lgsl
 CC = g++-4.2
 

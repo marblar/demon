@@ -10,6 +10,7 @@
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_sf.h>
 #include <time.h>
+#include <omp.h>
 #include <semaphore.h>
 #include <algorithm>
 #include <math.h>
@@ -74,7 +75,10 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
     {
         //TODO: Move this into a semaphore in the utility function
         gsl_rng *localRNG = GSLRandomNumberGenerator();
-        
+
+	#pragma omp single
+	print(omp_get_num_threads());
+
         int *localHistogram = new int[1<<BIT_STREAM_LENGTH];
         std::fill_n(histogram, 1<<BIT_STREAM_LENGTH, 0);
         
