@@ -16,12 +16,16 @@
 #include <sqlite3.h>
 #include <assert.h>
 #include <set>
+#include <boost/program_options.hpp>
+
 
 #include "States.h"
 #include "System.h"
 #include "Utilities.h"
 
 #define print(x) std::cout<<#x <<": " <<x<<std::endl;
+
+namespace opt = boost::program_options;
 
 enum OutputType {
     CommaSeparated,
@@ -35,11 +39,29 @@ void simulate_and_print(Constants constants, int iterations, OutputType type);
 
 int main(int argc, char * argv[])
 {
+    const int default_iterations = 1<<16;
+    
+    opt::options_description desc("Allowed options");
+    desc.add_options()
+        ("iterations,n",opt::value<int>(), "Number of iterations")
+        ("help","Show help message")
+    ;
+    
+    opt::variables_map vmap;
+    opt::store(opt::parse_command_line(argc,argv,desc),vmap);
+    opt::notify(vmap);
+    
+    if (vmap.count("help")) {
+        std::cout << desc << "\n";
+        return 1;
+    }
+    
+    int iterations = vmap.count("iterations,n") ? vmap["iterations,n"].as<int>() : default_iterations;
+    
     /*! This call sets up our state machine for the wheel. Each state (i.e. "A0", "C1") is
      represented by an object with pointers to the next states and the bit-flip states. */
     setupStates();
     
-    int iterations = 1<<16;
     
     Constants constants;
     
