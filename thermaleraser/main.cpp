@@ -39,7 +39,7 @@ int main(int argc, char * argv[])
      represented by an object with pointers to the next states and the bit-flip states. */
     setupStates();
     
-    int iterations = 1<<22;
+    int iterations = 1<<16;
     
     Constants constants;
     
@@ -50,10 +50,10 @@ int main(int argc, char * argv[])
     constants.epsilon = .7;
     constants.tau = 1;
     int dimension = 50;
-    for (int k=0; k<dimension*dimension; k++) {
-        constants.delta = .5+.5*(k % dimension)/(float)(dimension);
-        constants.epsilon = (k/dimension)/(float)(dimension);
-        simulate_and_print(constants, iterations, NoOutput);
+    for (int k=dimension*dimension; k>=0; k--) {
+        constants.epsilon = (k % dimension)/(double)(dimension);
+        constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
+        simulate_and_print(constants, iterations, CommaSeparated);
     }
 
 }
@@ -61,16 +61,15 @@ int main(int argc, char * argv[])
 void simulate_and_print(Constants constants, int iterations, OutputType type) {
     
     /*! Use this to change the length of the tape. */
-    const int BIT_STREAM_LENGTH = 16;
+    const int BIT_STREAM_LENGTH = 8;
     
     int first_pass_iterations = iterations;
     
+    System *systems = new System[first_pass_iterations]();
+    
     int *histogram = new int[1<<BIT_STREAM_LENGTH];
     std::fill_n(histogram, 1<<BIT_STREAM_LENGTH, 0);
-    clock_t start = clock();
-    
-    std::set<int> regions;
-    
+
     #pragma omp parallel default(shared)
     {
         //TODO: Move this into a semaphore in the utility function
@@ -81,27 +80,29 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
         
         #pragma omp for
         for (int k=0; k<first_pass_iterations; ++k) {
-            System *currentSystem = new System();
+            System *currentSystem = systems+k;
             
             currentSystem->constants = constants;
             currentSystem->nbits = BIT_STREAM_LENGTH;
             
             evolveSystem(currentSystem, localRNG);
             ++localHistogram[currentSystem->endingBitString];
-            
-            delete currentSystem;
+        
         }
         
-        #pragma omp critical
-        for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
-            histogram[k]+=localHistogram[k];
-        }
+
         delete [] localHistogram;
+        
         gsl_rng_free(localRNG);
     }//End parallel
-    clock_t end = clock();
     
-    print((double)(end-start)/CLOCKS_PER_SEC);
+    for(int k=0; k<first_pass_iterations; k++) {
+        histogram[systems[k].endingBitString]++;
+    }
+    
+    
+    delete [] systems;
+    
     //time_t stop_time = time(NULL);
     
     //std::clog<<"Time elapsed: "<<(stop_time-start_time)<<std::endl;
@@ -157,7 +158,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
         }
         std::cout<< constants.delta << "," << constants.epsilon << "," << sum/iterations << "," << max_surprise << std::endl;
     }
-
 
     
     if(type==PrettyPrint) {
