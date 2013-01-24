@@ -3,7 +3,7 @@ INC = -I$(HOME)/local/include -I/usr/local/include
 LIB = -L$(HOME)/local/lib/ -L/usr/local/lib
 
 COMPILE_OPTS = $(INC) $(LIB) -fopenmp
-LINK_OPTS = -lgsl
+LINK_OPTS = -lgsl -lboost_program_options
 CC = g++-4.2
 
 all : thermal.out
@@ -26,7 +26,7 @@ thermal.out : States.o System.o Utilities.o main.o
 .PHONY: clean run
 
 clean :
-	rm *.o thermal.out
+	rm -f *.o thermal.out *~
 
 run : thermal.out
 	./thermal.out
