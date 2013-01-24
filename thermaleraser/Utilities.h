@@ -10,7 +10,7 @@
 #define __thermaleraser__Utilities__
 
 #include <iostream>
-#include <gsl_rng.h>
+#include <gsl/gsl_rng.h>
 #include <sqlite3.h>
 #include <map>
 

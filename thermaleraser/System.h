@@ -10,7 +10,7 @@
 #define __thermaleraser__System__
 
 #include "States.h"
-#include "gsl_rng.h"
+#include <gsl/gsl_rng.h>
 
 struct Constants {
     double delta;

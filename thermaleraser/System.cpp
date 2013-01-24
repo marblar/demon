@@ -8,7 +8,7 @@
 
 #include "System.h"
 #include "Utilities.h"
-#include "gsl_randist.h"
+#include <gsl/gsl_randist.h>
 #include <assert.h>
 #include <math.h>
 
@@ -117,10 +117,4 @@ long packResult(System *system) {
     
     assert(offset<64);
     return result;
-}
-
-System *unpackResult(long value) {
-    int sixteen_bits = ~((~0)<<16);
-    int ten_bits = ~((~0)<<10);
-    
 }

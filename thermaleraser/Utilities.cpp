@@ -7,7 +7,7 @@
 //
 
 #include "Utilities.h"
-#include "gsl_randist.h"
+#include <gsl/gsl_randist.h>
 #include <semaphore.h>
 #include <sqlite3.h>
 #include <assert.h>
