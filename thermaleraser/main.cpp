@@ -36,15 +36,18 @@ enum OutputType {
 
 void simulate_and_print(Constants constants, int iterations, OutputType type);
 
+int main(int argc, char * argv[]) {
+  /*! Initialize options list.
+   */
 
-int main(int argc, char * argv[])
-{
+    bool verbose = false;
     const int default_iterations = 1<<16;
     
     opt::options_description desc("Allowed options");
     desc.add_options()
         ("iterations,n",opt::value<int>(), "Number of iterations")
         ("help","Show help message")
+        ("verbose,v", "Show extensive debugging info") 
     ;
     
     opt::variables_map vmap;
@@ -55,14 +58,19 @@ int main(int argc, char * argv[])
         std::cout << desc << "\n";
         return 1;
     }
+
+    verbose = vmap.count("verbose");
     
     int iterations = vmap.count("iterations,n") ? vmap["iterations,n"].as<int>() : default_iterations;
     
+    if (verbose) {
+      print(iterations);
+    }
+
     /*! This call sets up our state machine for the wheel. Each state (i.e. "A0", "C1") is
      represented by an object with pointers to the next states and the bit-flip states. */
     setupStates();
-    
-    
+        
     Constants constants;
     
     /*! The delta used here is NOT, at this point, the delta used in the paper. This is the 
