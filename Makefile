@@ -1,6 +1,6 @@
 VPATH = thermaleraser:GSL/libs/
-INC = -I $(HOME)/local/include
-LIB = -L $(HOME)/local/lib/
+INC = -I $(HOME)/local/include -I /usr/local/include
+LIB = -L $(HOME)/local/lib/ -L /usr/local/lib
 
 COMPILE_OPTS = $(INC) $(LIB) -fopenmp
 LINK_OPTS = -lgsl
