@@ -48,6 +48,7 @@
 		4DAFD7AF16B2077F004D9346 /* libboost_program_options.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_program_options.dylib; path = ../../local/lib/libboost_program_options.dylib; sourceTree = "<group>"; };
 		4DAFD7B016B2077F004D9346 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../local/lib/libboost_system.dylib; sourceTree = "<group>"; };
 		4DAFD7B116B2077F004D9346 /* libboost_timer.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_timer.dylib; path = ../../local/lib/libboost_timer.dylib; sourceTree = "<group>"; };
+		4DAFD7C216B2EC54004D9346 /* clangomp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clangomp.h; sourceTree = "<group>"; };
 		4DD182EF1605213000353837 /* thermaleraser */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = thermaleraser; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -72,6 +73,10 @@
 		4DAFD7A716B202EF004D9346 /* Static Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				4DAFD7AE16B2077F004D9346 /* libboost_chrono.dylib */,
+				4DAFD7AF16B2077F004D9346 /* libboost_program_options.dylib */,
+				4DAFD7B016B2077F004D9346 /* libboost_system.dylib */,
+				4DAFD7B116B2077F004D9346 /* libboost_timer.dylib */,
 				4D35ECB21677BA0400DDF748 /* mathlink.h */,
 				4D35ECB51677BB3000DDF748 /* libMLi3.a */,
 				4DAFD7A516B1E7A3004D9346 /* libgsl.a */,
@@ -82,13 +87,9 @@
 		4DD182E41605213000353837 = {
 			isa = PBXGroup;
 			children = (
-				4DAFD7AE16B2077F004D9346 /* libboost_chrono.dylib */,
-				4DAFD7AF16B2077F004D9346 /* libboost_program_options.dylib */,
-				4DAFD7B016B2077F004D9346 /* libboost_system.dylib */,
-				4DAFD7B116B2077F004D9346 /* libboost_timer.dylib */,
 				4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */,
 				4DAFD7A716B202EF004D9346 /* Static Libraries */,
-				4DD182F21605213000353837 /* thermaleraser */,
+				4DD182F21605213000353837 /* src */,
 				4DD182F01605213000353837 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,9 +102,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4DD182F21605213000353837 /* thermaleraser */ = {
+		4DD182F21605213000353837 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
 				4D9C2B01160524A9001FA974 /* States.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
@@ -112,7 +114,6 @@
 				4D611CFF16406A2F008FB029 /* System.cpp */,
 				4D611D0316406ADE008FB029 /* Utilities.cpp */,
 			);
-			name = thermaleraser;
 			path = src;
 			sourceTree = "<group>";
 		};
@@ -204,7 +205,7 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = $HOME/local/libs;
+				LIBRARY_SEARCH_PATHS = $HOME/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
@@ -235,7 +236,7 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = $HOME/local/libs;
+				LIBRARY_SEARCH_PATHS = $HOME/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_LDFLAGS = "";
 				SDKROOT = macosx;
@@ -253,10 +254,10 @@
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_LINK_WITH_DYNAMIC_LIBRARIES = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/GSL/libs\"",
 					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions/mathlink.framework/Versions/3.16\"",
 					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions\"",
 					"\"$(SRCROOT)/../../local/lib\"",
@@ -280,7 +281,6 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/GSL/libs\"",
 					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions/mathlink.framework/Versions/3.16\"",
 					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions\"",
 					"\"$(SRCROOT)/../../local/lib\"",
