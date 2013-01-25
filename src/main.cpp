@@ -62,7 +62,7 @@ int main(int argc, char * argv[]) {
 
     verbose = vmap.count("verbose");
     
-    int iterations = vmap.count("iterations,n") ? vmap["iterations,n"].as<int>() : default_iterations;
+    int iterations = vmap.count("iterations") ? vmap["iterations"].as<int>() : default_iterations;
     
     if (verbose) {
       print(iterations);
