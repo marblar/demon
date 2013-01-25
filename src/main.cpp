@@ -107,9 +107,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
         //TODO: Move this into a semaphore in the utility function
         gsl_rng *localRNG = GSLRandomNumberGenerator();
         
-        int *localHistogram = new int[1<<BIT_STREAM_LENGTH];
-        std::fill_n(histogram, 1<<BIT_STREAM_LENGTH, 0);
-        
         #pragma omp for
         for (int k=0; k<first_pass_iterations; ++k) {
             System *currentSystem = systems+k;
@@ -118,12 +115,8 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
             currentSystem->nbits = BIT_STREAM_LENGTH;
             
             evolveSystem(currentSystem, localRNG);
-            ++localHistogram[currentSystem->endingBitString];
         
         }
-        
-
-        delete [] localHistogram;
         
         gsl_rng_free(localRNG);
     }//End parallel
