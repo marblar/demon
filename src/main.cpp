@@ -74,6 +74,8 @@ int main(int argc, char * argv[]) {
         
     Constants constants;
     
+    omp_set_num_threads(8);
+    
     /*! The delta used here is NOT, at this point, the delta used in the paper. This is the 
      ratio of ones to zeroes in the bit stream. Probably worth changing the name, but
      calculating this at runtime is just an invitation for bugs. */
