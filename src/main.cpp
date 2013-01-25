@@ -61,43 +61,43 @@ int main(int argc, char * argv[]) {
         std::cout << desc << "\n";
         return 1;
     }
-
+    
     verbose = vmap.count("verbose");
     
     int iterations = vmap.count("iterations") ? vmap["iterations"].as<int>() : default_iterations;
     
     if (verbose) {
-      print(iterations);
-      #pragma omp parallel
-      #pragma omp single
-      print(omp_get_num_threads());
+        print(iterations);
+        #pragma omp parallel
+        #pragma omp single
+        print(omp_get_num_threads());
     }
-
+    
     OutputType output_style = vmap.count("output") ? (OutputType)vmap["output"].as<int>() : CommaSeparated;
-
+    
     /*! This call sets up our state machine for the wheel. Each state (i.e. "A0", "C1") is
      represented by an object with pointers to the next states and the bit-flip states. */
     setupStates();
-        
+    
     Constants constants;
     
-    /*! The delta used here is NOT, at this point, the delta used in the paper. This is the 
+    /*! The delta used here is NOT, at this point, the delta used in the paper. This is the
      ratio of ones to zeroes in the bit stream. Probably worth changing the name, but
      calculating this at runtime is just an invitation for bugs. */
     constants.delta = .5;
     constants.epsilon = .7;
     constants.tau = 1;
     int dimension = 50;
+    #pragma omp parallel for private(constants)
     for (int k=dimension*dimension; k>=0; k--) {
         constants.epsilon = (k % dimension)/(double)(dimension);
         constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
         simulate_and_print(constants, iterations, output_style);
     }
-
+    
 }
 
 void simulate_and_print(Constants constants, int iterations, OutputType type) {
-    boost::timer::auto_cpu_timer t;
     
     /*! Use this to change the length of the tape. */
     const int BIT_STREAM_LENGTH = 8;
@@ -147,9 +147,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
         #pragma omp single nowait
         delete [] histogram;
 
-	#pragma omp barrier
-
-        //Make sure we don't accidentally share a seed.
+        #pragma omp barrier
         
         #pragma omp for reduction(+ : sum)
         for(int k=0; k<iterations; k++) {
@@ -170,6 +168,10 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
         {
             delete [] p_prime;
             delete [] p;
+        }
+            
+        #pragma omp critical
+        {
             if(type==CommaSeparated) {
                 static int once = 0;
                 if (!once) {
@@ -192,6 +194,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
                 assert(0);
             }
         }
-	gsl_rng_free(localRNG);
+        gsl_rng_free(localRNG);
     }
 }
