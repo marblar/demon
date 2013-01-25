@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Kenyon College. All rights reserved.
 //
 
-#include <omp.h>
+
 #include <iostream>
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_sf.h>
@@ -20,7 +20,7 @@
 #include <boost/program_options.hpp>
 #include <boost/timer/timer.hpp>
 
-
+#include "clangomp.h"
 #include "States.h"
 #include "System.h"
 #include "Utilities.h"
@@ -50,7 +50,7 @@ int main(int argc, char * argv[]) {
     ("iterations,n",opt::value<int>(), "Number of iterations")
     ("help","Show help message")
     ("verbose,v", "Show extensive debugging info")
-    ("output,o", opt::value<int>(), "Output style.");
+    ("output,o", opt::value<int>(), "Output style.")
     ;
     
     opt::variables_map vmap;
@@ -161,27 +161,29 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
     delete [] p_prime;
     delete [] p;
     
-    
-    if(type==CommaSeparated) {
-        static int once = 0;
-        if (!once) {
-            std::cout<<"delta,epsilon,avg,max_surprise\n";
-            once=1;
+    #pragma omp critical
+    {
+        if(type==CommaSeparated) {
+            static int once = 0;
+            if (!once) {
+                std::cout<<"delta,epsilon,avg,max_surprise\n";
+                once=1;
+            }
+            std::cout<< constants.delta << "," << constants.epsilon << "," << sum/iterations << "," << max_surprise << std::endl;
         }
-        std::cout<< constants.delta << "," << constants.epsilon << "," << sum/iterations << "," << max_surprise << std::endl;
-    }
-    if(type==PrettyPrint) {
-        print(beta);
-        print(constants.delta);
-        print(constants.epsilon);
-        print(sum/iterations);
-        print(max_surprise);
-        print(sum);
-        std::cout<<std::endl;
-    }
-    
-    if (type==Mathematica) {
-        assert(0);
+        if(type==PrettyPrint) {
+            print(beta);
+            print(constants.delta);
+            print(constants.epsilon);
+            print(sum/iterations);
+            print(max_surprise);
+            print(sum);
+            std::cout<<std::endl;
+        }
+        
+        if (type==Mathematica) {
+            assert(0);
+        }
     }
     
     gsl_rng_free(localRNG);
