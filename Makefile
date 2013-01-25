@@ -1,3 +1,5 @@
+#A change for tate
+
 VPATH = src
 INC = -I$(HOME)/local/include -I/usr/local/include
 LIB = -L$(HOME)/local/lib/ -L/usr/local/lib
