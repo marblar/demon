@@ -4,7 +4,7 @@
 //
 //  Created by Mark Larus on 9/8/12.
 //  Copyright (c) 2012 Kenyon College. All rights reserved.
-//  
+//
 
 #include <omp.h>
 #include <iostream>
@@ -36,7 +36,7 @@ enum OutputType {
     NoOutput
 };
 
-void simulate_and_print(Constants constants, int iterations, OutputType type);
+void simulate_and_print(Constants constants, int iterations, OutputType type, bool verbose = false);
 
 int main(int argc, char * argv[]) {
     /*! Initialize options list.
@@ -88,16 +88,17 @@ int main(int argc, char * argv[]) {
     constants.epsilon = .7;
     constants.tau = 1;
     int dimension = 50;
+
     #pragma omp parallel for private(constants)
     for (int k=dimension*dimension; k>=0; k--) {
         constants.epsilon = (k % dimension)/(double)(dimension);
         constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
-        simulate_and_print(constants, iterations, output_style);
+        simulate_and_print(constants, iterations, output_style,verbose);
     }
     
 }
 
-void simulate_and_print(Constants constants, int iterations, OutputType type) {
+void simulate_and_print(Constants constants, int iterations, OutputType type, bool verbose) {
     
     /*! Use this to change the length of the tape. */
     const int BIT_STREAM_LENGTH = 8;
@@ -108,7 +109,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
     
     int *histogram = new int[1<<BIT_STREAM_LENGTH];
     std::fill_n(histogram, 1<<BIT_STREAM_LENGTH, 0);
-
+    
     long double *p = new long double[1<<BIT_STREAM_LENGTH];
     long double *p_prime = new long double[1<<BIT_STREAM_LENGTH];
     long double sum = 0;
@@ -117,83 +118,71 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
     long double max_surprise = 0;
     long double min_surprise = LONG_MAX;
     
-    #pragma omp parallel
-    {
-        //TODO: Move this into a semaphore in the utility function
-        gsl_rng *localRNG = GSLRandomNumberGenerator();
-
-        #pragma omp for
-        for (int k=0; k<first_pass_iterations; ++k) {
-            System *currentSystem = systems+k;
-            
-            currentSystem->constants = constants;
-            currentSystem->nbits = BIT_STREAM_LENGTH;
-            
-            evolveSystem(currentSystem, localRNG);
-
-            histogram[systems[k].endingBitString]++;
-        }
+    gsl_rng *localRNG = GSLRandomNumberGenerator();
     
-        #pragma omp single nowait
-        delete [] systems;
-
-        #pragma omp for nowait
-        for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
-            int setBits = bitCount(k,BIT_STREAM_LENGTH);
-            p[k] = gsl_ran_binomial_pdf(setBits, constants.delta, BIT_STREAM_LENGTH)/gsl_sf_choose(BIT_STREAM_LENGTH,setBits);
-            p_prime[k]=static_cast<long double>(histogram[k])/(first_pass_iterations);
-        }
+    
+    for (int k=0; k<first_pass_iterations; ++k) {
+        System *currentSystem = systems+k;
         
-        #pragma omp single nowait
-        delete [] histogram;
-
-        #pragma omp barrier
+        currentSystem->constants = constants;
+        currentSystem->nbits = BIT_STREAM_LENGTH;
         
-        #pragma omp for reduction(+ : sum)
-        for(int k=0; k<iterations; k++) {
-            System *currentSystem = new System();
-            currentSystem->constants = constants;
-            currentSystem->nbits = BIT_STREAM_LENGTH;
-            
-            evolveSystem(currentSystem, localRNG);
-            
-            long double surprise = exp(beta*currentSystem->mass)*p_prime[currentSystem->endingBitString]/p[currentSystem->startingBitString];
-            max_surprise = surprise > max_surprise ? surprise : max_surprise;
-            min_surprise = surprise && surprise < min_surprise ? surprise : min_surprise;
-            sum = sum + surprise;
-            delete currentSystem;
-        }
+        evolveSystem(currentSystem, localRNG);
         
-        #pragma omp single nowait
-        {
-            delete [] p_prime;
-            delete [] p;
-        }
-            
-        #pragma omp critical
-        {
-            if(type==CommaSeparated) {
-                static int once = 0;
-                if (!once) {
-                    std::cout<<"delta,epsilon,avg,max_surprise\n";
-                    once=1;
-                }
-                std::cout<< constants.delta << "," << constants.epsilon << "," << sum/iterations << "," << max_surprise << std::endl;
-            }
-            if(type==PrettyPrint) {
-                print(beta);
-                print(constants.delta);
-                print(constants.epsilon);
-                print(sum/iterations);
-                print(max_surprise);
-                print(sum);
-                std::cout<<std::endl;
-            }
-            
-            if (type==Mathematica) {
-                assert(0);
-            }
-        }
-        gsl_rng_free(localRNG);
+        histogram[systems[k].endingBitString]++;
     }
+    
+    delete [] systems;
+    
+    for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
+        int setBits = bitCount(k,BIT_STREAM_LENGTH);
+        p[k] = gsl_ran_binomial_pdf(setBits, constants.delta, BIT_STREAM_LENGTH)/gsl_sf_choose(BIT_STREAM_LENGTH,setBits);
+        p_prime[k]=static_cast<long double>(histogram[k])/(first_pass_iterations);
+    }
+    
+    
+    delete [] histogram;
+    
+    for(int k=0; k<iterations; k++) {
+        System *currentSystem = new System();
+        currentSystem->constants = constants;
+        currentSystem->nbits = BIT_STREAM_LENGTH;
+        
+        evolveSystem(currentSystem, localRNG);
+        
+        long double surprise = exp(beta*currentSystem->mass)*p_prime[currentSystem->endingBitString]/p[currentSystem->startingBitString];
+        max_surprise = surprise > max_surprise ? surprise : max_surprise;
+        min_surprise = surprise && surprise < min_surprise ? surprise : min_surprise;
+        sum = sum + surprise;
+        delete currentSystem;
+    }
+    
+    
+    delete [] p_prime;
+    delete [] p;
+    
+    
+    if(type==CommaSeparated) {
+        static int once = 0;
+        if (!once) {
+            std::cout<<"delta,epsilon,avg,max_surprise\n";
+            once=1;
+        }
+        std::cout<< constants.delta << "," << constants.epsilon << "," << sum/iterations << "," << max_surprise << std::endl;
+    }
+    if(type==PrettyPrint) {
+        print(beta);
+        print(constants.delta);
+        print(constants.epsilon);
+        print(sum/iterations);
+        print(max_surprise);
+        print(sum);
+        std::cout<<std::endl;
+    }
+    
+    if (type==Mathematica) {
+        assert(0);
+    }
+    
+    gsl_rng_free(localRNG);
 }
