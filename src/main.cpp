@@ -17,6 +17,7 @@
 #include <assert.h>
 #include <set>
 #include <boost/program_options.hpp>
+#include <boost/timer/timer.hpp>
 
 
 #include "States.h"
@@ -89,6 +90,7 @@ int main(int argc, char * argv[]) {
 }
 
 void simulate_and_print(Constants constants, int iterations, OutputType type) {
+    boost::timer::auto_cpu_timer t;
     
     /*! Use this to change the length of the tape. */
     const int BIT_STREAM_LENGTH = 8;
