@@ -39,18 +39,18 @@ enum OutputType {
 void simulate_and_print(Constants constants, int iterations, OutputType type);
 
 int main(int argc, char * argv[]) {
-  /*! Initialize options list.
-   */
-
+    /*! Initialize options list.
+     */
+    
     bool verbose = false;
     const int default_iterations = 1<<16;
     
     opt::options_description desc("Allowed options");
     desc.add_options()
-        ("iterations,n",opt::value<int>(), "Number of iterations")
-        ("help","Show help message")
-        ("verbose,v", "Show extensive debugging info") 
-      ("output,o", opt::value<int>(), "Output style.");
+    ("iterations,n",opt::value<int>(), "Number of iterations")
+    ("help","Show help message")
+    ("verbose,v", "Show extensive debugging info")
+    ("output,o", opt::value<int>(), "Output style.");
     ;
     
     opt::variables_map vmap;
