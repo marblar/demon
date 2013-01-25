@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Kenyon College. All rights reserved.
 //  
 
+#include <omp.h>
 #include <iostream>
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_sf.h>
@@ -49,6 +50,7 @@ int main(int argc, char * argv[]) {
         ("iterations,n",opt::value<int>(), "Number of iterations")
         ("help","Show help message")
         ("verbose,v", "Show extensive debugging info") 
+      ("output,o", opt::value<int>(), "Output style.");
     ;
     
     opt::variables_map vmap;
@@ -66,7 +68,12 @@ int main(int argc, char * argv[]) {
     
     if (verbose) {
       print(iterations);
+      #pragma omp parallel
+      #pragma omp single
+      print(omp_get_num_threads());
     }
+
+    OutputType output_style = vmap.count("output") ? (OutputType)vmap["output"].as<int>() : CommaSeparated;
 
     /*! This call sets up our state machine for the wheel. Each state (i.e. "A0", "C1") is
      represented by an object with pointers to the next states and the bit-flip states. */
@@ -84,7 +91,7 @@ int main(int argc, char * argv[]) {
     for (int k=dimension*dimension; k>=0; k--) {
         constants.epsilon = (k % dimension)/(double)(dimension);
         constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
-        simulate_and_print(constants, iterations, CommaSeparated);
+        simulate_and_print(constants, iterations, output_style);
     }
 
 }
@@ -97,7 +104,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
     
     int first_pass_iterations = iterations;
     
-    System *systems = new System[first_pass_iterations]();
+    System *systems = new System[first_pass_iterations];
     
     int *histogram = new int[1<<BIT_STREAM_LENGTH];
     std::fill_n(histogram, 1<<BIT_STREAM_LENGTH, 0);
@@ -110,11 +117,11 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
     long double max_surprise = 0;
     long double min_surprise = LONG_MAX;
     
-    #pragma omp parallel default(shared)
+    #pragma omp parallel
     {
         //TODO: Move this into a semaphore in the utility function
         gsl_rng *localRNG = GSLRandomNumberGenerator();
-        
+
         #pragma omp for
         for (int k=0; k<first_pass_iterations; ++k) {
             System *currentSystem = systems+k;
@@ -123,28 +130,24 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
             currentSystem->nbits = BIT_STREAM_LENGTH;
             
             evolveSystem(currentSystem, localRNG);
-        
-        }
-        
 
-        
-        #pragma omp for
-        for(int k=0; k<first_pass_iterations; k++) {
             histogram[systems[k].endingBitString]++;
         }
     
-        #pragma omp single
+        #pragma omp single nowait
         delete [] systems;
 
-        #pragma omp for
+        #pragma omp for nowait
         for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
             int setBits = bitCount(k,BIT_STREAM_LENGTH);
             p[k] = gsl_ran_binomial_pdf(setBits, constants.delta, BIT_STREAM_LENGTH)/gsl_sf_choose(BIT_STREAM_LENGTH,setBits);
             p_prime[k]=static_cast<long double>(histogram[k])/(first_pass_iterations);
         }
         
-        #pragma omp single
+        #pragma omp single nowait
         delete [] histogram;
+
+	#pragma omp barrier
 
         //Make sure we don't accidentally share a seed.
         
@@ -163,7 +166,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
             delete currentSystem;
         }
         
-        #pragma omp single
+        #pragma omp single nowait
         {
             delete [] p_prime;
             delete [] p;
@@ -189,6 +192,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type) {
                 assert(0);
             }
         }
-        gsl_rng_free(localRNG);
+	gsl_rng_free(localRNG);
     }
 }
