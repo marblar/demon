@@ -3,8 +3,8 @@ VPATH = src
 INC = -I$(HOME)/local/include -I/usr/local/include
 LIB = -L$(HOME)/local/lib/ -L/usr/local/lib
 
-COMPILE_OPTS = $(INC) $(LIB) -fopenmp
-LINK_OPTS = -lgsl -lboost_program_options
+COMPILE_OPTS = $(INC) $(LIB) -fopenmp -O3
+LINK_OPTS = -lgsl -lboost_program_options -lboost_timer -lboost_chrono -lboost_system
 CC = g++-4.2
 
 all : thermal.out
