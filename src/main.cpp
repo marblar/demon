@@ -20,6 +20,10 @@
 #include <boost/program_options.hpp>
 #include <boost/timer/timer.hpp>
 
+#define timer timer_class
+#include <boost/progress.hpp>
+#undef timer
+
 #include "clangomp.h"
 #include "States.h"
 #include "System.h"
@@ -51,6 +55,7 @@ int main(int argc, char * argv[]) {
     ("help","Show help message")
     ("verbose,v", "Show extensive debugging info")
     ("output,o", opt::value<int>(), "Output style.")
+      ("benchmark", "Test evaluation speed")
     ;
     
     opt::variables_map vmap;
@@ -88,6 +93,27 @@ int main(int argc, char * argv[]) {
     constants.epsilon = .7;
     constants.tau = 1;
     int dimension = 50;
+
+    if(vmap.count("benchmark")) {
+      std::cout<<"Benchmarking speed.\n";
+      int benchmark_size = 1000;
+      boost::timer::cpu_timer timer;
+      boost::progress_display display(benchmark_size);
+      timer.start();
+      int tickmarks;
+      #pragma omp parallel for private(constants)
+      for (int k=0; k<benchmark_size; k++) {
+	simulate_and_print(constants,iterations,NoOutput,false);
+	++display;
+      }
+      timer.stop();
+      double speed_factor;
+      double time_elapsed = timer.elapsed().wall;
+      print(benchmark_size);
+      print(timer.format(3,"%ws"));
+      print(benchmark_size/time_elapsed);
+      exit(0);
+    }
 
     #pragma omp parallel for private(constants)
     for (int k=dimension*dimension; k>=0; k--) {
