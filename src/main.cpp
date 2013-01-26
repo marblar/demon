@@ -126,7 +126,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
         
         evolveSystem(currentSystem, localRNG);
         
-        histogram[systems[k].endingBitString]++;
+        histogram[currentSystem->endingBitString]++;
 	delete currentSystem;
     }
     
