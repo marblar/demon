@@ -105,8 +105,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
     
     int first_pass_iterations = iterations;
     
-    System *systems = new System[first_pass_iterations];
-    
     int *histogram = new int[1<<BIT_STREAM_LENGTH];
     std::fill_n(histogram, 1<<BIT_STREAM_LENGTH, 0);
     
@@ -119,10 +117,9 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
     long double min_surprise = LONG_MAX;
     
     gsl_rng *localRNG = GSLRandomNumberGenerator();
-    
-    
+        
     for (int k=0; k<first_pass_iterations; ++k) {
-        System *currentSystem = systems+k;
+        System *currentSystem = new System();
         
         currentSystem->constants = constants;
         currentSystem->nbits = BIT_STREAM_LENGTH;
@@ -130,9 +127,8 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
         evolveSystem(currentSystem, localRNG);
         
         histogram[systems[k].endingBitString]++;
+	delete currentSystem;
     }
-    
-    delete [] systems;
     
     for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
         int setBits = bitCount(k,BIT_STREAM_LENGTH);
@@ -156,7 +152,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
         sum = sum + surprise;
         delete currentSystem;
     }
-    
     
     delete [] p_prime;
     delete [] p;
