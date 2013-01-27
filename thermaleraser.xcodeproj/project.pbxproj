@@ -38,7 +38,6 @@
 		4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		4D46888916B5C549009143D0 /* Stochastic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stochastic.cpp; sourceTree = "<group>"; };
 		4D46888A16B5C549009143D0 /* Stochastic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stochastic.h; sourceTree = "<group>"; };
-		4D46888B16B5C58C009143D0 /* Reservoir.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Reservoir.cpp; sourceTree = "<group>"; };
 		4D46888C16B5C58C009143D0 /* Reservoir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reservoir.h; sourceTree = "<group>"; };
 		4D611CFF16406A2F008FB029 /* System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = System.cpp; sourceTree = "<group>"; };
 		4D611D0016406A2F008FB029 /* System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = System.h; sourceTree = "<group>"; };
@@ -72,7 +71,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4DAFD7A716B202EF004D9346 /* Static Libraries */ = {
+		4DAFD7A716B202EF004D9346 /* External Libraries */ = {
 			isa = PBXGroup;
 			children = (
 				4DAFD7AE16B2077F004D9346 /* libboost_chrono.dylib */,
@@ -83,14 +82,14 @@
 				4D35ECB51677BB3000DDF748 /* libMLi3.a */,
 				4DAFD7A516B1E7A3004D9346 /* libgsl.a */,
 			);
-			name = "Static Libraries";
+			name = "External Libraries";
 			sourceTree = "<group>";
 		};
 		4DD182E41605213000353837 = {
 			isa = PBXGroup;
 			children = (
 				4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */,
-				4DAFD7A716B202EF004D9346 /* Static Libraries */,
+				4DAFD7A716B202EF004D9346 /* External Libraries */,
 				4DD182F21605213000353837 /* src */,
 				4DD182F01605213000353837 /* Products */,
 			);
@@ -113,7 +112,6 @@
 				4D46888A16B5C549009143D0 /* Stochastic.h */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
 				4D9C2AFF160524A9001FA974 /* main.cpp */,
-				4D46888B16B5C58C009143D0 /* Reservoir.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
 				4D46888916B5C549009143D0 /* Stochastic.cpp */,
 				4D611D0316406ADE008FB029 /* Utilities.cpp */,
@@ -126,7 +124,7 @@
 /* Begin PBXLegacyTarget section */
 		4D46888E16B5D5B8009143D0 /* BuildWithMakefile */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "$(ACTION)";
+			buildArgumentsString = "$(ACTION) RPATH=''";
 			buildConfigurationList = 4D46888F16B5D5B8009143D0 /* Build configuration list for PBXLegacyTarget "BuildWithMakefile" */;
 			buildPhases = (
 			);
@@ -355,6 +353,7 @@
 				4D46889116B5D5B8009143D0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4DD182E91605213000353837 /* Build configuration list for PBXProject "thermaleraser" */ = {
 			isa = XCConfigurationList;
