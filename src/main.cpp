@@ -6,20 +6,17 @@
 //  Copyright (c) 2012 Kenyon College. All rights reserved.
 //
 
-
 #include <iostream>
-#include <gsl/gsl_randist.h>
-#include <gsl/gsl_sf.h>
-#include <time.h>
-#include <semaphore.h>
 #include <algorithm>
 #include <math.h>
-#include <sqlite3.h>
-#include <assert.h>
-#include <set>
+#include <gsl/gsl_randist.h>
+#include <gsl/gsl_sf_choose>
 #include <boost/program_options.hpp>
 #include <boost/timer/timer.hpp>
 
+/*! Fix a namespace issue with boost library.
+  This lets us use both cpu_timer and progress
+*/
 #define timer timer_class
 #include <boost/progress.hpp>
 #undef timer
@@ -209,7 +206,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
         }
         
         if (type==Mathematica) {
-            assert(0);
+	  exit(1);
         }
     }
     
