@@ -10,6 +10,6 @@
     #include <omp.h>
 #else
 //Declare any used openmp items for clang.
-int omp_get_num_threads();
+#define omp_get_num_threads() 1
 
 #endif
