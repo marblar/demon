@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		4D35ECB61677BB3000DDF748 /* libMLi3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35ECB51677BB3000DDF748 /* libMLi3.a */; };
 		4D35ECB81677BB8800DDF748 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */; };
+		4D46888D16B5D38D009143D0 /* Stochastic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D46888916B5C549009143D0 /* Stochastic.cpp */; };
 		4D611D0116406A2F008FB029 /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
 		4D611D0516406ADE008FB029 /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
 		4D9C2B02160524A9001FA974 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9C2AFF160524A9001FA974 /* main.cpp */; };
-		4D9C2B03160524A9001FA974 /* States.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9C2B00160524A9001FA974 /* States.cpp */; };
 		4DAFD7A616B1E7A3004D9346 /* libgsl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAFD7A516B1E7A3004D9346 /* libgsl.a */; };
 		4DAFD7B216B2077F004D9346 /* libboost_chrono.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAFD7AE16B2077F004D9346 /* libboost_chrono.dylib */; };
 		4DAFD7B316B2077F004D9346 /* libboost_program_options.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAFD7AF16B2077F004D9346 /* libboost_program_options.dylib */; };
@@ -36,13 +36,15 @@
 		4D35ECB21677BA0400DDF748 /* mathlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mathlink.h; path = "/Applications/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions/mathlink.h"; sourceTree = "<absolute>"; };
 		4D35ECB51677BB3000DDF748 /* libMLi3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMLi3.a; path = "/Applications/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions/libMLi3.a"; sourceTree = "<absolute>"; };
 		4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		4D46888916B5C549009143D0 /* Stochastic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stochastic.cpp; sourceTree = "<group>"; };
+		4D46888A16B5C549009143D0 /* Stochastic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stochastic.h; sourceTree = "<group>"; };
+		4D46888B16B5C58C009143D0 /* Reservoir.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Reservoir.cpp; sourceTree = "<group>"; };
+		4D46888C16B5C58C009143D0 /* Reservoir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reservoir.h; sourceTree = "<group>"; };
 		4D611CFF16406A2F008FB029 /* System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = System.cpp; sourceTree = "<group>"; };
 		4D611D0016406A2F008FB029 /* System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = System.h; sourceTree = "<group>"; };
 		4D611D0316406ADE008FB029 /* Utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
 		4D611D0416406ADE008FB029 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		4D9C2AFF160524A9001FA974 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		4D9C2B00160524A9001FA974 /* States.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = States.cpp; sourceTree = "<group>"; };
-		4D9C2B01160524A9001FA974 /* States.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = States.h; sourceTree = "<group>"; };
 		4DAFD7A516B1E7A3004D9346 /* libgsl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgsl.a; path = ../../local/lib/libgsl.a; sourceTree = "<group>"; };
 		4DAFD7AE16B2077F004D9346 /* libboost_chrono.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_chrono.dylib; path = ../../local/lib/libboost_chrono.dylib; sourceTree = "<group>"; };
 		4DAFD7AF16B2077F004D9346 /* libboost_program_options.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_program_options.dylib; path = ../../local/lib/libboost_program_options.dylib; sourceTree = "<group>"; };
@@ -106,18 +108,37 @@
 			isa = PBXGroup;
 			children = (
 				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
-				4D9C2B01160524A9001FA974 /* States.h */,
+				4D46888C16B5C58C009143D0 /* Reservoir.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
+				4D46888A16B5C549009143D0 /* Stochastic.h */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
 				4D9C2AFF160524A9001FA974 /* main.cpp */,
-				4D9C2B00160524A9001FA974 /* States.cpp */,
+				4D46888B16B5C58C009143D0 /* Reservoir.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
+				4D46888916B5C549009143D0 /* Stochastic.cpp */,
 				4D611D0316406ADE008FB029 /* Utilities.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		4D46888E16B5D5B8009143D0 /* BuildWithMakefile */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 4D46888F16B5D5B8009143D0 /* Build configuration list for PBXLegacyTarget "BuildWithMakefile" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "$(SOURCE_ROOT)";
+			dependencies = (
+			);
+			name = BuildWithMakefile;
+			passBuildSettingsInEnvironment = 1;
+			productName = BuildWithMakefile;
+		};
+/* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
 		4DD182EE1605213000353837 /* thermaleraser */ = {
@@ -159,6 +180,7 @@
 			projectRoot = "";
 			targets = (
 				4DD182EE1605213000353837 /* thermaleraser */,
+				4D46888E16B5D5B8009143D0 /* BuildWithMakefile */,
 			);
 		};
 /* End PBXProject section */
@@ -169,15 +191,48 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D9C2B02160524A9001FA974 /* main.cpp in Sources */,
-				4D9C2B03160524A9001FA974 /* States.cpp in Sources */,
 				4D611D0116406A2F008FB029 /* System.cpp in Sources */,
 				4D611D0516406ADE008FB029 /* Utilities.cpp in Sources */,
+				4D46888D16B5D38D009143D0 /* Stochastic.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		4D46889016B5D5B8009143D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4D46889116B5D5B8009143D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		4DD182F71605213000353837 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -293,6 +348,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4D46888F16B5D5B8009143D0 /* Build configuration list for PBXLegacyTarget "BuildWithMakefile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4D46889016B5D5B8009143D0 /* Debug */,
+				4D46889116B5D5B8009143D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		4DD182E91605213000353837 /* Build configuration list for PBXProject "thermaleraser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
