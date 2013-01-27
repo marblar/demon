@@ -131,7 +131,7 @@
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
-			buildWorkingDirectory = /Users/mark/Source/thermaleraser;
+			buildWorkingDirectory = "$(SOURCE_ROOT)";
 			dependencies = (
 			);
 			name = BuildWithMakefile;

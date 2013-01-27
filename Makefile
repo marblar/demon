@@ -7,7 +7,7 @@ LIB = -L$(HOME)/local/lib/ -L/usr/local/lib
 COMPILE_OPTS = $(INC) $(LIB) -O3 -fopenmp
 LINK_OPTS = -lgsl -lboost_program_options -lboost_timer -lboost_chrono -lboost_system -lgslcblas
 RPATH=-Wl,-rpath=$(HOME)/local/lib:/usr/local/lib
-CC = g++
+CC = g++ -g
 
 all : thermal.out
 
