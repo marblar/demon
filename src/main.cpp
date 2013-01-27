@@ -21,7 +21,7 @@
 #include <boost/timer/timer.hpp>
 
 #include "clangomp.h"
-#include "States.h"
+#include "Stochastic.h"
 #include "System.h"
 #include "Utilities.h"
 
@@ -123,6 +123,8 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
         
         currentSystem->constants = constants;
         currentSystem->nbits = BIT_STREAM_LENGTH;
+        StochasticReservoir *reservoir = new StochasticReservoir(localRNG);
+        currentSystem->reservoir = reservoir;
         
         evolveSystem(currentSystem, localRNG);
         
@@ -141,8 +143,12 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
     
     for(int k=0; k<iterations; k++) {
         System *currentSystem = new System();
+        
         currentSystem->constants = constants;
         currentSystem->nbits = BIT_STREAM_LENGTH;
+        
+        StochasticReservoir *reservoir = new StochasticReservoir(localRNG);
+        currentSystem->reservoir = reservoir;
         
         evolveSystem(currentSystem, localRNG);
         

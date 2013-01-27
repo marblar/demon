@@ -11,8 +11,8 @@ CC = g++
 
 all : thermal.out
 
-States.o : States.cpp States.h
-	$(CC) $(COMPILE_OPTS) -c src/States.cpp
+Stochastic.o : Stochastic.cpp Stochastic.h
+	$(CC) $(COMPILE_OPTS) -c src/Stochastic.cpp
 
 System.o : System.cpp System.h Utilities.h
 	$(CC) $(COMPILE_OPTS) -c src/System.cpp
@@ -23,8 +23,8 @@ Utilities.o : Utilities.cpp Utilities.h
 main.o : main.cpp
 	$(CC) $(COMPILE_OPTS) -c src/main.cpp
 
-thermal.out : States.o System.o Utilities.o main.o
-	$(CC) $(COMPILE_OPTS) $(LINK_OPTS) System.o States.o Utilities.o main.o -o thermal.out $(RPATH)
+thermal.out : Stochastic.o System.o Utilities.o main.o
+	$(CC) $(COMPILE_OPTS) $(LINK_OPTS) System.o Stochastic.o Utilities.o main.o -o thermal.out $(RPATH)
 
 .PHONY: clean run
 

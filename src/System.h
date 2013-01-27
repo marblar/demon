@@ -9,8 +9,9 @@
 #ifndef __thermaleraser__System__
 #define __thermaleraser__System__
 
-#include "States.h"
 #include <gsl/gsl_rng.h>
+
+class Reservoir;
 
 struct Constants {
     double delta;
@@ -34,12 +35,10 @@ struct System {
     unsigned int startingBitString;
     unsigned int endingBitString;
     int mass;
-    SystemState *currentState;
     Constants constants;
+    Reservoir *reservoir;
     System();
 };
-
-SystemState *randomState();
 
 void evolveSystem(System *system, gsl_rng *rng, bool discrete_system = false);
 
