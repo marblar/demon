@@ -44,7 +44,7 @@ int main(int argc, char * argv[]) {
      */
     
     bool verbose = false;
-    const int default_iterations = 1<<21;
+    const int default_iterations = 1<<16;
     
     opt::options_description desc("Allowed options");
     desc.add_options()
@@ -52,7 +52,7 @@ int main(int argc, char * argv[]) {
     ("help","Show help message")
     ("verbose,v", "Show extensive debugging info")
     ("output,o", opt::value<int>(), "Output style.")
-      ("benchmark", "Test evaluation speed")
+    ("benchmark", "Test evaluation speed")
     ;
     
     opt::variables_map vmap;
@@ -92,24 +92,24 @@ int main(int argc, char * argv[]) {
     int dimension = 50;
 
     if(vmap.count("benchmark")) {
-      std::cout<<"Benchmarking speed.\n";
-      int benchmark_size = 1000;
-      boost::timer::cpu_timer timer;
-      boost::progress_display display(benchmark_size);
-      timer.start();
-      int tickmarks;
-      #pragma omp parallel for private(constants)
-      for (int k=0; k<benchmark_size; k++) {
-	simulate_and_print(constants,iterations,NoOutput,false);
-	++display;
-      }
-      timer.stop();
-      double speed_factor;
-      double time_elapsed = timer.elapsed().wall;
-      print(benchmark_size);
-      print(timer.format(3,"%ws"));
-      print(benchmark_size/time_elapsed);
-      exit(0);
+        std::cout<<"Benchmarking speed.\n";
+        int benchmark_size = 1000;
+        boost::timer::cpu_timer timer;
+        boost::progress_display display(benchmark_size);
+        timer.start();
+        int tickmarks;
+        #pragma omp parallel for private(constants)
+        for (int k=0; k<benchmark_size; k++) {
+            simulate_and_print(constants,iterations,NoOutput,false);
+            ++display;
+        }
+        timer.stop();
+        double speed_factor;
+        double time_elapsed = timer.elapsed().wall;
+        print(benchmark_size);
+        print(timer.format(3,"%ws"));
+        print(benchmark_size/time_elapsed);
+        exit(0);
     }
 
     #pragma omp parallel for private(constants)
@@ -207,7 +207,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
         }
         
         if (type==Mathematica) {
-	  exit(1);
+            exit(1);
         }
     }
     
