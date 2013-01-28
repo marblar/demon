@@ -31,7 +31,7 @@ class StochasticReservoir : public Reservoir {
 public:
     SystemState *currentState;
     gsl_rng *RNG;
-    StochasticReservoir(gsl_rng *RNG);
+    StochasticReservoir(gsl_rng *RNG, Constants constants);
     int interactWithBit(int bit);
 };
 

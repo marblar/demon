@@ -13,25 +13,26 @@
 #include <assert.h>
 #include <math.h>
 
-System::System() {
+System::System(gsl_rng *localRNG, Constants constants, int nbits) {
     this->bitPosition = 0;
-    this->timeSinceLastBit = 0;
-    this->startingBitString = 0;
+    this->nbits = nbits;
+    
+    this->startingBitString = randomShortIntWithBitDistribution(constants.delta, nbits, localRNG);
+    this->constants = constants;
+    
     this->endingBitString = 0;
     this->mass = 0;
 }
 
-void evolveSystemWithReservoir(System *currentSystem, Reservoir *reservoir, gsl_rng *localRNG, bool discrete_system) {
-    currentSystem->startingBitString = randomShortIntWithBitDistribution(currentSystem->constants.delta, currentSystem->nbits, localRNG);
+void System::evolveWithReservoir(Reservoir *reservoir) {
+    unsigned int& startingBitString = this->startingBitString;
+    unsigned int& endingBitString = this->endingBitString;
+    int& bitPosition = this->bitPosition;
     
-    unsigned int& startingBitString = currentSystem->startingBitString;
-    unsigned int& endingBitString = currentSystem->endingBitString;
-    int& bitPosition = currentSystem->bitPosition;
-    
-    while (currentSystem->bitPosition < currentSystem->nbits) {
+    while (this->bitPosition < this->nbits) {
         int oldBit = (startingBitString >> bitPosition) & 1;
         int newBit = reservoir->interactWithBit(oldBit);
-        currentSystem->mass -= oldBit - newBit;
+        this->mass -= oldBit - newBit;
         endingBitString |= ( newBit << bitPosition );
         bitPosition++;
     }//End while

@@ -102,9 +102,10 @@ int StochasticReservoir::interactWithBit(int bit) {
     return currentState->bit;
 }
 
-StochasticReservoir::StochasticReservoir(gsl_rng *RNG) {
+StochasticReservoir::StochasticReservoir(gsl_rng *RNG, Constants constants) {
     this->RNG = RNG;
     currentState = randomState();
+    this->constants = constants;
 }
 
 

@@ -142,15 +142,10 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
     gsl_rng *localRNG = GSLRandomNumberGenerator();
         
     for (int k=0; k<first_pass_iterations; ++k) {
-        System *currentSystem = new System();
-        StochasticReservoir *reservoir = new StochasticReservoir(localRNG);
+        System *currentSystem = new System(localRNG, constants,BIT_STREAM_LENGTH);
+        StochasticReservoir *reservoir = new StochasticReservoir(localRNG,constants);
         
-        currentSystem->constants = constants;
-        reservoir->constants = constants;
-        currentSystem->nbits = BIT_STREAM_LENGTH;
-        
-        evolveSystemWithReservoir(currentSystem, reservoir, localRNG);
-        
+        currentSystem->evolveWithReservoir(reservoir);
         histogram[currentSystem->endingBitString]++;
         delete currentSystem;
         delete reservoir;
@@ -166,19 +161,16 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
     delete [] histogram;
     
     for(int k=0; k<iterations; k++) {
-        System *currentSystem = new System();
-        StochasticReservoir *reservoir = new StochasticReservoir(localRNG);
+        System *currentSystem = new System(localRNG, constants, BIT_STREAM_LENGTH);
+        StochasticReservoir *reservoir = new StochasticReservoir(localRNG,constants);
         
-        reservoir->constants = constants;
-        currentSystem->constants = constants;
-        currentSystem->nbits = BIT_STREAM_LENGTH;
-        
-        evolveSystemWithReservoir(currentSystem,reservoir,localRNG);
+        currentSystem->evolveWithReservoir(reservoir);
         
         long double surprise = exp(beta*currentSystem->mass)*p_prime[currentSystem->endingBitString]/p[currentSystem->startingBitString];
         max_surprise = surprise > max_surprise ? surprise : max_surprise;
         min_surprise = surprise && surprise < min_surprise ? surprise : min_surprise;
         sum = sum + surprise;
+        
         delete currentSystem;
         delete reservoir;
     }

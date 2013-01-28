@@ -29,19 +29,14 @@ struct Constants {
 
 struct System {
     int bitPosition;
-    double timeSinceLastBit;
     int nbits;
-    
     unsigned int startingBitString;
     unsigned int endingBitString;
     int mass;
     Constants constants;
-    System();
+    
+    System(gsl_rng *rng, Constants, int nbits);
+    void evolveWithReservoir(Reservoir *reservoir);
 };
-
-void evolveSystemWithReservoir(System *system, Reservoir *reservoir, gsl_rng *rng, bool discrete_system = false);
-
-long packResult(System *system);
-System *unpackResult(long long value);
 
 #endif /* defined(__thermaleraser__System__) */
