@@ -1,6 +1,6 @@
-VPATH = src
-INC = -I$(HOME)/local/include -I/usr/local/include
-LIB = -L$(HOME)/local/lib/ -L/usr/local/lib
+VPATH = src build
+INC = -I$(HOME)/local/include/ -I/usr/local/include/
+LIB = -L$(HOME)/local/lib/ -L/usr/local/lib/
 UNAME = $(shell uname)
 
 COMPILE_OPTS = $(INC) $(LIB) -O3 -fopenmp
@@ -15,24 +15,24 @@ endif
 all : thermal.out
 
 Stochastic.o : Stochastic.cpp Stochastic.h
-	$(CC) $(COMPILE_OPTS) -c src/Stochastic.cpp
+	$(CC) $(COMPILE_OPTS) -c src/Stochastic.cpp -o build/Stochastic.o
 
 System.o : System.cpp System.h Utilities.h
-	$(CC) $(COMPILE_OPTS) -c src/System.cpp
+	$(CC) $(COMPILE_OPTS) -c src/System.cpp -o build/System.o
 
 Utilities.o : Utilities.cpp Utilities.h
-	$(CC) $(COMPILE_OPTS) -c src/Utilities.cpp
+	$(CC) $(COMPILE_OPTS) -c src/Utilities.cpp -o build/Utilities.o
 
 main.o : main.cpp
-	$(CC) $(COMPILE_OPTS) -c src/main.cpp
+	$(CC) $(COMPILE_OPTS) -c src/main.cpp -o build/main.o
 
 thermal.out : Stochastic.o System.o Utilities.o main.o
-	$(CC) $(COMPILE_OPTS) $(LINK_OPTS) System.o Stochastic.o Utilities.o main.o -o thermal.out $(RPATH)
+	$(CC) $(COMPILE_OPTS) $(LINK_OPTS) build/System.o build/Stochastic.o build/Utilities.o build/main.o -o thermal.out $(RPATH)
 
 .PHONY: clean run
 
 clean :
-	rm -f *.o thermal.out *~
+	rm -f build/*.o thermal.out *~ src/*~
 
 run : thermal.out
 	./thermal.out
