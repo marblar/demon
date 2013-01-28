@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <math.h>
 #include <gsl/gsl_randist.h>
-#include <gsl/gsl_sf_choose>
+#include <gsl/gsl_sf.h>
 #include <boost/program_options.hpp>
 #include <boost/timer/timer.hpp>
 
