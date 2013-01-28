@@ -21,7 +21,7 @@ System::System() {
     this->mass = 0;
 }
 
-void evolveSystem(System *currentSystem, gsl_rng *localRNG, bool discrete_system) {
+void evolveSystemWithReservoir(System *currentSystem, Reservoir *reservoir, gsl_rng *localRNG, bool discrete_system) {
     currentSystem->startingBitString = randomShortIntWithBitDistribution(currentSystem->constants.delta, currentSystem->nbits, localRNG);
     
     unsigned int& startingBitString = currentSystem->startingBitString;
@@ -29,7 +29,9 @@ void evolveSystem(System *currentSystem, gsl_rng *localRNG, bool discrete_system
     int& bitPosition = currentSystem->bitPosition;
     
     while (currentSystem->bitPosition < currentSystem->nbits) {
-        int newBit = currentSystem->reservoir->evolve_bit(startingBitString >> bitPosition);
+        int oldBit = (startingBitString >> bitPosition) & 1;
+        int newBit = reservoir->interactWithBit(oldBit);
+        currentSystem->mass -= oldBit - newBit;
         endingBitString |= ( newBit << bitPosition );
         bitPosition++;
     }//End while

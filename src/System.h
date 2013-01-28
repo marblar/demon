@@ -36,11 +36,10 @@ struct System {
     unsigned int endingBitString;
     int mass;
     Constants constants;
-    Reservoir *reservoir;
     System();
 };
 
-void evolveSystem(System *system, gsl_rng *rng, bool discrete_system = false);
+void evolveSystemWithReservoir(System *system, Reservoir *reservoir, gsl_rng *rng, bool discrete_system = false);
 
 long packResult(System *system);
 System *unpackResult(long long value);

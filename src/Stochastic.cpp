@@ -68,7 +68,7 @@ SystemState *randomState() {
     return randomState[index];
 }
 
-int StochasticReservoir::evolve_bit(int bit) {
+int StochasticReservoir::interactWithBit(int bit) {
     if (currentState->bit != bit) {
         currentState=currentState->bitFlipState;
     }

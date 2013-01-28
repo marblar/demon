@@ -6,5 +6,5 @@ class Constants;
 class Reservoir {
 public:
     Constants constants;
-    virtual int evolve_bit(int bit) = 0;
+    virtual int interactWithBit(int bit) = 0;
 };

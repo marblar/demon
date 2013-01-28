@@ -32,7 +32,7 @@ public:
     SystemState *currentState;
     gsl_rng *RNG;
     StochasticReservoir(gsl_rng *RNG);
-    int evolve_bit(int bit);
+    int interactWithBit(int bit);
 };
 
 #endif /* defined(__FSM__StateMachine__) */

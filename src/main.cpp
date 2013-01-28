@@ -44,7 +44,7 @@ int main(int argc, char * argv[]) {
      */
     
     bool verbose = false;
-    const int default_iterations = 1<<16;
+    const int default_iterations = 1<<21;
     
     opt::options_description desc("Allowed options");
     desc.add_options()
@@ -143,16 +143,17 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
         
     for (int k=0; k<first_pass_iterations; ++k) {
         System *currentSystem = new System();
+        StochasticReservoir *reservoir = new StochasticReservoir(localRNG);
         
         currentSystem->constants = constants;
+        reservoir->constants = constants;
         currentSystem->nbits = BIT_STREAM_LENGTH;
-        StochasticReservoir *reservoir = new StochasticReservoir(localRNG);
-        currentSystem->reservoir = reservoir;
         
-        evolveSystem(currentSystem, localRNG);
+        evolveSystemWithReservoir(currentSystem, reservoir, localRNG);
         
         histogram[currentSystem->endingBitString]++;
-	delete currentSystem;
+        delete currentSystem;
+        delete reservoir;
     }
     
     for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
@@ -166,20 +167,20 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
     
     for(int k=0; k<iterations; k++) {
         System *currentSystem = new System();
+        StochasticReservoir *reservoir = new StochasticReservoir(localRNG);
         
+        reservoir->constants = constants;
         currentSystem->constants = constants;
         currentSystem->nbits = BIT_STREAM_LENGTH;
         
-        StochasticReservoir *reservoir = new StochasticReservoir(localRNG);
-        currentSystem->reservoir = reservoir;
-        
-        evolveSystem(currentSystem, localRNG);
+        evolveSystemWithReservoir(currentSystem,reservoir,localRNG);
         
         long double surprise = exp(beta*currentSystem->mass)*p_prime[currentSystem->endingBitString]/p[currentSystem->startingBitString];
         max_surprise = surprise > max_surprise ? surprise : max_surprise;
         min_surprise = surprise && surprise < min_surprise ? surprise : min_surprise;
         sum = sum + surprise;
         delete currentSystem;
+        delete reservoir;
     }
     
     delete [] p_prime;
