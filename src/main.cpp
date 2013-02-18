@@ -124,7 +124,7 @@ int main(int argc, char * argv[]) {
     
     ReservoirFactory *rFactory = NULL;
     
-    if ( vmap["ising"].as<bool>() )  {
+    if ( vmap.count("ising") )  {
         if (!vmap.count("dimension")) {
             std::clog << "Option --ising requires -d\n";
             exit(1);
