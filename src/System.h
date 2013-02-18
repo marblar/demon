@@ -37,7 +37,7 @@ struct System {
     int mass;
     Constants constants;
     
-    System(gsl_rng *rng, Constants, int nbits);
+    System(gsl_rng *rng, Constants, int nbits = 16);
     void evolveWithReservoir(Reservoir *reservoir);
 };
 

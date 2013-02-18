@@ -153,7 +153,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
                         ReservoirFactory *factory, bool verbose) {
     
     /*! Use this to change the length of the tape. */
-    const int BIT_STREAM_LENGTH = 8;
+    const int BIT_STREAM_LENGTH = 16;
     
     int first_pass_iterations = iterations;
     
