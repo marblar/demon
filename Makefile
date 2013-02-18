@@ -3,7 +3,7 @@ INC = -I$(HOME)/local/include/ -I/usr/local/include/
 LIB = -L$(HOME)/local/lib/ -L/usr/local/lib/
 UNAME = $(shell uname)
 
-COMPILE_OPTS = $(INC) $(LIB) -O3 -fopenmp
+COMPILE_OPTS = $(INC) $(LIB) -fopenmp
 LINK_OPTS = -lgsl -lboost_program_options -lboost_timer -lboost_chrono -lboost_system -lgslcblas
 RPATH=-Wl,-rpath=$(HOME)/local/lib:/usr/local/lib
 CC = g++ -g

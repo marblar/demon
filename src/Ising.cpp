@@ -5,8 +5,8 @@
 #define SQUARED(x) x*x
 
 namespace ising {
-    inline int s(int x,int y,int z) {
-        return x<<2 + y<<1 + z;
+    inline int s(char x,char y,char z) {
+        return (x<<2) + (y<<1) + (z);
     }
 }
 
@@ -186,7 +186,7 @@ inline void IsingReservoir::setupStateTable() {
     
     #define init(XX,StateXX) \
                 TransitionTable XX;\
-                for (int k=0; k<8; k++) \
+                for (char k=0; k<8; k++) \
                     XX[k]=&StateXX;
     init(A1,StateA1);
     A1[s(0,0,1)] = &StateB1;
