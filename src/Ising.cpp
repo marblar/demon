@@ -8,6 +8,13 @@ namespace ising {
     inline int s(char x,char y,char z) {
         return (x<<2) + (y<<1) + (z);
     }
+    
+    inline int boundsCheck(int x, const int max) {
+        if (x < 0) {
+            return max + x;
+        }
+        return x % max;
+    }
 }
 
 using namespace ising;
@@ -67,8 +74,39 @@ inline void IsingReservoir::wheelStep() {
 }
 
 inline int IsingReservoir::countHighNeighbors(Coordinate c) {
-    CoordinateList neighbors = getNeighbors(c);
-    return countHigh(neighbors);
+    int value = 0;
+    for (int k = 0; k<4; k++) {
+        Coordinate neighbor;
+        switch (k) {
+            case 0: // North
+                neighbor.x = c.x;
+                neighbor.y = c.y - 1;
+                break;
+                
+            case 1: // South
+                neighbor.x = c.x;
+                neighbor.y = c.y + 1;
+                break;
+                
+            case 2: // East
+                neighbor.x = c.x - 1;
+                neighbor.y = c.y;
+                break;
+                
+            case 3: // West
+                neighbor.x = c.x + 1;
+                neighbor.y = c.y;
+                break;
+                
+            default: // We should never be here.
+                assert(0 && "Unreachable.");
+                break;
+        }
+        neighbor.x = boundsCheck(neighbor.x, isingSide);
+        neighbor.y = boundsCheck(neighbor.y, isingSide);
+        value +=getCell(neighbor);
+    }
+    return value;
 }
 
 void IsingReservoir::initializeCellsWithRNG(gsl_rng *RNG, int N) {
@@ -120,12 +158,6 @@ inline int IsingReservoir::countHigh(CoordinateList list) {
     return highCount;
 }
 
-inline int boundsCheck(int x, const int max) {
-    if (x < 0) {
-        return max + x;
-    }
-    return x % max;
-}
 
 IsingReservoir::CoordinateList IsingReservoir::getNeighbors(const Coordinate c){
     std::vector<Coordinate> neighbors(4);
