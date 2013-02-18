@@ -60,11 +60,9 @@ int main(int argc, char * argv[]) {
     ("help","Show help message")
     ("verbose,v", "Show extensive debugging info")
     ("benchmark", "Test evaluation speed")
-    ("ising", opt::value<bool>()->default_value(false),
-        "Use Ising reservoir. Requires -d. Overrides --stoch")
-    ("stoch", opt::value<bool>()->default_value(true),
-        "Use Stochastic reservoir. This is set by default, and overridden by"
-        " --ising")
+    ("ising", "Use Ising reservoir. Requires -d. Overrides --stoch")
+    ("stoch", "Use Stochastic reservoir. This is set by default, and overridden"
+            " by --ising.")
     ("dimension,d", opt::value<int>()->default_value(100),
         "Set the dimension of the Ising reservoir")
     ;
