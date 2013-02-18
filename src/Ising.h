@@ -1,10 +1,11 @@
 #ifndef ___STOCH___
 #define ___STOCH___
 
-#include "Reservoir.h"
 #include <utility>
 #include <vector>
 #include <map>
+#include "Reservoir.h"
+#include "ReservoirFactory.h"
 
 struct Coordinate {
     int x,y;
@@ -52,5 +53,13 @@ public:
     
     virtual void initializeCellsWithRNG(gsl_rng *RNG, int N = 1<<20);
     virtual int interactWithBit(int bit);
+    
+    class IsingFactory : public ReservoirFactory {
+        int dimension;
+    public:
+        virtual Reservoir *create(gsl_rng *RNG, Constants constants);
+        IsingFactory(int dim) : dimension(dim) {}
+    };
 };
+
 #endif

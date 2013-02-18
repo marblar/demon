@@ -26,6 +26,7 @@
 #include "Ising.h"
 #include "System.h"
 #include "Utilities.h"
+#include "ReservoirFactory.h"
 
 #define print(x) std::cout<<#x <<": " <<x<<std::endl;
 
@@ -43,8 +44,8 @@ enum ReservoirType {
     Stoch
 };
 
-template <class Reservoir, int Dimension>
-void simulate_and_print(Constants constants, int iterations, OutputType type, bool verbose = false);
+void simulate_and_print(Constants constants, int iterations,
+                        OutputType type, ReservoirFactory *factory, bool verbose = false);
 
 int main(int argc, char * argv[]) {
     /*! Initialize options list.
@@ -55,11 +56,17 @@ int main(int argc, char * argv[]) {
     
     opt::options_description desc("Allowed options");
     desc.add_options()
-    ("iterations,n",opt::value<int>(), "Number of iterations")
+    ("iterations,n",opt::value<int>(), "Number of iterations.")
     ("help","Show help message")
     ("verbose,v", "Show extensive debugging info")
-    ("output,o", opt::value<int>(), "Output style.")
     ("benchmark", "Test evaluation speed")
+    ("ising", opt::value<bool>()->default_value(false),
+        "Use Ising reservoir. Requires -d. Overrides --stoch")
+    ("stoch", opt::value<bool>()->default_value(true),
+        "Use Stochastic reservoir. This is set by default, and overridden by"
+        " --ising")
+    ("dimension,d", opt::value<int>()->default_value(100),
+        "Set the dimension of the Ising reservoir")
     ;
     
     opt::variables_map vmap;
@@ -106,7 +113,7 @@ int main(int argc, char * argv[]) {
         timer.start();
         #pragma omp parallel for private(constants)
         for (int k=0; k<benchmark_size; k++) {
-            simulate_and_print<IsingReservoir,100>(constants,iterations,NoOutput,false);
+            simulate_and_print(constants,iterations,NoOutput,false);
             ++display;
         }
         timer.stop();
@@ -116,18 +123,36 @@ int main(int argc, char * argv[]) {
         print(benchmark_size/time_elapsed);
         exit(0);
     }
+    
+    ReservoirFactory *rFactory = NULL;
+    
+    if ( vmap["ising"].as<bool>() )  {
+        if (!vmap.count("dimension")) {
+            std::clog << "Option --ising requires -d\n";
+            exit(1);
+        }
+        
+        int dim = vmap["dimension"].as<int>();
+        rFactory = new IsingReservoir::IsingFactory(dim);
+    } else {
+        //Assume stochastic
+        rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
+    }
+    
+    assert(rFactory);
 
     #pragma omp parallel for private(constants)
     for (int k=dimension*dimension; k>=0; k--) {
         constants.epsilon = (k % dimension)/(double)(dimension);
         constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
-        simulate_and_print<IsingReservoir,100>(constants, iterations, output_style,verbose);
+        simulate_and_print(constants, iterations, output_style, rFactory, verbose);
     }
     
+    delete rFactory;
 }
 
-template <class Reservoir, int Dimension>
-void simulate_and_print(Constants constants, int iterations, OutputType type, bool verbose) {
+void simulate_and_print(Constants constants, int iterations, OutputType type, \
+                        ReservoirFactory *factory, bool verbose) {
     
     /*! Use this to change the length of the tape. */
     const int BIT_STREAM_LENGTH = 8;
@@ -149,7 +174,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
         
     for (int k=0; k<first_pass_iterations; ++k) {
         System *currentSystem = new System(localRNG, constants,BIT_STREAM_LENGTH);
-        StochasticReservoir *reservoir = new StochasticReservoir(localRNG,constants,Dimension);
+        StochasticReservoir *reservoir = new StochasticReservoir(localRNG,constants);
         
         currentSystem->evolveWithReservoir(reservoir);
         histogram[currentSystem->endingBitString]++;

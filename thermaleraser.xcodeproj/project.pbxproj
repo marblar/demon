@@ -20,6 +20,7 @@
 		4DAFD7B516B2077F004D9346 /* libboost_timer.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAFD7B116B2077F004D9346 /* libboost_timer.dylib */; };
 		4DE1438416D143C400F8B816 /* Ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438216D143C400F8B816 /* Ising.cpp */; };
 		4DE1438616D1443E00F8B816 /* Reservoir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438516D1443E00F8B816 /* Reservoir.cpp */; };
+		4DFFF1FE16D1BE1E001BB4E8 /* ReservoirFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,6 +57,8 @@
 		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		4DE1438316D143C400F8B816 /* Ising.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Ising.h; sourceTree = "<group>"; };
 		4DE1438516D1443E00F8B816 /* Reservoir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Reservoir.cpp; sourceTree = "<group>"; };
+		4DFFF1F916D1B7B7001BB4E8 /* ReservoirFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservoirFactory.h; sourceTree = "<group>"; };
+		4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReservoirFactory.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,10 +116,12 @@
 			children = (
 				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
 				4D46888C16B5C58C009143D0 /* Reservoir.h */,
+				4DFFF1F916D1B7B7001BB4E8 /* ReservoirFactory.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
 				4DE1438716D147BB00F8B816 /* Reservoirs */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
 				4D9C2AFF160524A9001FA974 /* main.cpp */,
+				4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
 				4DE1438516D1443E00F8B816 /* Reservoir.cpp */,
 				4D611D0316406ADE008FB029 /* Utilities.cpp */,
@@ -210,6 +215,7 @@
 				4D46888D16B5D38D009143D0 /* Stochastic.cpp in Sources */,
 				4DE1438416D143C400F8B816 /* Ising.cpp in Sources */,
 				4DE1438616D1443E00F8B816 /* Reservoir.cpp in Sources */,
+				4DFFF1FE16D1BE1E001BB4E8 /* ReservoirFactory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

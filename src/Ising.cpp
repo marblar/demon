@@ -211,3 +211,6 @@ inline void IsingReservoir::setupStateTable() {
     //TODO: TEST ME.
 }
 
+Reservoir *IsingReservoir::IsingFactory::create(gsl_rng *RNG, Constants constants) {
+    return new IsingReservoir(RNG,constants,dimension);
+}
