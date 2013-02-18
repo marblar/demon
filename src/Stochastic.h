@@ -13,7 +13,7 @@
 class StochasticReservoir : public Reservoir {
 public:
     gsl_rng *RNG;
-    StochasticReservoir(gsl_rng *RNG, Constants constants);
+    StochasticReservoir(gsl_rng *RNG, Constants constants, int unused = 0);
     int interactWithBit(int bit);
 };
 

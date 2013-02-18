@@ -2,6 +2,9 @@
 #include <string>
 #include "System.h"
 
+#ifndef MBL_SYSTEM
+#define MBL_SYSTEM
+
 class Constants;
 
 struct SystemState {
@@ -26,3 +29,5 @@ extern SystemState StateA1, StateB1, StateC1, StateA0, StateB0, StateC0;
 void setupStates();
 SystemState *randomState();
 std::string print_state(SystemState *state);
+
+#endif

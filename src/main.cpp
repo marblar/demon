@@ -23,6 +23,7 @@
 
 #include "clangomp.h"
 #include "Stochastic.h"
+#include "Ising.h"
 #include "System.h"
 #include "Utilities.h"
 
@@ -37,6 +38,12 @@ enum OutputType {
     NoOutput
 };
 
+enum ReservoirType {
+    Ising,
+    Stoch
+};
+
+template <class Reservoir, int Dimension>
 void simulate_and_print(Constants constants, int iterations, OutputType type, bool verbose = false);
 
 int main(int argc, char * argv[]) {
@@ -88,7 +95,7 @@ int main(int argc, char * argv[]) {
      calculating this at runtime is just an invitation for bugs. */
     constants.delta = .5;
     constants.epsilon = .7;
-    constants.tau = 1;
+    constants.tau = 20;
     int dimension = 50;
 
     if(vmap.count("benchmark")) {
@@ -99,7 +106,7 @@ int main(int argc, char * argv[]) {
         timer.start();
         #pragma omp parallel for private(constants)
         for (int k=0; k<benchmark_size; k++) {
-            simulate_and_print(constants,iterations,NoOutput,false);
+            simulate_and_print<IsingReservoir,100>(constants,iterations,NoOutput,false);
             ++display;
         }
         timer.stop();
@@ -114,11 +121,12 @@ int main(int argc, char * argv[]) {
     for (int k=dimension*dimension; k>=0; k--) {
         constants.epsilon = (k % dimension)/(double)(dimension);
         constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
-        simulate_and_print(constants, iterations, output_style,verbose);
+        simulate_and_print<IsingReservoir,100>(constants, iterations, output_style,verbose);
     }
     
 }
 
+template <class Reservoir, int Dimension>
 void simulate_and_print(Constants constants, int iterations, OutputType type, bool verbose) {
     
     /*! Use this to change the length of the tape. */
@@ -141,7 +149,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, bo
         
     for (int k=0; k<first_pass_iterations; ++k) {
         System *currentSystem = new System(localRNG, constants,BIT_STREAM_LENGTH);
-        StochasticReservoir *reservoir = new StochasticReservoir(localRNG,constants);
+        StochasticReservoir *reservoir = new StochasticReservoir(localRNG,constants,Dimension);
         
         currentSystem->evolveWithReservoir(reservoir);
         histogram[currentSystem->endingBitString]++;
