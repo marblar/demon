@@ -1,8 +1,19 @@
+#include "Reservoir.h"
+
+SystemState StateA1, StateB1, StateC1, StateA0, StateB0, StateC0;
+
+std::string print_state(SystemState *state) {
+    std::string theString = "";
+    theString.push_back(state->letter);
+    theString.push_back('0'+state->bit);
+    return theString;
+}
+
+
 void setupStates() {
     static bool alreadyInitialized = false;
     
     if(!alreadyInitialized) {
-        
         StateA1.nextState1 = &StateB1;
         StateA1.nextState2 = &StateC0;
         StateA1.bitFlipState = &StateA0;
@@ -45,4 +56,8 @@ SystemState *randomState() {
     int index = rand()%6;
     SystemState *randomState[] = {&StateA0,&StateA1,&StateB0,&StateB1,&StateB0,&StateC0,&StateC1};
     return randomState[index];
+}
+
+Reservoir::Reservoir(Constants c) : constants(c) {
+    this->currentState = randomState();
 }

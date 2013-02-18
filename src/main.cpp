@@ -97,14 +97,12 @@ int main(int argc, char * argv[]) {
         boost::timer::cpu_timer timer;
         boost::progress_display display(benchmark_size);
         timer.start();
-        int tickmarks;
         #pragma omp parallel for private(constants)
         for (int k=0; k<benchmark_size; k++) {
             simulate_and_print(constants,iterations,NoOutput,false);
             ++display;
         }
         timer.stop();
-        double speed_factor;
         double time_elapsed = timer.elapsed().wall;
         print(benchmark_size);
         print(timer.format(3,"%ws"));

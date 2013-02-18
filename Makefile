@@ -14,7 +14,7 @@ endif
 
 all : thermal.out
 
-Stochastic.o : Stochastic.cpp Stochastic.h
+Stochastic.o : Stochastic.cpp Stochastic.h Reservoir.h
 	$(CC) $(COMPILE_OPTS) -c src/Stochastic.cpp -o build/Stochastic.o
 
 System.o : System.cpp System.h Utilities.h
@@ -23,11 +23,17 @@ System.o : System.cpp System.h Utilities.h
 Utilities.o : Utilities.cpp Utilities.h
 	$(CC) $(COMPILE_OPTS) -c src/Utilities.cpp -o build/Utilities.o
 
+Reservoir.o : Reservoir.cpp Reservoir.h
+	$(CC) $(COMPILE_OPTS) -c src/Reservoir.cpp -o build/Reservoir.o
+
+Ising.o : Ising.cpp Ising.h Reservoir.h
+	$(CC) $(COMPILE_OPTS) -c src/Ising.cpp -o build/Ising.o
+
 main.o : main.cpp
 	$(CC) $(COMPILE_OPTS) -c src/main.cpp -o build/main.o
 
-thermal.out : Stochastic.o System.o Utilities.o main.o
-	$(CC) $(COMPILE_OPTS) $(LINK_OPTS) build/System.o build/Stochastic.o build/Utilities.o build/main.o -o thermal.out $(RPATH)
+thermal.out : Stochastic.o System.o Utilities.o main.o Ising.o Reservoir.o
+	$(CC) $(COMPILE_OPTS) $(LINK_OPTS) build/System.o build/Stochastic.o build/Utilities.o build/main.o build/Ising.o build/Reservoir.o -o thermal.out $(RPATH)
 
 .PHONY: clean run
 

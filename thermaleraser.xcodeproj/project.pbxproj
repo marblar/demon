@@ -39,7 +39,7 @@
 		4D35ECB51677BB3000DDF748 /* libMLi3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMLi3.a; path = "/Applications/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions/libMLi3.a"; sourceTree = "<absolute>"; };
 		4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		4D46888916B5C549009143D0 /* Stochastic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stochastic.cpp; sourceTree = "<group>"; };
-		4D46888A16B5C549009143D0 /* Stochastic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stochastic.h; sourceTree = "<group>"; };
+		4D46888A16B5C549009143D0 /* Stochastic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Stochastic.h; sourceTree = "<group>"; };
 		4D46888C16B5C58C009143D0 /* Reservoir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reservoir.h; sourceTree = "<group>"; };
 		4D611CFF16406A2F008FB029 /* System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = System.cpp; sourceTree = "<group>"; };
 		4D611D0016406A2F008FB029 /* System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = System.h; sourceTree = "<group>"; };
@@ -53,8 +53,8 @@
 		4DAFD7B116B2077F004D9346 /* libboost_timer.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_timer.dylib; path = ../../local/lib/libboost_timer.dylib; sourceTree = "<group>"; };
 		4DAFD7C216B2EC54004D9346 /* clangomp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clangomp.h; sourceTree = "<group>"; };
 		4DD182EF1605213000353837 /* thermaleraser */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = thermaleraser; sourceTree = BUILT_PRODUCTS_DIR; };
-		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; };
-		4DE1438316D143C400F8B816 /* Ising.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ising.h; sourceTree = "<group>"; };
+		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; usesTabs = 0; };
+		4DE1438316D143C400F8B816 /* Ising.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Ising.h; sourceTree = "<group>"; };
 		4DE1438516D1443E00F8B816 /* Reservoir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Reservoir.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,17 +114,25 @@
 				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
 				4D46888C16B5C58C009143D0 /* Reservoir.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
-				4D46888A16B5C549009143D0 /* Stochastic.h */,
-				4DE1438316D143C400F8B816 /* Ising.h */,
+				4DE1438716D147BB00F8B816 /* Reservoirs */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
-				4DE1438216D143C400F8B816 /* Ising.cpp */,
 				4D9C2AFF160524A9001FA974 /* main.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
 				4DE1438516D1443E00F8B816 /* Reservoir.cpp */,
-				4D46888916B5C549009143D0 /* Stochastic.cpp */,
 				4D611D0316406ADE008FB029 /* Utilities.cpp */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		4DE1438716D147BB00F8B816 /* Reservoirs */ = {
+			isa = PBXGroup;
+			children = (
+				4D46888A16B5C549009143D0 /* Stochastic.h */,
+				4D46888916B5C549009143D0 /* Stochastic.cpp */,
+				4DE1438316D143C400F8B816 /* Ising.h */,
+				4DE1438216D143C400F8B816 /* Ising.cpp */,
+			);
+			name = Reservoirs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

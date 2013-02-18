@@ -8,16 +8,10 @@
 
 #ifndef __FSM__StateMachine__
 #define __FSM__StateMachine__
-
-#include <iostream>
-#include <gsl/gsl_rng.h>
 #include "Reservoir.h"
-
-std::string print_state(SystemState *state);
 
 class StochasticReservoir : public Reservoir {
 public:
-    SystemState *currentState;
     gsl_rng *RNG;
     StochasticReservoir(gsl_rng *RNG, Constants constants);
     int interactWithBit(int bit);

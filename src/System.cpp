@@ -38,5 +38,9 @@ void System::evolveWithReservoir(Reservoir *reservoir) {
     }//End while
 }
 
+double Constants::beta() {
+    return -log((1+epsilon)/(1-epsilon));
+}
+
 
 

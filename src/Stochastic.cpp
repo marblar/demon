@@ -10,15 +10,6 @@
 #include <gsl/gsl_randist.h>
 #include "Stochastic.h"
 
-SystemState StateA1, StateB1, StateC1, StateA0, StateB0, StateC0;
-
-std::string print_state(SystemState *state) {
-    std::string theString = "";
-    theString.push_back(state->letter);
-    theString.push_back('0'+state->bit);
-    return theString;
-}
-
 int StochasticReservoir::interactWithBit(int bit) {
     if (currentState->bit != bit) {
         currentState=currentState->bitFlipState;
@@ -53,10 +44,9 @@ int StochasticReservoir::interactWithBit(int bit) {
     return currentState->bit;
 }
 
-StochasticReservoir::StochasticReservoir(gsl_rng *RNG, Constants constants) {
+StochasticReservoir::StochasticReservoir(gsl_rng *RNG, Constants constants) :
+        Reservoir(constants) {
     this->RNG = RNG;
-    currentState = randomState();
-    this->constants = constants;
 }
 
 

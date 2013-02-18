@@ -25,6 +25,8 @@ struct Constants {
     
     int nBits;
     //The number of bits the tape interacts with.
+    
+    double beta();
 };
 
 struct System {
