@@ -65,6 +65,7 @@ int main(int argc, char * argv[]) {
             " by --ising.")
     ("dimension,d", opt::value<int>()->default_value(100),
         "Set the dimension of the Ising reservoir")
+    ("tau,t", opt::value<double>()->default_value(5))
     ;
     
     opt::variables_map vmap;
@@ -94,14 +95,6 @@ int main(int argc, char * argv[]) {
     setupStates();
     
     Constants constants;
-    
-    /*! The delta used here is NOT, at this point, the delta used in the paper. This is the
-     ratio of ones to zeroes in the bit stream. Probably worth changing the name, but
-     calculating this at runtime is just an invitation for bugs. */
-    constants.delta = .5;
-    constants.epsilon = .7;
-    int dimension = 50;
-
     if(vmap.count("benchmark")) {
         std::cout<<"Benchmarking speed.\n";
         int benchmark_size = 1000;
@@ -138,11 +131,13 @@ int main(int argc, char * argv[]) {
     
     assert(rFactory);
 
+    int dimension = 50;
+    const double tau = vmap["tau"].as<double>();
     #pragma omp parallel for private(constants)
     for (int k=dimension*dimension; k>=0; k--) {
         constants.epsilon = (k % dimension)/(double)(dimension);
         constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
-        constants.tau = 20;
+        constants.tau = tau;
         simulate_and_print(constants, iterations, output_style, rFactory, verbose);
     }
     
@@ -151,9 +146,12 @@ int main(int argc, char * argv[]) {
 
 void simulate_and_print(Constants constants, int iterations, OutputType type, \
                         ReservoirFactory *factory, bool verbose) {
+    if (constants.tau<.1) {
+        std::clog<<"Warning: small tau.\n";
+    }
     
     /*! Use this to change the length of the tape. */
-    const int BIT_STREAM_LENGTH = 16;
+    const int BIT_STREAM_LENGTH = 8;
     
     int first_pass_iterations = iterations;
     
