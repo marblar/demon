@@ -17,7 +17,8 @@ System::System(gsl_rng *localRNG, Constants constants, int nbits) {
     this->bitPosition = 0;
     this->nbits = nbits;
     
-    this->startingBitString = randomShortIntWithBitDistribution(constants.delta, nbits, localRNG);
+    this->startingBitString = \
+        randomShortIntWithBitDistribution(constants.delta, nbits, localRNG);
     this->constants = constants;
     
     this->endingBitString = 0;
@@ -31,8 +32,12 @@ void System::evolveWithReservoir(Reservoir *reservoir) {
     
     while (this->bitPosition < this->nbits) {
         int oldBit = (startingBitString >> bitPosition) & 1;
-        int newBit = reservoir->interactWithBit(oldBit);
-        this->mass -= oldBit - newBit;
+        Reservoir::InteractionResult result = reservoir->interactWithBit(oldBit);
+        
+        int newBit = result.bit;
+        this->mass += result.work;
+        
+//        this->mass -= oldBit - newBit;
         endingBitString |= ( newBit << bitPosition );
         bitPosition++;
     }//End while

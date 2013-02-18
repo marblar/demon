@@ -19,7 +19,8 @@ namespace ising {
 
 using namespace ising;
 
-int IsingReservoir::interactWithBit(int bit) {
+Reservoir::InteractionResult IsingReservoir::interactWithBit(int bit) {
+    InteractionResult result;
     if (currentState->bit != bit) {
         currentState=currentState->bitFlipState;
     }
@@ -30,14 +31,16 @@ int IsingReservoir::interactWithBit(int bit) {
     
     for (int k = 0; k<iterations; k++) {
         parity = 0;
-        this->isingStep();
-        this->wheelStep();
+        this->isingStep(result);
+        this->wheelStep(result);
     }
     
-    return currentState->bit;
+    result.bit = currentState->bit;
+    
+    return result;
 }
 
-inline int IsingReservoir::isingStep() {
+inline void IsingReservoir::isingStep(InteractionResult &result) {
     int row = 0;
     int column = (currentStepType == odd ? row + 1 : row) % 2;
     while (row<isingSide) {
@@ -58,7 +61,7 @@ inline int IsingReservoir::isingStep() {
     currentStepType = (currentStepType == odd) ? even : odd;
 }
 
-inline void IsingReservoir::wheelStep() {
+inline void IsingReservoir::wheelStep(InteractionResult &result) {
     char &s1 = getCell(interactionCells.first);
     char &s2 = getCell(interactionCells.second);
     
@@ -71,7 +74,39 @@ inline void IsingReservoir::wheelStep() {
     assert(currentTable.size());
     assert(nextState);
     
+    const int &oldBit = nextState->bit;
+    const int &newBit = currentState->bit;
+    
+    //The abstraction is leaking, but this saves a very complicated table.
+    if (oldBit != newBit) {
+        int initialEnergy = getEnergy(interactionCells.first) \
+                                + getEnergy(interactionCells.second) - s1 ^ s2;
+        
+        if (newBit>oldBit) {
+            s1 = 0;
+            s2 = 0;
+        } else if (newBit < oldBit) {
+            s1 = 0;
+            s2 = 1;
+        }
+        
+        int finalEnergy = getEnergy(interactionCells.first) \
+                                + getEnergy(interactionCells.second) - s1 ^ s2;
+        
+        result.work += initialEnergy - finalEnergy;
+    }
+    
     currentState = nextState;
+}
+
+inline int IsingReservoir::getEnergy(Coordinate c) {
+    int highNeighbors = countHighNeighbors(c);
+    
+    if (getCell(c) == 1) {
+        return 4 - highNeighbors;
+    } else {
+        return highNeighbors;
+    }
 }
 
 inline int IsingReservoir::countHighNeighbors(Coordinate c) {

@@ -14,7 +14,7 @@ class StochasticReservoir : public Reservoir {
 public:
     gsl_rng *RNG;
     StochasticReservoir(gsl_rng *RNG, Constants constants);
-    int interactWithBit(int bit);
+    InteractionResult interactWithBit(int bit);
 };
 
 #endif /* defined(__FSM__StateMachine__) */

@@ -15,13 +15,22 @@ struct SystemState {
     char letter;
 };
 
+
+
 class Reservoir {
 protected:
     Reservoir(Constants);
 public:
     SystemState *currentState;
     Constants constants;
-    virtual int interactWithBit(int bit) = 0;
+    
+    struct InteractionResult {
+        int work;
+        int bit;
+        InteractionResult() : work(0), bit(0) {}
+    };
+    
+    virtual InteractionResult interactWithBit(int bit) = 0;
 };
 
 extern SystemState StateA1, StateB1, StateC1, StateA0, StateB0, StateC0;

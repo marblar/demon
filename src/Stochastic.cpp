@@ -10,8 +10,10 @@
 #include <gsl/gsl_randist.h>
 #include "Stochastic.h"
 
-int StochasticReservoir::interactWithBit(int bit) {
-    if (currentState->bit != bit) {
+Reservoir::InteractionResult StochasticReservoir::interactWithBit(int oldBit) {
+    InteractionResult result;
+    
+    if (currentState->bit != oldBit) {
         currentState=currentState->bitFlipState;
     }
     
@@ -41,7 +43,11 @@ int StochasticReservoir::interactWithBit(int bit) {
         currentState = nextState;
         time_elapsed+=fastestTime;
     }
-    return currentState->bit;
+    int newBit = currentState->bit;
+
+    result.work = newBit - oldBit;
+    result.bit = newBit;
+    return result;
 }
 
 StochasticReservoir::StochasticReservoir(gsl_rng *RNG, Constants constants) :

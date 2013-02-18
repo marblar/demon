@@ -40,9 +40,10 @@ protected:
     inline int countHigh(CoordinateList);
     inline int countHighNeighbors(Coordinate);
     inline void setupStateTable();
+    inline int getEnergy(Coordinate);
 
-    int isingStep();
-    void wheelStep();
+    void isingStep(InteractionResult&);
+    void wheelStep(InteractionResult&);
 public:
     IsingReservoir(gsl_rng *RNG, Constants constants,
                    int IsingSide = 100);
@@ -52,7 +53,7 @@ public:
     std::pair<Coordinate, Coordinate> interactionCells;
     
     virtual void initializeCellsWithRNG(gsl_rng *RNG, int N = 1<<20);
-    virtual int interactWithBit(int bit);
+    virtual InteractionResult interactWithBit(int bit);
     
     class IsingFactory : public ReservoirFactory {
         int dimension;
