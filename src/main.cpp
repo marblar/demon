@@ -100,7 +100,6 @@ int main(int argc, char * argv[]) {
      calculating this at runtime is just an invitation for bugs. */
     constants.delta = .5;
     constants.epsilon = .7;
-    constants.tau = 20;
     int dimension = 50;
 
     if(vmap.count("benchmark")) {
@@ -143,6 +142,7 @@ int main(int argc, char * argv[]) {
     for (int k=dimension*dimension; k>=0; k--) {
         constants.epsilon = (k % dimension)/(double)(dimension);
         constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
+        constants.tau = 20;
         simulate_and_print(constants, iterations, output_style, rFactory, verbose);
     }
     
@@ -172,7 +172,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
         
     for (int k=0; k<first_pass_iterations; ++k) {
         System *currentSystem = new System(localRNG, constants,BIT_STREAM_LENGTH);
-        StochasticReservoir *reservoir = new StochasticReservoir(localRNG,constants);
+        Reservoir *reservoir = factory->create(localRNG, constants);
         
         currentSystem->evolveWithReservoir(reservoir);
         histogram[currentSystem->endingBitString]++;
@@ -191,7 +191,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
     
     for(int k=0; k<iterations; k++) {
         System *currentSystem = new System(localRNG, constants, BIT_STREAM_LENGTH);
-        StochasticReservoir *reservoir = new StochasticReservoir(localRNG,constants);
+        Reservoir *reservoir = factory->create(localRNG,constants);
         
         currentSystem->evolveWithReservoir(reservoir);
         
