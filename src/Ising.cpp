@@ -55,6 +55,7 @@ inline int IsingReservoir::isingStep() {
         row++;
         column = (currentStepType == odd ? row + 1 : row) % 2;
     }
+    currentStepType = (currentStepType == odd) ? even : odd;
 }
 
 inline void IsingReservoir::wheelStep() {
