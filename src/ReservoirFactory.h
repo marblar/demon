@@ -15,6 +15,7 @@
 class ReservoirFactory {
 public:
     virtual Reservoir *create(gsl_rng *RNG, Constants constants) = 0;
+    virtual ~ReservoirFactory() {}
 };
 
 template <class ReservoirKind>
