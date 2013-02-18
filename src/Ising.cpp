@@ -31,15 +31,13 @@ int IsingReservoir::interactWithBit(int bit) {
 }
 
 inline int IsingReservoir::isingStep() {
-    Coordinate coord;
     int row = 0;
     int column = (currentStepType == odd ? row + 1 : row) % 2;
-    while (row<=isingSide) {
-        while (column<=isingSide) {
-            
+    while (row<isingSide) {
+        while (column<isingSide) {
+            Coordinate coord(row,column);
             //Evolve each cell.
             char &cell = getCell(coord);
-            Coordinate coord(row,column);
             if (countHighNeighbors(coord) == 2) {
                 cell = (cell + 1) % 2;
             }
@@ -108,7 +106,8 @@ void IsingReservoir::initializeCellsWithRNG(gsl_rng *RNG, int N) {
 }
 
 inline char &IsingReservoir::getCell(const Coordinate c) {
-    return cells[c.x][c.y];
+    //FIXME: Bounds check?
+    return cells[c.y][c.x];
 }
 
 inline int IsingReservoir::countHigh(CoordinateList list) {

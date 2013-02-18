@@ -44,6 +44,3 @@ thermal.out : Stochastic.o System.o Utilities.o main.o Ising.o Reservoir.o\
 
 clean :
 	rm -f build/*.o thermal.out *~ src/*~
-
-run : thermal.out
-	./thermal.out
