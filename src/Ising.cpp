@@ -56,8 +56,14 @@ inline void IsingReservoir::wheelStep() {
     char &s1 = getCell(interactionCells.first);
     char &s2 = getCell(interactionCells.second);
     
+    int inputState = s(s1,s2,parity % 2);
+    
+    SystemState *lastState = currentState;
     TransitionTable currentTable = transitions[currentState];
-    SystemState *nextState = currentTable[s(s1,s2,parity)];
+    SystemState *nextState = currentTable[inputState];
+    
+    assert(currentTable.size());
+    assert(nextState);
     
     currentState = nextState;
 }
@@ -123,7 +129,7 @@ inline int boundsCheck(int x, const int max) {
 }
 
 IsingReservoir::CoordinateList IsingReservoir::getNeighbors(const Coordinate c){
-    std::vector<Coordinate> neighbors;
+    std::vector<Coordinate> neighbors(4);
     for (int k = 0; k<4; k++) {
         Coordinate neighbor;
         switch (k) {
@@ -183,31 +189,42 @@ inline void IsingReservoir::setupStateTable() {
                 for (int k=0; k<8; k++) \
                     XX[k]=&StateXX;
     init(A1,StateA1);
-    A1[s(0,0,1)] = A1[s(1,0,1)] = &StateB1;
+    A1[s(0,0,1)] = &StateB1;
+    A1[s(1,0,1)] = &StateB1;
     transitions[&StateA1]=A1;
     
     init(B1,StateB1);
-    B1[s(0,0,1)] = B1[s(1,0,1)] = &StateA1;
-    B1[s(1,1,1)] = B1[s(0,1,1)] = &StateC1;
+    B1[s(0,0,1)] = &StateA1;
+    B1[s(1,0,1)] = &StateA1;
+    B1[s(1,1,1)] = &StateC1;
+    B1[s(0,1,1)] = &StateC1;
     transitions[&StateB1]=B1;
     
     init(C1,StateC1);
-    C1[s(0,1,1)] = C1[s(1,1,1)] = &StateB1;
-    C1[s(0,0,1)] = C1[s(0,0,0)] = &StateA0;
+    C1[s(0,1,1)] = &StateB1;
+    C1[s(1,1,1)] = &StateB1;
+    C1[s(0,0,1)] = &StateA0;
+    C1[s(0,0,0)] = &StateA0;
     transitions[&StateC1]=C1;
     
     init(A0,StateA0);
-    A0[s(0,1,0)] = A0[s(0,1,1)] = &StateC1;
-    A0[s(1,0,1)] = A0[s(0,0,1)] = &StateB0;
+    A0[s(0,1,0)] = &StateC1;
+    A0[s(0,1,1)] = &StateC1;
+    A0[s(1,0,1)] = &StateB0;
+    A0[s(0,0,1)] = &StateB0;
     transitions[&StateA0]=A0;
     
     init(B0,StateB0);
-    B0[s(0,0,1)] = B0[s(1,0,1)] = &StateB0;
-    B0[s(1,1,1)] = B0[s(0,1,1)] = &StateA0;
+    B0[s(0,0,1)] = &StateB0;
+    B0[s(1,0,1)] = &StateB0;
+    B0[s(1,1,1)] = &StateA0;
+    B0[s(0,1,1)] = &StateA0;
+    transitions[&StateB0] = B0;
     
     init(C0,StateC0);
-    B0[s(1,1,1)] = B0[s(0,1,1)] = &StateB0;
-    
+    C0[s(1,1,1)] = &StateB0;
+    C0[s(0,1,1)] = &StateB0;
+    transitions[&StateC0] = C0;
     //TODO: TEST ME.
 }
 
