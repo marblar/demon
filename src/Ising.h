@@ -52,7 +52,7 @@ public:
     //The default is {IsingSide/2,IsingSide/2} and the cell to its right.
     std::pair<Coordinate, Coordinate> interactionCells;
     
-    virtual void initializeCellsWithRNG(gsl_rng *RNG, int N = 1<<20);
+    virtual void initializeCellsWithRNG(gsl_rng *RNG, int N = 1<<10);
     virtual InteractionResult interactWithBit(int bit);
     
     class IsingFactory : public ReservoirFactory {
