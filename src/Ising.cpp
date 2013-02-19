@@ -13,7 +13,10 @@ namespace ising {
         if (x < 0) {
             return max + x;
         }
-        return x % max;
+        if (x >= max) {
+            return x-max;
+        }
+        return x;
     }
 }
 
