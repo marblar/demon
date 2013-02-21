@@ -7,38 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D35ECB61677BB3000DDF748 /* libMLi3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35ECB51677BB3000DDF748 /* libMLi3.a */; };
-		4D35ECB81677BB8800DDF748 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */; };
-		4D46888D16B5D38D009143D0 /* Stochastic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D46888916B5C549009143D0 /* Stochastic.cpp */; };
-		4D611D0116406A2F008FB029 /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
-		4D611D0516406ADE008FB029 /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
-		4D9C2B02160524A9001FA974 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9C2AFF160524A9001FA974 /* main.cpp */; };
-		4DAFD7A616B1E7A3004D9346 /* libgsl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAFD7A516B1E7A3004D9346 /* libgsl.a */; };
-		4DAFD7B216B2077F004D9346 /* libboost_chrono.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAFD7AE16B2077F004D9346 /* libboost_chrono.dylib */; };
-		4DAFD7B316B2077F004D9346 /* libboost_program_options.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAFD7AF16B2077F004D9346 /* libboost_program_options.dylib */; };
-		4DAFD7B416B2077F004D9346 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAFD7B016B2077F004D9346 /* libboost_system.dylib */; };
-		4DAFD7B516B2077F004D9346 /* libboost_timer.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAFD7B116B2077F004D9346 /* libboost_timer.dylib */; };
-		4DE1438416D143C400F8B816 /* Ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438216D143C400F8B816 /* Ising.cpp */; };
-		4DE1438616D1443E00F8B816 /* Reservoir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438516D1443E00F8B816 /* Reservoir.cpp */; };
-		4DFFF1FE16D1BE1E001BB4E8 /* ReservoirFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */; };
+		4D28A4A716D66DF40019141B /* libboost_chrono-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AA16D662B20047BE84 /* libboost_chrono-mt.dylib */; };
+		4D28A4A816D66DF40019141B /* libboost_program_options-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AB16D662B20047BE84 /* libboost_program_options-mt.dylib */; };
+		4D28A4A916D66DF40019141B /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AC16D662B20047BE84 /* libboost_system-mt.dylib */; };
+		4D28A4AA16D66DF40019141B /* libboost_timer-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AD16D662B20047BE84 /* libboost_timer-mt.dylib */; };
+		4D28A4AB16D66DF40019141B /* libgsl.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3A816D660EB0047BE84 /* libgsl.0.dylib */; };
+		4D28A4AC16D66E2B0019141B /* Stochastic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D46888916B5C549009143D0 /* Stochastic.cpp */; };
+		4D28A4AD16D66E2B0019141B /* Ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438216D143C400F8B816 /* Ising.cpp */; };
+		4D28A4AE16D66E2B0019141B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9C2AFF160524A9001FA974 /* main.cpp */; };
+		4D28A4AF16D66E2B0019141B /* ReservoirFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */; };
+		4D28A4B016D66E2B0019141B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
+		4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438516D1443E00F8B816 /* Reservoir.cpp */; };
+		4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		4DD182ED1605213000353837 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
+/* Begin PBXContainerItemProxy section */
+		4D28A4B316D66FB90019141B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4DD182E61605213000353837 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4D28A4A216D66DC40019141B;
+			remoteInfo = libjdemon;
 		};
-/* End PBXCopyFilesBuildPhase section */
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4D35ECB21677BA0400DDF748 /* mathlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mathlink.h; path = "/Applications/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions/mathlink.h"; sourceTree = "<absolute>"; };
-		4D35ECB51677BB3000DDF748 /* libMLi3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMLi3.a; path = "/Applications/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions/libMLi3.a"; sourceTree = "<absolute>"; };
-		4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		4D02E3A816D660EB0047BE84 /* libgsl.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgsl.0.dylib; path = ../../macports/lib/libgsl.0.dylib; sourceTree = "<group>"; };
+		4D02E3AA16D662B20047BE84 /* libboost_chrono-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_chrono-mt.dylib"; path = "../../macports/lib/libboost_chrono-mt.dylib"; sourceTree = "<group>"; };
+		4D02E3AB16D662B20047BE84 /* libboost_program_options-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_program_options-mt.dylib"; path = "../../macports/lib/libboost_program_options-mt.dylib"; sourceTree = "<group>"; };
+		4D02E3AC16D662B20047BE84 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../macports/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
+		4D02E3AD16D662B20047BE84 /* libboost_timer-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_timer-mt.dylib"; path = "../../macports/lib/libboost_timer-mt.dylib"; sourceTree = "<group>"; };
+		4D28A4A316D66DC40019141B /* liblibjdemon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibjdemon.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D46888916B5C549009143D0 /* Stochastic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stochastic.cpp; sourceTree = "<group>"; };
 		4D46888A16B5C549009143D0 /* Stochastic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Stochastic.h; sourceTree = "<group>"; };
 		4D46888C16B5C58C009143D0 /* Reservoir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reservoir.h; sourceTree = "<group>"; };
@@ -47,13 +46,7 @@
 		4D611D0316406ADE008FB029 /* Utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
 		4D611D0416406ADE008FB029 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		4D9C2AFF160524A9001FA974 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		4DAFD7A516B1E7A3004D9346 /* libgsl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgsl.a; path = ../../local/lib/libgsl.a; sourceTree = "<group>"; };
-		4DAFD7AE16B2077F004D9346 /* libboost_chrono.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_chrono.dylib; path = ../../local/lib/libboost_chrono.dylib; sourceTree = "<group>"; };
-		4DAFD7AF16B2077F004D9346 /* libboost_program_options.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_program_options.dylib; path = ../../local/lib/libboost_program_options.dylib; sourceTree = "<group>"; };
-		4DAFD7B016B2077F004D9346 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../local/lib/libboost_system.dylib; sourceTree = "<group>"; };
-		4DAFD7B116B2077F004D9346 /* libboost_timer.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_timer.dylib; path = ../../local/lib/libboost_timer.dylib; sourceTree = "<group>"; };
 		4DAFD7C216B2EC54004D9346 /* clangomp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clangomp.h; sourceTree = "<group>"; };
-		4DD182EF1605213000353837 /* thermaleraser */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = thermaleraser; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		4DE1438316D143C400F8B816 /* Ising.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Ising.h; sourceTree = "<group>"; };
 		4DE1438516D1443E00F8B816 /* Reservoir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Reservoir.cpp; sourceTree = "<group>"; };
@@ -62,17 +55,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4DD182EC1605213000353837 /* Frameworks */ = {
+		4D28A4A016D66DC40019141B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DAFD7B216B2077F004D9346 /* libboost_chrono.dylib in Frameworks */,
-				4DAFD7B316B2077F004D9346 /* libboost_program_options.dylib in Frameworks */,
-				4DAFD7B416B2077F004D9346 /* libboost_system.dylib in Frameworks */,
-				4DAFD7B516B2077F004D9346 /* libboost_timer.dylib in Frameworks */,
-				4DAFD7A616B1E7A3004D9346 /* libgsl.a in Frameworks */,
-				4D35ECB81677BB8800DDF748 /* CoreFoundation.framework in Frameworks */,
-				4D35ECB61677BB3000DDF748 /* libMLi3.a in Frameworks */,
+				4D28A4A716D66DF40019141B /* libboost_chrono-mt.dylib in Frameworks */,
+				4D28A4A816D66DF40019141B /* libboost_program_options-mt.dylib in Frameworks */,
+				4D28A4A916D66DF40019141B /* libboost_system-mt.dylib in Frameworks */,
+				4D28A4AA16D66DF40019141B /* libboost_timer-mt.dylib in Frameworks */,
+				4D28A4AB16D66DF40019141B /* libgsl.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,13 +73,11 @@
 		4DAFD7A716B202EF004D9346 /* External Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				4DAFD7AE16B2077F004D9346 /* libboost_chrono.dylib */,
-				4DAFD7AF16B2077F004D9346 /* libboost_program_options.dylib */,
-				4DAFD7B016B2077F004D9346 /* libboost_system.dylib */,
-				4DAFD7B116B2077F004D9346 /* libboost_timer.dylib */,
-				4D35ECB21677BA0400DDF748 /* mathlink.h */,
-				4D35ECB51677BB3000DDF748 /* libMLi3.a */,
-				4DAFD7A516B1E7A3004D9346 /* libgsl.a */,
+				4D02E3AA16D662B20047BE84 /* libboost_chrono-mt.dylib */,
+				4D02E3AB16D662B20047BE84 /* libboost_program_options-mt.dylib */,
+				4D02E3AC16D662B20047BE84 /* libboost_system-mt.dylib */,
+				4D02E3AD16D662B20047BE84 /* libboost_timer-mt.dylib */,
+				4D02E3A816D660EB0047BE84 /* libgsl.0.dylib */,
 			);
 			name = "External Libraries";
 			sourceTree = "<group>";
@@ -96,7 +85,6 @@
 		4DD182E41605213000353837 = {
 			isa = PBXGroup;
 			children = (
-				4D35ECB71677BB8800DDF748 /* CoreFoundation.framework */,
 				4DAFD7A716B202EF004D9346 /* External Libraries */,
 				4DD182F21605213000353837 /* src */,
 				4DD182F01605213000353837 /* Products */,
@@ -106,7 +94,7 @@
 		4DD182F01605213000353837 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4DD182EF1605213000353837 /* thermaleraser */,
+				4D28A4A316D66DC40019141B /* liblibjdemon.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,16 +130,27 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		4D28A4A116D66DC40019141B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXLegacyTarget section */
 		4D46888E16B5D5B8009143D0 /* BuildWithMakefile */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "$(ACTION) RPATH=''";
+			buildArgumentsString = "$(ACTION)";
 			buildConfigurationList = 4D46888F16B5D5B8009143D0 /* Build configuration list for PBXLegacyTarget "BuildWithMakefile" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
-			buildWorkingDirectory = "$(SOURCE_ROOT)";
+			buildWorkingDirectory = "$(SOURCE_ROOT)/build/";
 			dependencies = (
+				4D28A4B416D66FB90019141B /* PBXTargetDependency */,
 			);
 			name = BuildWithMakefile;
 			passBuildSettingsInEnvironment = 1;
@@ -160,22 +159,22 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		4DD182EE1605213000353837 /* thermaleraser */ = {
+		4D28A4A216D66DC40019141B /* libjdemon */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4DD182F91605213000353837 /* Build configuration list for PBXNativeTarget "thermaleraser" */;
+			buildConfigurationList = 4D28A4A416D66DC40019141B /* Build configuration list for PBXNativeTarget "libjdemon" */;
 			buildPhases = (
-				4DD182EB1605213000353837 /* Sources */,
-				4DD182EC1605213000353837 /* Frameworks */,
-				4DD182ED1605213000353837 /* CopyFiles */,
+				4D28A49F16D66DC40019141B /* Sources */,
+				4D28A4A016D66DC40019141B /* Frameworks */,
+				4D28A4A116D66DC40019141B /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = thermaleraser;
-			productName = thermaleraser;
-			productReference = 4DD182EF1605213000353837 /* thermaleraser */;
-			productType = "com.apple.product-type.tool";
+			name = libjdemon;
+			productName = libjdemon;
+			productReference = 4D28A4A316D66DC40019141B /* liblibjdemon.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -198,30 +197,78 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4DD182EE1605213000353837 /* thermaleraser */,
 				4D46888E16B5D5B8009143D0 /* BuildWithMakefile */,
+				4D28A4A216D66DC40019141B /* libjdemon */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4DD182EB1605213000353837 /* Sources */ = {
+		4D28A49F16D66DC40019141B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D9C2B02160524A9001FA974 /* main.cpp in Sources */,
-				4D611D0116406A2F008FB029 /* System.cpp in Sources */,
-				4D611D0516406ADE008FB029 /* Utilities.cpp in Sources */,
-				4D46888D16B5D38D009143D0 /* Stochastic.cpp in Sources */,
-				4DE1438416D143C400F8B816 /* Ising.cpp in Sources */,
-				4DE1438616D1443E00F8B816 /* Reservoir.cpp in Sources */,
-				4DFFF1FE16D1BE1E001BB4E8 /* ReservoirFactory.cpp in Sources */,
+				4D28A4AC16D66E2B0019141B /* Stochastic.cpp in Sources */,
+				4D28A4AD16D66E2B0019141B /* Ising.cpp in Sources */,
+				4D28A4AE16D66E2B0019141B /* main.cpp in Sources */,
+				4D28A4AF16D66E2B0019141B /* ReservoirFactory.cpp in Sources */,
+				4D28A4B016D66E2B0019141B /* System.cpp in Sources */,
+				4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */,
+				4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		4D28A4B416D66FB90019141B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4D28A4A216D66DC40019141B /* libjdemon */;
+			targetProxy = 4D28A4B316D66FB90019141B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		4D28A4A516D66DC40019141B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_VERSION = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../macports/lib\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4D28A4A616D66DC40019141B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_VERSION = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../macports/lib\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		4D46889016B5D5B8009143D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -281,13 +328,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = $HOME/local/lib;
+				HEADER_SEARCH_PATHS = $HOME/macports/include;
+				LIBRARY_SEARCH_PATHS = "$HOME/macports/lib/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = $HOME/local/include;
+				USER_HEADER_SEARCH_PATHS = $HOME/macports/include;
 			};
 			name = Debug;
 		};
@@ -312,64 +360,27 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = $HOME/local/lib;
+				HEADER_SEARCH_PATHS = $HOME/macports/include;
+				LIBRARY_SEARCH_PATHS = "$HOME/macports/lib/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_LDFLAGS = "";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = $HOME/local/include;
-			};
-			name = Release;
-		};
-		4DD182FA1605213000353837 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions\"",
-				);
-				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
-				GCC_LINK_WITH_DYNAMIC_LIBRARIES = YES;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions/mathlink.framework/Versions/3.16\"",
-					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions\"",
-					"\"$(SRCROOT)/../../local/lib\"",
-				);
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		4DD182FB1605213000353837 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				ENABLE_OPENMP_SUPPORT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions\"",
-				);
-				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
-				GCC_LINK_WITH_DYNAMIC_LIBRARIES = YES;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions/mathlink.framework/Versions/3.16\"",
-					"\"$(SYSTEM_APPS_DIR)/Mathematica.app/SystemFiles/Links/MathLink/DeveloperKit/MacOSX-x86-64/CompilerAdditions\"",
-					"\"$(SRCROOT)/../../local/lib\"",
-				);
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = $HOME/macports/include;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4D28A4A416D66DC40019141B /* Build configuration list for PBXNativeTarget "libjdemon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4D28A4A516D66DC40019141B /* Debug */,
+				4D28A4A616D66DC40019141B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		4D46888F16B5D5B8009143D0 /* Build configuration list for PBXLegacyTarget "BuildWithMakefile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -384,15 +395,6 @@
 			buildConfigurations = (
 				4DD182F71605213000353837 /* Debug */,
 				4DD182F81605213000353837 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4DD182F91605213000353837 /* Build configuration list for PBXNativeTarget "thermaleraser" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4DD182FA1605213000353837 /* Debug */,
-				4DD182FB1605213000353837 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
