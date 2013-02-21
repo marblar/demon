@@ -217,7 +217,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
 //    #pragma omp critical
     {
         if(type==CommaSeparated) {
-            printf("%lf,%lf,%lf,%lf\n",constants.delta,constants.epsilon,sum/iterations,max_surprise);
+            printf("%llf,%llf,%llf,%llf\n",constants.delta,constants.epsilon,sum/iterations,max_surprise);
         }
         if(type==PrettyPrint) {
             #pragma omp critical
