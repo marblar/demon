@@ -137,6 +137,11 @@ int main(int argc, char * argv[]) {
 
     int dimension = 50;
     const double tau = vmap["tau"].as<double>();
+
+    if ( output_style == CommaSeparated ) {
+        printf("delta,epsilon,avg,max_surprise\n");
+    }
+    
     #pragma omp parallel for private(constants)
     for (int k=dimension*dimension; k>=0; k--) {
         constants.epsilon = (k % dimension)/(double)(dimension);
@@ -208,25 +213,24 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
     
     delete [] p_prime;
     delete [] p;
-    
-    #pragma omp critical
+
+//    #pragma omp critical
     {
         if(type==CommaSeparated) {
-            static int once = 0;
-            if (!once) {
-                std::cout<<"delta,epsilon,avg,max_surprise\n";
-                once=1;
-            }
-            std::cout<< constants.delta << "," << constants.epsilon << "," << sum/iterations << "," << max_surprise << std::endl;
+            printf("%lf,%lf,%lf,%lf\n",constants.delta,constants.epsilon,sum/iterations,max_surprise);
         }
         if(type==PrettyPrint) {
-            print(beta);
-            print(constants.delta);
-            print(constants.epsilon);
-            print(sum/iterations);
-            print(max_surprise);
-            print(sum);
-            std::cout<<std::endl;
+            #pragma omp critical
+            {
+                print(beta);
+                print(constants.delta);
+                print(constants.epsilon);
+                print(sum/iterations);
+                print(max_surprise);
+                print(sum);
+                std::cout<<std::endl;
+            }
+            
         }
         
         if (type==Mathematica) {
