@@ -12,14 +12,16 @@
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_sf.h>
 #include <boost/program_options.hpp>
-#include <boost/timer/timer.hpp>
 
+#ifdef HAS_BOOST_TIMER
+#include <boost/timer/timer.hpp>
 /*! Fix a namespace issue with boost library.
   This lets us use both cpu_timer and progress
 */
 #define timer timer_class
 #include <boost/progress.hpp>
 #undef timer
+#endif
 
 #include "clangomp.h"
 #include "Stochastic.h"
@@ -59,7 +61,9 @@ int main(int argc, char * argv[]) {
     ("iterations,n",opt::value<int>(), "Number of iterations.")
     ("help","Show help message")
     ("verbose,v", "Show extensive debugging info")
+#ifdef HAS_BOOST_TIMER
     ("benchmark", "Test evaluation speed")
+#endif
     ("ising", "Use Ising reservoir. Requires -d. Overrides --stoch")
     ("stoch", "Use Stochastic reservoir. This is set by default, and overridden"
             " by --ising.")
@@ -95,6 +99,7 @@ int main(int argc, char * argv[]) {
     setupStates();
     
     Constants constants;
+#ifdef HAS_BOOST_TIMER
     if(vmap.count("benchmark")) {
         std::cout<<"Benchmarking speed.\n";
         int benchmark_size = 1000;
@@ -113,9 +118,8 @@ int main(int argc, char * argv[]) {
         print(benchmark_size/time_elapsed);
         exit(0);
     }
-    
+#endif
     ReservoirFactory *rFactory = NULL;
-    
     if ( vmap.count("ising") )  {
         if (!vmap.count("dimension")) {
             std::clog << "Option --ising requires -d\n";
