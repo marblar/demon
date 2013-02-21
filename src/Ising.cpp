@@ -154,14 +154,14 @@ void IsingReservoir::initializeCellsWithRNG(gsl_rng *RNG, int N) {
         int column = (int)(k / this->isingSide);
         
         //Randomize the cells.
-        this->cells[column][row] = gsl_rng_uniform_int(RNG,2);
+        this->cells[column][row] = rand() % 2;
     }
     
     // The metropolis algorithm!
     for (int k=0; k<N; k++) {
         Coordinate coord;
-        coord.x = gsl_rng_uniform_int(RNG,isingSide);
-        coord.y = gsl_rng_uniform_int(RNG,isingSide);
+        coord.x = (int)gsl_rng_uniform_int(RNG,isingSide);
+        coord.y = (int)gsl_rng_uniform_int(RNG,isingSide);
         
         char &cell = getCell(coord);
         
