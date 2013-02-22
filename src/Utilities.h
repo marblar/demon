@@ -11,7 +11,6 @@
 
 #include <iostream>
 #include <gsl/gsl_rng.h>
-#include <sqlite3.h>
 #include <map>
 
 unsigned int randomShortIntWithBitDistribution(double ratioOfOnesToZeroes, int nbits, gsl_rng* generator);
