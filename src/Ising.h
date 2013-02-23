@@ -28,7 +28,7 @@ private:
     stepType currentStepType;
     typedef std::map<char, SystemState *> TransitionTable;
     std::map<SystemState *,TransitionTable> transitions;
-    int parity;
+    unsigned char parity;
 protected:
     struct Neighbors {
         Coordinate coordinates[4];

@@ -117,8 +117,9 @@ inline void IsingReservoir::wheelStep(InteractionResult &result) {
     TransitionTable currentTable = transitions[currentState];
     SystemState *nextState = currentTable[inputState];
     
-    assert(currentTable.size());
-    assert(nextState);
+    assert(inputState<8 && inputState>=0 && "Invalid input state.");
+    assert(currentTable.size() == 8 && "Transition table size should be 8");
+    assert(nextState && "nextState must not be null.");
     
     const int &oldBit = nextState->bit;
     const int &newBit = currentState->bit;
