@@ -113,39 +113,8 @@ inline int IsingReservoir::getEnergy(Coordinate c) {
 }
 
 inline int IsingReservoir::countHighNeighbors(Coordinate c) {
-    int value = 0;
-    for (int k = 0; k<4; k++) {
-        Coordinate neighbor;
-        switch (k) {
-            case 0: // North
-                neighbor.x = c.x;
-                neighbor.y = c.y - 1;
-                break;
-                
-            case 1: // South
-                neighbor.x = c.x;
-                neighbor.y = c.y + 1;
-                break;
-                
-            case 2: // East
-                neighbor.x = c.x - 1;
-                neighbor.y = c.y;
-                break;
-                
-            case 3: // West
-                neighbor.x = c.x + 1;
-                neighbor.y = c.y;
-                break;
-                
-            default: // We should never be here.
-                assert(0 && "Unreachable.");
-                break;
-        }
-        neighbor.x = boundsCheck(neighbor.x, isingSide);
-        neighbor.y = boundsCheck(neighbor.y, isingSide);
-        value +=getCell(neighbor);
-    }
-    return value;
+    Neighbors neighbors = getNeighbors(c);
+    return countHigh(neighbors);
 }
 
 void IsingReservoir::initializeCellsWithRNG(gsl_rng *RNG, int N) {
@@ -187,19 +156,17 @@ inline char &IsingReservoir::getCell(const Coordinate c) {
     return cells[c.y][c.x];
 }
 
-inline int IsingReservoir::countHigh(CoordinateList list) {
+inline int IsingReservoir::countHigh(Neighbors list) {
     int highCount = 0;
-    for (CoordIterator it = list.begin(); it!=list.end(); ++it) {
-        if (getCell(*it) == 1) {
-            ++highCount;
-        }
+    for (int k=0; k<4; k++) {
+        highCount+=getCell(list.coordinates[k]);
     }
     return highCount;
 }
 
 
-IsingReservoir::CoordinateList IsingReservoir::getNeighbors(const Coordinate c){
-    std::vector<Coordinate> neighbors(4);
+IsingReservoir::Neighbors IsingReservoir::getNeighbors(const Coordinate c){
+    Neighbors neighbors;
     for (int k = 0; k<4; k++) {
         Coordinate neighbor;
         switch (k) {
@@ -229,7 +196,7 @@ IsingReservoir::CoordinateList IsingReservoir::getNeighbors(const Coordinate c){
         }
         neighbor.x = boundsCheck(neighbor.x, isingSide);
         neighbor.y = boundsCheck(neighbor.y, isingSide);
-        neighbors.push_back(neighbor);
+        neighbors.coordinates[k] = neighbor;
     }
     return neighbors;
 }

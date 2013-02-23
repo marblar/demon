@@ -30,14 +30,14 @@ private:
     std::map<SystemState *,TransitionTable> transitions;
     int parity;
 protected:
-    //Convenience types:
-    typedef std::vector<Coordinate> CoordinateList;
-    typedef CoordinateList::iterator CoordIterator;
-    
+    struct Neighbors {
+        Coordinate coordinates[4];
+    };
+
     //Methods for accesing stuff:
-    CoordinateList getNeighbors(Coordinate);
+    Neighbors getNeighbors(Coordinate);
     char &getCell(Coordinate x);
-    inline int countHigh(CoordinateList);
+    inline int countHigh(Neighbors);
     inline int countHighNeighbors(Coordinate);
     inline void setupStateTable();
     inline int getEnergy(Coordinate);
