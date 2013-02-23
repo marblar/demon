@@ -224,9 +224,11 @@ IsingReservoir::~IsingReservoir() {
 
 IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS) : Reservoir(constants), isingSide(IS), RNG(RNG_) {
     setupStateTable();
-    this->cells = new char *[IS];
+    cells = new char *[IS];
     for (int k=0; k<IS; k++) {
-        this->cells[k]=new char[IS];
+        cells[k]=new char[IS];
+        
+        std::fill(cells[k], cells[k]+IS, 0);
     }
     this->initializeCellsWithRNG(RNG);
 }
