@@ -32,6 +32,7 @@ public:
     
     virtual InteractionResult interactWithBit(int bit) = 0;
     virtual ~Reservoir() {}
+    virtual void reset() = 0;
 };
 
 extern SystemState StateA1, StateB1, StateC1, StateA0, StateB0, StateC0;

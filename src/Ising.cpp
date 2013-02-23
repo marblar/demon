@@ -1,6 +1,7 @@
 #include "Ising.h"
 #include <math.h>
 #include <assert.h>
+#include <stack>
 
 #define SQUARED(x) x*x
 
@@ -64,6 +65,48 @@ inline void IsingReservoir::isingStep(InteractionResult &result) {
     currentStepType = (currentStepType == odd) ? even : odd;
 }
 
+void IsingReservoir::reset() {
+    currentState = randomState();
+    for (int k = 0; k<20; k++) {
+        clusterMethod();
+    }
+}
+
+void IsingReservoir::clusterMethod() {
+
+//  http://link.springer.com/chapter/10.1007%2F3-540-35273-2_1?LI=true#page-1
+
+    std::stack<Coordinate> workStack;
+    Coordinate currentCoord(rand()%isingSide,rand()%isingSide);
+    workStack.push(currentCoord);
+    
+    //Basic BFT
+    while (!workStack.empty()) {
+        currentCoord = workStack.top();
+        char &currentCell = getCell(currentCoord);
+        workStack.pop();
+        Neighbors neighbors = getNeighbors(currentCoord);
+        for (int k=0; k<4; k++) {
+            Coordinate neighborCoord = neighbors.coordinates[k];
+            char &neighborCell = getCell(neighborCoord);
+            
+            if (currentCell!=neighborCell) {
+                continue;
+            }
+            
+            double inclusionProbability = 1 - exp(-2*constants.beta());
+            if (gsl_rng_get(RNG)<inclusionProbability) {
+                workStack.push(neighborCoord);
+            }
+        }
+        
+        // Once the current cell has been flipped, we don't need
+        // to worry about keeping track of considered bonds.
+        currentCell = (currentCell + 1) % 2;
+    }
+    
+}
+
 inline void IsingReservoir::wheelStep(InteractionResult &result) {
     char &s1 = getCell(interactionCells.first);
     char &s2 = getCell(interactionCells.second);
@@ -118,37 +161,7 @@ inline int IsingReservoir::countHighNeighbors(Coordinate c) {
 }
 
 void IsingReservoir::initializeCellsWithRNG(gsl_rng *RNG, int N) {
-    for (int k=0; k<SQUARED(this->isingSide); k++) {
-        int row = (int)(k % this->isingSide);
-        int column = (int)(k / this->isingSide);
-        
-        //Randomize the cells.
-        this->cells[column][row] = rand() % 2;
-    }
-    
-    // The metropolis algorithm!
-    for (int k=0; k<N; k++) {
-        Coordinate coord;
-        coord.x = (int)gsl_rng_uniform_int(RNG,isingSide);
-        coord.y = (int)gsl_rng_uniform_int(RNG,isingSide);
-        
-        char &cell = getCell(coord);
-        
-        int dE = 0;
-        if (cell == 0) {
-            dE = 4 - 2 * countHighNeighbors(coord);
-        } else {
-            //dE = 4 - 2 * (4 - countHigh(neighbors));
-            //dE = 4 - 8 + 2 * countHigh(neighbors);
-            dE = 2 * countHighNeighbors(coord) - 4;
-        }
-        
-        // TODO: Memoize me.
-        if ( exp(constants.beta() * dE) < gsl_rng_uniform(RNG) ) {
-            char &cell = getCell(coord);
-            cell = (cell + 1) % 2;
-        }
-    }
+    reset();
 }
 
 inline char &IsingReservoir::getCell(const Coordinate c) {
@@ -208,7 +221,7 @@ IsingReservoir::~IsingReservoir() {
     delete [] cells;
 }
 
-IsingReservoir::IsingReservoir(gsl_rng *RNG, Constants constants, int IS) : Reservoir(constants), isingSide(IS) {
+IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS) : Reservoir(constants), isingSide(IS), RNG(RNG_) {
     setupStateTable();
     this->cells = new char *[IS];
     for (int k=0; k<IS; k++) {

@@ -55,5 +55,8 @@ StochasticReservoir::StochasticReservoir(gsl_rng *RNG, Constants constants) :
     this->RNG = RNG;
 }
 
+void StochasticReservoir::reset() {
+    currentState = randomState();
+}
 
 

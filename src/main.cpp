@@ -176,7 +176,8 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
     long double min_surprise = LONG_MAX;
     
     gsl_rng *localRNG = GSLRandomNumberGenerator();
-        
+    Reservoir *reservoir = factory->create(localRNG,constants);
+    
     for (int k=0; k<first_pass_iterations; ++k) {
         System *currentSystem = new System(localRNG, constants,BIT_STREAM_LENGTH);
         Reservoir *reservoir = factory->create(localRNG, constants);
@@ -184,7 +185,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
         currentSystem->evolveWithReservoir(reservoir);
         histogram[currentSystem->endingBitString]++;
         delete currentSystem;
-        delete reservoir;
+        reservoir->reset();
     }
     
     for(int k=0; k<1<<BIT_STREAM_LENGTH; k++) {
@@ -198,7 +199,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
     
     for(int k=0; k<iterations; k++) {
         System *currentSystem = new System(localRNG, constants, BIT_STREAM_LENGTH);
-        Reservoir *reservoir = factory->create(localRNG,constants);
         
         currentSystem->evolveWithReservoir(reservoir);
         
@@ -208,7 +208,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
         sum = sum + surprise;
         
         delete currentSystem;
-        delete reservoir;
+        reservoir->reset();
     }
     
     delete [] p_prime;

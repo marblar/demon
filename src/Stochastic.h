@@ -15,6 +15,7 @@ public:
     gsl_rng *RNG;
     StochasticReservoir(gsl_rng *RNG, Constants constants);
     InteractionResult interactWithBit(int bit);
+    virtual void reset();
 };
 
 #endif /* defined(__FSM__StateMachine__) */
