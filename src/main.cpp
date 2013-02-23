@@ -237,6 +237,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
             exit(1);
         }
     }
-    
+    delete reservoir;
     gsl_rng_free(localRNG);
 }

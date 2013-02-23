@@ -37,10 +37,10 @@ protected:
     //Methods for accesing stuff:
     Neighbors getNeighbors(Coordinate);
     char &getCell(Coordinate x);
-    inline int countHigh(Neighbors);
-    inline int countHighNeighbors(Coordinate);
-    inline void setupStateTable();
-    inline int getEnergy(Coordinate);
+    int countHigh(Neighbors);
+    int countHighNeighbors(Coordinate);
+    void setupStateTable();
+    int getEnergy(Coordinate);
 
     void isingStep(InteractionResult&);
     void wheelStep(InteractionResult&);
