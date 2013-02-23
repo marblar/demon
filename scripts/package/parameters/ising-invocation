@@ -1,1 +1,1 @@
---ising -n 8128 -d 25
+ARGS=--ising -n 8128 -d 25
