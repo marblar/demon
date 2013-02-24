@@ -67,7 +67,7 @@ inline void IsingReservoir::isingStep(InteractionResult &result) {
 
 void IsingReservoir::reset() {
     currentState = randomState();
-    for (int k = 0; k<20; k++) {
+    for (int k = 0; k<2000; k++) {
         clusterMethod();
     }
 }
