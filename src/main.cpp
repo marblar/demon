@@ -142,7 +142,7 @@ int main(int argc, char * argv[]) {
         printf("delta,epsilon,avg,max_surprise\n");
     }
     
-    #pragma omp parallel for private(constants)
+    #pragma omp parallel for private(constants) schedule(guided) 
     for (int k=dimension*dimension; k>=0; k--) {
         constants.epsilon = (k % dimension)/(double)(dimension);
         constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
@@ -180,8 +180,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
     
     for (int k=0; k<first_pass_iterations; ++k) {
         System *currentSystem = new System(localRNG, constants,BIT_STREAM_LENGTH);
-        Reservoir *reservoir = factory->create(localRNG, constants);
-        
         currentSystem->evolveWithReservoir(reservoir);
         histogram[currentSystem->endingBitString]++;
         delete currentSystem;
