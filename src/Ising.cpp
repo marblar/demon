@@ -237,44 +237,44 @@ inline void IsingReservoir::setupStateTable() {
     //TODO: Custom states. This is goofy.
     //Source: http://imgur.com/FF5TBQh
     
-    #define init(XX,StateXX) \
+    #define init(XX) \
                 TransitionTable XX;\
                 for (char k=0; k<8; k++) \
-                    XX[k]=&StateXX;
-    init(A1,StateA1);
+                    XX[k]=&State##XX;
+    init(A1);
     A1[s(0,0,1)] = &StateB1;
     A1[s(1,0,1)] = &StateB1;
     transitions[&StateA1]=A1;
     
-    init(B1,StateB1);
+    init(B1);
     B1[s(0,0,1)] = &StateA1;
     B1[s(1,0,1)] = &StateA1;
     B1[s(1,1,1)] = &StateC1;
     B1[s(0,1,1)] = &StateC1;
     transitions[&StateB1]=B1;
     
-    init(C1,StateC1);
+    init(C1);
     C1[s(0,1,1)] = &StateB1;
     C1[s(1,1,1)] = &StateB1;
     C1[s(0,0,1)] = &StateA0;
     C1[s(0,0,0)] = &StateA0;
     transitions[&StateC1]=C1;
     
-    init(A0,StateA0);
+    init(A0);
     A0[s(0,1,0)] = &StateC1;
     A0[s(0,1,1)] = &StateC1;
     A0[s(1,0,1)] = &StateB0;
     A0[s(0,0,1)] = &StateB0;
     transitions[&StateA0]=A0;
     
-    init(B0,StateB0);
+    init(B0);
     B0[s(0,0,1)] = &StateB0;
     B0[s(1,0,1)] = &StateB0;
     B0[s(1,1,1)] = &StateA0;
     B0[s(0,1,1)] = &StateA0;
     transitions[&StateB0] = B0;
     
-    init(C0,StateC0);
+    init(C0);
     C0[s(1,1,1)] = &StateB0;
     C0[s(0,1,1)] = &StateB0;
     transitions[&StateC0] = C0;
