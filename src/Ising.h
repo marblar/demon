@@ -46,6 +46,7 @@ protected:
     void wheelStep(InteractionResult&);
     void clusterMethod();
 public:
+    int totalEnergy();
     IsingReservoir(gsl_rng *RNG, Constants constants,
                    int IsingSide = 100);
     ~IsingReservoir();
@@ -57,13 +58,16 @@ public:
     virtual InteractionResult interactWithBit(int bit);
     
     class IsingFactory : public ReservoirFactory {
-        int dimension;
+        int dimension, clusters;
     public:
         virtual Reservoir *create(gsl_rng *RNG, Constants constants);
-        IsingFactory(int dim) : dimension(dim) {}
+        IsingFactory(int dim, int clst) : dimension(dim), clusters(clst) {}
     };
+    int clusters;
     virtual void reset();
     gsl_rng *RNG;
 };
+
+void isingEnergyDistribution(int d, int clusters);
 
 #endif

@@ -47,7 +47,8 @@ enum ReservoirType {
 };
 
 void simulate_and_print(Constants constants, int iterations,
-                        OutputType type, ReservoirFactory *factory, bool verbose = false);
+                        OutputType type, ReservoirFactory *factory,
+                        bool verbose = false);
 
 int main(int argc, char * argv[]) {
     /*! Initialize options list.
@@ -70,6 +71,9 @@ int main(int argc, char * argv[]) {
     ("dimension,d", opt::value<int>()->default_value(100),
         "Set the dimension of the Ising reservoir")
     ("tau,t", opt::value<double>()->default_value(5))
+    ("distribution","Output the energy distribution of the ising reservoir.")
+    ("clusters,c",opt::value<int>()->default_value(200),
+        "The number of cluster steps used by the ising model.")
     ;
     
     opt::variables_map vmap;
@@ -79,6 +83,12 @@ int main(int argc, char * argv[]) {
     if (vmap.count("help")) {
         std::cout << desc << "\n";
         return 1;
+    }
+    
+    if(vmap.count("distribution")) {
+        isingEnergyDistribution(vmap["dimension"].as<int>(),
+                                    vmap["clusters"].as<int>());
+        exit(0);
     }
     
     verbose = vmap.count("verbose");
@@ -127,7 +137,8 @@ int main(int argc, char * argv[]) {
         }
         
         int dim = vmap["dimension"].as<int>();
-        rFactory = new IsingReservoir::IsingFactory(dim);
+        int clst = vmap["clusters"].as<int>();
+        rFactory = new IsingReservoir::IsingFactory(dim,clst);
     } else {
         //Assume stochastic
         rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
@@ -147,7 +158,8 @@ int main(int argc, char * argv[]) {
         constants.epsilon = (k % dimension)/(double)(dimension);
         constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
         constants.tau = tau;
-        simulate_and_print(constants, iterations, output_style, rFactory, verbose);
+        simulate_and_print(constants, iterations,
+                                output_style, rFactory, verbose);
     }
     
     delete rFactory;

@@ -1,4 +1,6 @@
 #include "Ising.h"
+#include "Utilities.h"
+
 #include <math.h>
 #include <assert.h>
 #include <stack>
@@ -67,7 +69,7 @@ inline void IsingReservoir::isingStep(InteractionResult &result) {
 
 void IsingReservoir::reset() {
     currentState = randomState();
-    for (int k = 0; k<200; k++) {
+    for (int k = 0; k<clusters; k++) {
         clusterMethod();
     }
 }
@@ -222,7 +224,8 @@ IsingReservoir::~IsingReservoir() {
     delete [] cells;
 }
 
-IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS) : Reservoir(constants), isingSide(IS), RNG(RNG_) {
+IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS) :
+        Reservoir(constants), isingSide(IS), RNG(RNG_), clusters(200) {
     setupStateTable();
     cells = new char *[IS];
     for (int k=0; k<IS; k++) {
@@ -283,4 +286,37 @@ inline void IsingReservoir::setupStateTable() {
 
 Reservoir *IsingReservoir::IsingFactory::create(gsl_rng *RNG, Constants constants) {
     return new IsingReservoir(RNG,constants,dimension);
+}
+
+void isingEnergyDistribution(int d, int clusters) {
+    Constants constants;
+    constants.tau = 1;
+    constants.delta = .5;
+    constants.epsilon = 0;
+    gsl_rng *RNG = GSLRandomNumberGenerator();
+    for (int energy = 0; energy!=4; energy++) {
+        constants.epsilon = .24*energy;
+        printf("Beta: %lf\n",constants.beta());
+        IsingReservoir *reservoir = new IsingReservoir(RNG,constants,d);
+        reservoir->reset();
+        for (int k=0; k<20000; k++) {
+            printf("%d\n",reservoir->totalEnergy());
+            reservoir->reset();
+        }
+        delete reservoir;
+        printf("\n");
+    }
+}
+
+int IsingReservoir::totalEnergy() {
+    int N = SQUARED(isingSide);
+    int energy = 0;
+    for (int k = 0; k<N; k++) {
+        int row = (int)(k % this->isingSide);
+        int column = (int)(k / this->isingSide);
+        energy += getEnergy(Coordinate(row, column));
+    }
+    // This method overcounts by two, considering both the forward and
+    // backword bonds.
+    return energy/2;
 }
