@@ -32,4 +32,5 @@ AC_C_INLINE
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([src/Makefile])
+AC_CONFIG_FILES([scripts/Makefile])
 AC_OUTPUT

@@ -68,11 +68,11 @@ int main(int argc, char * argv[]) {
     ("ising", "Use Ising reservoir. Requires -d. Overrides --stoch")
     ("stoch", "Use Stochastic reservoir. This is set by default, and overridden"
             " by --ising.")
-    ("dimension,d", opt::value<int>()->default_value(100),
+    ("dimension,d", opt::value<int>()->default_value(10),
         "Set the dimension of the Ising reservoir")
     ("tau,t", opt::value<double>()->default_value(5))
     ("distribution","Output the energy distribution of the ising reservoir.")
-    ("clusters,c",opt::value<int>()->default_value(200),
+    ("clusters,c",opt::value<int>()->default_value(10),
         "The number of cluster steps used by the ising model.")
     ;
     
