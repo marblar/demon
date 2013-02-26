@@ -48,7 +48,7 @@ protected:
 public:
     int totalEnergy();
     IsingReservoir(gsl_rng *RNG, Constants constants,
-                   int IsingSide = 100);
+                   int IsingSide = 100, int clusters = 20);
     ~IsingReservoir();
     
     //The default is {IsingSide/2,IsingSide/2} and the cell to its right.

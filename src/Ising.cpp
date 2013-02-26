@@ -224,8 +224,8 @@ IsingReservoir::~IsingReservoir() {
     delete [] cells;
 }
 
-IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS) :
-        Reservoir(constants), isingSide(IS), RNG(RNG_), clusters(200) {
+IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS, int cls) :
+        Reservoir(constants), isingSide(IS), RNG(RNG_), clusters(cls) {
     setupStateTable();
     cells = new char *[IS];
     for (int k=0; k<IS; k++) {
@@ -285,7 +285,7 @@ inline void IsingReservoir::setupStateTable() {
 }
 
 Reservoir *IsingReservoir::IsingFactory::create(gsl_rng *RNG, Constants constants) {
-    return new IsingReservoir(RNG,constants,dimension);
+    return new IsingReservoir(RNG,constants,dimension,clusters);
 }
 
 void isingEnergyDistribution(int d, int clusters) {
