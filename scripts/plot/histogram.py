@@ -19,6 +19,7 @@ for line in stdin:
     number_str = line.strip("\n")
     if number_str:
         currentList.append(int(number_str))
+lists.append(currentList)
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
