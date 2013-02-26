@@ -300,7 +300,7 @@ void isingEnergyDistribution(int d, int clusters) {
         printf("Beta: %lf\n",constants.beta());
         IsingReservoir *reservoir = new IsingReservoir(RNG,constants,d);
         reservoir->reset();
-        for (int k=0; k<20000; k++) {
+        for (int k=0; k<100; k++) {
             printf("%d\n",reservoir->totalEnergy());
             reservoir->reset();
         }
