@@ -81,6 +81,13 @@ void IsingReservoir::clusterMethod() {
     std::stack<Coordinate> workStack;
     Coordinate currentCoord(rand()%isingSide,rand()%isingSide);
     workStack.push(currentCoord);
+    char &currentCell = getCell(currentCoord);
+    unsigned char clusterBit = currentCell;
+    currentCell^=1;
+
+    
+    double inclusionProbability = 1 - exp(-2*constants.beta());
+    assert(inclusionProbability<=1 && inclusionProbability>=0);
     
     //Basic BFT
     while (!workStack.empty()) {
@@ -92,19 +99,13 @@ void IsingReservoir::clusterMethod() {
             Coordinate neighborCoord = neighbors.coordinates[k];
             char &neighborCell = getCell(neighborCoord);
             
-            if (currentCell!=neighborCell) {
-                continue;
-            }
-            
-            double inclusionProbability = 1 - exp(-2*constants.beta());
-            if (gsl_rng_get(RNG)<inclusionProbability) {
+            if (neighborCell == clusterBit &&
+                    gsl_rng_uniform(RNG)<inclusionProbability) {
                 workStack.push(neighborCoord);
+                neighborCell^=1;
             }
         }
-        
-        // Once the current cell has been flipped, we don't need
-        // to worry about keeping track of considered bonds.
-        currentCell = (currentCell + 1) % 2;
+        assert(workStack.size()<SQUARED(isingSide));
     }
     
 }
