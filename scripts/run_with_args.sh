@@ -1,3 +1,4 @@
+set -ex -o pipefail
 if [ -e build -o -e demon -o -e results ]; then
     rm -rf build demon results
 fi
