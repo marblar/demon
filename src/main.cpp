@@ -29,6 +29,7 @@
 #include "System.h"
 #include "Utilities.h"
 #include "ReservoirFactory.h"
+#include "Circos.h"
 
 #define print(x) std::cout<<#x <<": " <<x<<std::endl;
 
@@ -38,6 +39,7 @@ enum OutputType {
     CommaSeparated,
     PrettyPrint,
     Mathematica,
+    Circos,
     NoOutput
 };
 
@@ -146,18 +148,19 @@ int main(int argc, char * argv[]) {
     
     assert(rFactory);
 
-    int dimension = 50;
+    int dim = 50;
     const double tau = vmap["tau"].as<double>();
 
     if ( output_style == CommaSeparated ) {
         printf("delta,epsilon,avg,max_surprise\n");
     }
     
-    #pragma omp parallel for private(constants) schedule(guided) 
-    for (int k=dimension*dimension; k>=0; k--) {
-        constants.epsilon = (k % dimension)/(double)(dimension);
-        constants.delta = .5 + .5*(k / dimension)/(double)(dimension);
+//    #pragma omp parallel for schedule(guided) 
+    for (int k=dim*dim; k>=0; k--) {
+        constants.epsilon = (k % dim)/(double)(dim);
+        constants.delta = .5 + .5*(k / dim)/(double)(dim);
         constants.tau = tau;
+        assert(rFactory);
         simulate_and_print(constants, iterations,
                                 output_style, rFactory, verbose);
     }
@@ -188,7 +191,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
     
     gsl_rng *localRNG = GSLRandomNumberGenerator();
     Reservoir *reservoir = factory->create(localRNG,constants);
-    
+    CircosLogger logger(BIT_STREAM_LENGTH);
     for (int k=0; k<first_pass_iterations; ++k) {
         System *currentSystem = new System(localRNG, constants,BIT_STREAM_LENGTH);
         currentSystem->evolveWithReservoir(reservoir);
@@ -208,9 +211,8 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
     
     for(int k=0; k<iterations; k++) {
         System *currentSystem = new System(localRNG, constants, BIT_STREAM_LENGTH);
-        
         currentSystem->evolveWithReservoir(reservoir);
-        
+        logger.logSystem(currentSystem);
         long double surprise = exp(constants.beta()*currentSystem->mass)*p_prime[currentSystem->endingBitString]/p[currentSystem->startingBitString];
         max_surprise = surprise > max_surprise ? surprise : max_surprise;
         min_surprise = surprise && surprise < min_surprise ? surprise : min_surprise;
@@ -222,7 +224,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
     
     delete [] p_prime;
     delete [] p;
-
+    logger.writeLog(std::cerr);
 //    #pragma omp critical
     {
         if(type==CommaSeparated) {

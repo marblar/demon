@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D221F4216DE6EA700BD7F16 /* Circos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D221F4016DE6B2400BD7F16 /* Circos.cpp */; };
+		4D221F4316DE6EAA00BD7F16 /* Circos.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D221F4116DE6B2400BD7F16 /* Circos.h */; };
 		4D28A4A716D66DF40019141B /* libboost_chrono-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AA16D662B20047BE84 /* libboost_chrono-mt.dylib */; };
 		4D28A4A816D66DF40019141B /* libboost_program_options-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AB16D662B20047BE84 /* libboost_program_options-mt.dylib */; };
 		4D28A4A916D66DF40019141B /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AC16D662B20047BE84 /* libboost_system-mt.dylib */; };
@@ -37,6 +39,8 @@
 		4D02E3AB16D662B20047BE84 /* libboost_program_options-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_program_options-mt.dylib"; path = "../../macports/lib/libboost_program_options-mt.dylib"; sourceTree = "<group>"; };
 		4D02E3AC16D662B20047BE84 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../macports/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
 		4D02E3AD16D662B20047BE84 /* libboost_timer-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_timer-mt.dylib"; path = "../../macports/lib/libboost_timer-mt.dylib"; sourceTree = "<group>"; };
+		4D221F4016DE6B2400BD7F16 /* Circos.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Circos.cpp; sourceTree = "<group>"; };
+		4D221F4116DE6B2400BD7F16 /* Circos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Circos.h; sourceTree = "<group>"; };
 		4D28A4A316D66DC40019141B /* liblibjdemon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibjdemon.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D46888916B5C549009143D0 /* Stochastic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stochastic.cpp; sourceTree = "<group>"; };
 		4D46888A16B5C549009143D0 /* Stochastic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Stochastic.h; sourceTree = "<group>"; };
@@ -105,9 +109,11 @@
 				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
 				4D46888C16B5C58C009143D0 /* Reservoir.h */,
 				4DFFF1F916D1B7B7001BB4E8 /* ReservoirFactory.h */,
+				4D221F4116DE6B2400BD7F16 /* Circos.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
 				4DE1438716D147BB00F8B816 /* Reservoirs */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
+				4D221F4016DE6B2400BD7F16 /* Circos.cpp */,
 				4D9C2AFF160524A9001FA974 /* main.cpp */,
 				4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
@@ -135,6 +141,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D221F4316DE6EAA00BD7F16 /* Circos.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +222,7 @@
 				4D28A4B016D66E2B0019141B /* System.cpp in Sources */,
 				4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */,
 				4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */,
+				4D221F4216DE6EA700BD7F16 /* Circos.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
