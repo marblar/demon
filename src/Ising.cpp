@@ -296,9 +296,9 @@ void isingEnergyDistribution(int d, int clusters) {
     constants.epsilon = 0;
     gsl_rng *RNG = GSLRandomNumberGenerator();
     for (int energy = 0; energy!=4; energy++) {
-        constants.epsilon = .24*energy;
+        constants.epsilon = .15*energy+.25;
         printf("Beta: %lf\n",constants.beta());
-        IsingReservoir *reservoir = new IsingReservoir(RNG,constants,d);
+        IsingReservoir *reservoir = new IsingReservoir(RNG,constants,d,clusters);
         reservoir->reset();
         for (int k=0; k<100; k++) {
             printf("%d\n",reservoir->totalEnergy());

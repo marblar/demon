@@ -25,7 +25,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 
 # the histogram of the data
-n, bins, patches = ax.hist(lists, 10, normed=1, alpha=0.75,histtype='bar')
+n, bins, patches = ax.hist(lists, 50, normed=1, alpha=0.75,histtype='stepfilled')
 
 # hist uses np.histogram under the hood to create 'n' and 'bins'.
 # np.histogram returns the bin edges, so there will be 50 probability
@@ -36,8 +36,8 @@ bincenters = 0.5*(bins[1:]+bins[:-1])
 #y = mlab.normpdf( bincenters, mu, sigma)
 #l = ax.plot(bincenters, y, 'r--', linewidth=1)
 
-ax.set_xlabel('Smarts')
-ax.set_ylabel('Probability')
+ax.set_xlabel('Energy')
+ax.set_ylabel('PDF')
 #ax.set_title(r'$\mathrm{Histogram\ of\ IQ:}\ \mu=100,\ \sigma=15$')
 ax.grid(True)
 
