@@ -183,7 +183,6 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
     long double *p_prime = new long double[1<<BIT_STREAM_LENGTH];
     long double sum = 0;
     
-    const long double beta = log((1+constants.epsilon)/(1-constants.epsilon));
     long double max_surprise = 0;
     long double min_surprise = LONG_MAX;
     
@@ -212,7 +211,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
         
         currentSystem->evolveWithReservoir(reservoir);
         
-        long double surprise = exp(beta*currentSystem->mass)*p_prime[currentSystem->endingBitString]/p[currentSystem->startingBitString];
+        long double surprise = exp(constants.beta()*currentSystem->mass)*p_prime[currentSystem->endingBitString]/p[currentSystem->startingBitString];
         max_surprise = surprise > max_surprise ? surprise : max_surprise;
         min_surprise = surprise && surprise < min_surprise ? surprise : min_surprise;
         sum = sum + surprise;
@@ -232,7 +231,7 @@ void simulate_and_print(Constants constants, int iterations, OutputType type, \
         if(type==PrettyPrint) {
             #pragma omp critical
             {
-                print(beta);
+                print(constants.beta());
                 print(constants.delta);
                 print(constants.epsilon);
                 print(sum/iterations);
