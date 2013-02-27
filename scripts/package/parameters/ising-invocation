@@ -1,1 +1,1 @@
-ARGS=--ising -n 8192 -d 20 --clusters 20
+ARGS=--ising -n 32768 -d 20 --clusters 20
