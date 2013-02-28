@@ -13,9 +13,10 @@
 #include <numeric>
 #include <stdlib.h>
 #include <sstream>
+#include <iomanip>
 
 
-CircosLogger::CircosLogger(int tapeLength) : dimension(tapeLength+1) {
+CircosLogger::CircosLogger(int tapeLength) : dimension(tapeLength+1), tape(tapeLength) {
     links = new unsigned int *[dimension];
     for (int k=0; k<dimension; k++) {
         links[k] = new unsigned int[dimension];
@@ -30,46 +31,18 @@ void CircosLogger::logSystem(System *system) {
 }
 
 void CircosLogger::writeLog(std::ostream &output) {
-    int linkID = 0;
-    int total = 0;
-    int *startPos = new int[dimension];
-    int *size = new int[dimension];
-    int *incomingOffset= new int[dimension];
-    int *outGoingOffset = new int[dimension];
-    
-    std::fill(startPos, startPos+dimension, 0);
-    std::fill(size,size+dimension,0);
-    std::fill(incomingOffset, incomingOffset+dimension, 0);
-    std::fill(outGoingOffset, outGoingOffset+dimension, 0);
-    
-    for (unsigned int row=0; row<dimension; row++) {
-        int start = total;
-        startPos[row] = start;
-        int _size = std::accumulate(links[row], links[row]+dimension, 0);
-        size[row] = _size;
-        total += _size + 1;
-        output<<chrString(row, start, start+_size);
+    output << "labels ";
+    for (int k=0; k<dimension; k++) {
+        output << (char)('A'+k) << ' ';
     }
-    
-    std::copy(startPos, startPos+dimension, incomingOffset);
-    std::copy(startPos, startPos+dimension, outGoingOffset);
-    
-    for (int row=0; row<dimension; row++) {
-        for (int column = 0; column<dimension; column++) {
-            output<<linkString(linkID, row, outGoingOffset[row],
-                               outGoingOffset[row]+links[row][column]);
-            outGoingOffset[row]+=links[row][column];
-            output<<linkString(linkID, column, incomingOffset[column],
-                               incomingOffset[column]+links[row][column]);
-            incomingOffset[column]+=links[row][column];
-            linkID++;
+    output<<std::endl;
+    for (int k = 0; k<dimension; k++) {
+        output << (char)('A'+k) << ' ';
+        for (int col = 0; col<dimension; col++) {
+            output << links[k][col] << ' ';
         }
+        output << std::endl;
     }
-    
-    delete [] startPos;
-    delete [] size;
-    delete [] incomingOffset;
-    delete [] outGoingOffset;
 }
 
 unsigned int CircosLogger::toIndex(unsigned int key) {
@@ -92,6 +65,7 @@ std::string CircosLogger::linkString(int linkID, int chrID, int start, int end) 
 
 std::string CircosLogger::chrString(int chrID, int start, int end) {
     std::stringstream output;
+    output << "chr - ";
     output << "chr";
     output << chrID;
     output << " ";

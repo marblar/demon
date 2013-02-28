@@ -15,6 +15,7 @@ class System;
 class CircosLogger {
     unsigned int **links;
     const int dimension;
+    const int tape;
     unsigned int toIndex(unsigned int);
     std::string chrString(int,int,int);
     std::string linkString(int,int,int,int);

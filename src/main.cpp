@@ -157,9 +157,9 @@ int main(int argc, char * argv[]) {
     
 //    #pragma omp parallel for schedule(guided) 
     for (int k=dim*dim; k>=0; k--) {
-        constants.epsilon = (k % dim)/(double)(dim);
-        constants.delta = .5 + .5*(k / dim)/(double)(dim);
-        constants.tau = tau;
+        constants.epsilon = .7;
+        constants.delta = .5;
+        constants.tau = 1;
         assert(rFactory);
         simulate_and_print(constants, iterations,
                                 output_style, rFactory, verbose);
