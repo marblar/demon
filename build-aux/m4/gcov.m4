@@ -10,11 +10,6 @@ AC_DEFUN([DEMON_ENABLE_GCOV],
     enable_gcov=no)
   if test x$enable_gcov = xyes
   then
-    if test "x$GCC" != "xyes"
-    then
-      AC_MSG_ERROR([gcov only works if gcc is used])
-    fi
-
     AS_COMPILER_FLAGS(GCOV_CFLAGS, "-fprofile-arcs -ftest-coverage")
     dnl libtool 1.5.22 and lower strip -fprofile-arcs from the flags
     dnl passed to the linker, which is a bug; -fprofile-arcs implicitly
@@ -26,7 +21,7 @@ AC_DEFUN([DEMON_ENABLE_GCOV],
     AC_SUBST(GCOV)
 
     DEMON_GCOV_ENABLED=yes
-    AC_DEFINE_UNQUOTED(DEMON_ENABLE_GCOV, 1,
+    AC_DEFINE_UNQUOTED(DEMON_GCOV_ENABLED, 1,
       [Defined if gcov is enabled to force a rebuild due to config.h changing])
 
     # Force the user to turn off optimization
