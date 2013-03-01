@@ -26,7 +26,7 @@ AC_DEFUN([DEMON_ENABLE_GCOV],
 
     # Force the user to turn off optimization
     AC_MSG_NOTICE([gcov enabled, adding "-g -O0" to CFLAGS])
-    AS_COMPILER_FLAGS(CFLAGS, "-g -O0")
+    AS_COMPILER_FLAGS(CXXFLAGS, "-g -O0")
   fi
   AM_CONDITIONAL(DEMON_GCOV_ENABLED, test x$enable_gcov = xyes)
 ])
