@@ -17,7 +17,7 @@ AC_DEFUN([DEMON_ENABLE_GCOV],
     GCOV_LIBS=-lgcov
     AC_SUBST(GCOV_CFLAGS)
     AC_SUBST(GCOV_LIBS)
-    GCOV=`echo $CC | sed s/gcc/gcov/g`
+    GCOV=gcov
     AC_SUBST(GCOV)
 
     DEMON_GCOV_ENABLED=yes

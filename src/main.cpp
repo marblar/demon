@@ -54,6 +54,10 @@ int main(int argc, char * argv[]) {
     /*! Initialize options list.
      */
     
+    for(int k=0; k<1000000; k++) {
+        
+    }
+    
     bool verbose = false;
     const int default_iterations = 1<<16;
     
