@@ -1,7 +1,0 @@
-
-TESTS = demoncore
-check_PROGRAMS = $(TESTS)
-demoncore_SOURCES = test/core.cpp test/SystemTest.cpp
-demoncore_CXXFLAGS = -I${top_srcdir}/src $(CPPUNIT_CFLAGS)
-demoncore_LDFLAGS = $(CPPUNIT_LIBS) libdemon.la
-noinst_HEADERS = test/SystemTest.h
