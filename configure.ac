@@ -5,8 +5,9 @@ AC_PREREQ([2.63])
 AC_INIT([demon],[0.1],[pub@mblar.us])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.11 foreign no-define])
-AC_CONFIG_SRCDIR([src])
+AC_CONFIG_SRCDIR([src/Reservoir.cpp])
 AC_CONFIG_HEADERS([config.h])
+AM_EXTRA_RECURSIVE_TARGETS([coverage])
 
 # Checks for programs.
 AC_PROG_CXX
@@ -37,4 +38,5 @@ AC_C_INLINE
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([src/Makefile])
 AC_CONFIG_FILES([test/Makefile])
+AC_CONFIG_FILES([coverage/Makefile])
 AC_OUTPUT
