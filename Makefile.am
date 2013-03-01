@@ -9,5 +9,5 @@ noinst_HEADERS =
 noinst_LTLIBRARIES =
 
 include src/Makemodule.am
-#include tests/Makefile.am
+include test/Makemodule.am
 #include scripts/Makefile.am
