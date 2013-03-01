@@ -4,7 +4,8 @@ noinst_HEADERS += src/Stochastic.h \
                         src/Reservoir.h \
                         src/System.h \
                         src/Utilities.h \
-                        src/ReservoirFactory.h
+                        src/ReservoirFactory.h \
+			src/clangomp.h
 
 bin_PROGRAMS += jdemon
 jdemon_CXXFLAGS = $(OPENMP_CXXFLAGS) $(BOOST_CXXFLAGS) $(GSL_CXXFLAGS) 
