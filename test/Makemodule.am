@@ -1,6 +1,6 @@
 
 TESTS = demoncore
 check_PROGRAMS = $(TESTS)
-demoncore_SOURCES = test/core.cpp
+demoncore_SOURCES = test/core.cpp test/SystemTest.cpp
 demoncore_CXXFLAGS = $(CPPUNIT_CFLAGS)
 demoncore_LDFLAGS = $(CPPUNIT_LIBS) libdemon.la

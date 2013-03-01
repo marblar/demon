@@ -3,6 +3,8 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 
+#include "SystemTest.h"
+
 
 int main(int argc, char* argv[])
 {
