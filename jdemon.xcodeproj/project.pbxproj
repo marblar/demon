@@ -21,10 +21,18 @@
 		4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
 		4D917D6B16E080DF002ADE1E /* libcppunit-1.12.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */; };
 		4D917D6C16E080F3002ADE1E /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6816E0807B002ADE1E /* core.cpp */; };
+		4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6D16E081B4002ADE1E /* SystemTest.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		4D28A4B316D66FB90019141B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4DD182E61605213000353837 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4D28A4A216D66DC40019141B;
+			remoteInfo = libjdemon;
+		};
+		4D917D7416E0DE99002ADE1E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4DD182E61605213000353837 /* Project object */;
 			proxyType = 1;
@@ -49,6 +57,8 @@
 		4D611D0416406ADE008FB029 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		4D917D6816E0807B002ADE1E /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
 		4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libcppunit-1.12.1.dylib"; path = "../../macports/lib/libcppunit-1.12.1.dylib"; sourceTree = "<group>"; };
+		4D917D6D16E081B4002ADE1E /* SystemTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemTest.cpp; sourceTree = "<group>"; };
+		4D917D6E16E081B4002ADE1E /* SystemTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemTest.h; sourceTree = "<group>"; };
 		4D9C2AFF160524A9001FA974 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4DAFD7C216B2EC54004D9346 /* clangomp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clangomp.h; sourceTree = "<group>"; };
 		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -79,6 +89,8 @@
 			isa = PBXGroup;
 			children = (
 				4D917D6816E0807B002ADE1E /* core.cpp */,
+				4D917D6E16E081B4002ADE1E /* SystemTest.h */,
+				4D917D6D16E081B4002ADE1E /* SystemTest.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -156,10 +168,10 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXLegacyTarget section */
-		4D46888E16B5D5B8009143D0 /* BuildWithMakefile */ = {
+		4D46888E16B5D5B8009143D0 /* jdemon */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "$(ACTION)";
-			buildConfigurationList = 4D46888F16B5D5B8009143D0 /* Build configuration list for PBXLegacyTarget "BuildWithMakefile" */;
+			buildConfigurationList = 4D46888F16B5D5B8009143D0 /* Build configuration list for PBXLegacyTarget "jdemon" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
@@ -167,9 +179,24 @@
 			dependencies = (
 				4D28A4B416D66FB90019141B /* PBXTargetDependency */,
 			);
-			name = BuildWithMakefile;
+			name = jdemon;
 			passBuildSettingsInEnvironment = 1;
 			productName = BuildWithMakefile;
+		};
+		4D917D7016E0DE92002ADE1E /* demoncore */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = check;
+			buildConfigurationList = 4D917D7116E0DE92002ADE1E /* Build configuration list for PBXLegacyTarget "demoncore" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = /Users/mark/Source/jdemon/build;
+			dependencies = (
+				4D917D7516E0DE99002ADE1E /* PBXTargetDependency */,
+			);
+			name = demoncore;
+			passBuildSettingsInEnvironment = 1;
+			productName = demoncore;
 		};
 /* End PBXLegacyTarget section */
 
@@ -212,8 +239,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4D46888E16B5D5B8009143D0 /* BuildWithMakefile */,
+				4D46888E16B5D5B8009143D0 /* jdemon */,
 				4D28A4A216D66DC40019141B /* libjdemon */,
+				4D917D7016E0DE92002ADE1E /* demoncore */,
 			);
 		};
 /* End PBXProject section */
@@ -231,6 +259,7 @@
 				4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */,
 				4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */,
 				4D917D6C16E080F3002ADE1E /* core.cpp in Sources */,
+				4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +270,11 @@
 			isa = PBXTargetDependency;
 			target = 4D28A4A216D66DC40019141B /* libjdemon */;
 			targetProxy = 4D28A4B316D66FB90019141B /* PBXContainerItemProxy */;
+		};
+		4D917D7516E0DE99002ADE1E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4D28A4A216D66DC40019141B /* libjdemon */;
+			targetProxy = 4D917D7416E0DE99002ADE1E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -304,6 +338,39 @@
 			name = Debug;
 		};
 		4D46889116B5D5B8009143D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		4D917D7216E0DE92002ADE1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4D917D7316E0DE92002ADE1E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -398,7 +465,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4D46888F16B5D5B8009143D0 /* Build configuration list for PBXLegacyTarget "BuildWithMakefile" */ = {
+		4D46888F16B5D5B8009143D0 /* Build configuration list for PBXLegacyTarget "jdemon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4D46889016B5D5B8009143D0 /* Debug */,
@@ -406,6 +473,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		4D917D7116E0DE92002ADE1E /* Build configuration list for PBXLegacyTarget "demoncore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4D917D7216E0DE92002ADE1E /* Debug */,
+				4D917D7316E0DE92002ADE1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		4DD182E91605213000353837 /* Build configuration list for PBXProject "jdemon" */ = {
 			isa = XCConfigurationList;
