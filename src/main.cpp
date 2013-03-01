@@ -94,13 +94,17 @@ int main(int argc, char * argv[]) {
     verbose = vmap.count("verbose");
     
     int iterations = vmap.count("iterations") ? vmap["iterations"].as<int>() : default_iterations;
+
     
-    if (verbose) {
-        print(iterations);
-        #pragma omp parallel
-        #pragma omp single
-        print(omp_get_num_threads());
-    }
+/*! Disabled for:
+    http://lists.gnu.org/archive/html/bug-libtool/2011-03/msg00022.html
+    !*/
+//    if (verbose) {
+//        print(iterations);
+//        #pragma omp parallel
+//        #pragma omp single
+//        print(omp_get_num_threads());
+//    }
     
     OutputType output_style = vmap.count("output") ? (OutputType)vmap["output"].as<int>() : CommaSeparated;
     
