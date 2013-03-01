@@ -19,6 +19,8 @@
 		4D28A4B016D66E2B0019141B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
 		4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438516D1443E00F8B816 /* Reservoir.cpp */; };
 		4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
+		4D917D6B16E080DF002ADE1E /* libcppunit-1.12.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */; };
+		4D917D6C16E080F3002ADE1E /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6816E0807B002ADE1E /* core.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		4D611D0016406A2F008FB029 /* System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = System.h; sourceTree = "<group>"; };
 		4D611D0316406ADE008FB029 /* Utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
 		4D611D0416406ADE008FB029 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		4D917D6816E0807B002ADE1E /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
+		4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libcppunit-1.12.1.dylib"; path = "../../macports/lib/libcppunit-1.12.1.dylib"; sourceTree = "<group>"; };
 		4D9C2AFF160524A9001FA974 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4DAFD7C216B2EC54004D9346 /* clangomp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clangomp.h; sourceTree = "<group>"; };
 		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -59,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D917D6B16E080DF002ADE1E /* libcppunit-1.12.1.dylib in Frameworks */,
 				4D28A4A716D66DF40019141B /* libboost_chrono-mt.dylib in Frameworks */,
 				4D28A4A816D66DF40019141B /* libboost_program_options-mt.dylib in Frameworks */,
 				4D28A4A916D66DF40019141B /* libboost_system-mt.dylib in Frameworks */,
@@ -70,6 +75,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D917D6716E0807B002ADE1E /* test */ = {
+			isa = PBXGroup;
+			children = (
+				4D917D6816E0807B002ADE1E /* core.cpp */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
 		4DAFD7A716B202EF004D9346 /* External Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +98,8 @@
 		4DD182E41605213000353837 = {
 			isa = PBXGroup;
 			children = (
+				4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */,
+				4D917D6716E0807B002ADE1E /* test */,
 				4DAFD7A716B202EF004D9346 /* External Libraries */,
 				4DD182F21605213000353837 /* src */,
 				4DD182F01605213000353837 /* Products */,
@@ -215,6 +230,7 @@
 				4D28A4B016D66E2B0019141B /* System.cpp in Sources */,
 				4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */,
 				4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */,
+				4D917D6C16E080F3002ADE1E /* core.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
