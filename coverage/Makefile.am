@@ -1,8 +1,7 @@
 SRC_BUILDDIR =  ${abs_top_builddir}/src
 COVERAGE_DIR =  ${abs_builddir}
 BUILDDIR =      ${abs_top_builddir}
-BRANCH_FLAGS =  --rc lcov_branch_coverage=1 
-
+BRANCH_FLAGS = # --rc lcov_branch_coverage=1 
 
 cov-reset:
 	rm -rf www
@@ -23,7 +22,7 @@ src.info: test.info
 
 # FIXME: This pattern blows.
 app.info: src.info
-	lcov $(BRANCH_FLAGS) -f --no-external -d /Users/mark/source/jdemon/src --extract src.info *src/* -o app.info
+	lcov $(BRANCH_FLAGS) --extract src.info *src/* -o app.info
 
 www/index.html: app.info
 	genhtml $(BRANCH_FLAGS) -t jdemon -o www app.info
