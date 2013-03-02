@@ -1,5 +1,5 @@
 
-#include <cppunit/CompilerOutputter.h>
+#include <cppunit/XmlOutputter.h>
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 
@@ -20,8 +20,9 @@ int main(int argc, char* argv[])
 
     // Change the default outputter to a compiler error format
     // outputter
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
+    std::ofstream xmlFileOut("cpptestresults.xml");
+    CppUnit::XmlOutputter xmlOut(&runner.result(), xmlFileOut);
+    xmlOut.write();
     
     // Run the tests.
     bool wasSucessful = runner.run();
