@@ -30,5 +30,5 @@ int main(int argc, char* argv[])
     xmlOut.write();
 
     // Return error code 1 if the one of test failed.
-    return result.testFailuresTotal() ? 0 : 1;
+    return result.testFailuresTotal() ? 1 : 0 ;
 }
