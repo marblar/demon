@@ -30,7 +30,7 @@ BOOST_PROGRAM_OPTIONS
 # BOOST_SYSTEM
 
 # Check for GSL
-AX_PATH_GSL(1.13)
+AX_PATH_GSL([1.13])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
