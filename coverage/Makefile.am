@@ -1,23 +1,35 @@
+SRC_BUILDDIR =  ${abs_top_builddir}/src
+COVERAGE_DIR =  ${abs_builddir}
+BUILDDIR =      ${abs_top_builddir}
+
 cov-reset:
-	rm -rf *
-	lcov --directory ${top_builddir}/test --zerocounters
+	rm -rf www
+	rm *.info
+	lcov --zerocounters -d ${abs_top_builddir} -q
 
-all-local:
-	lcov -b ${abs_top_srcdir} --capture --initial --directory ${abs_builddir}/src -o ${abs_builddir}/coverage/app_base.info
+#TODO: Dependencies!
+base.info:
+	lcov -c -i -d $(SRC_BUILDDIR) -o base.info
 
-check-local:
-	lcov -b ${abs_top_srcdir} --capture --directory . -t demoncore --output-file ${abs_builddir}/coverage/app_test.info
+test.info:
+	lcov -c -d $(SRC_BUILDDIR) -o test.info
 
-app_base.info: all
-app_test.info: app_base.info check
-app.info: app_base.info app_test.info
-	lcov -a app_base.info -a app_test.info -o app.info
+src.info: test.info
+	lcov -l base.info
+	lcov -l test.info
+	lcov -a base.info -a test.info -o src.info
+
+# FIXME: This pattern blows.
+app.info: src.info
+	lcov -f --no-external -d /Users/mark/source/jdemon/src --extract src.info *src/* -o app.info
 
 www/index.html: app.info
 	genhtml -o www app.info
 
+all-local: base.info
+check-local: app.info
 clean-local: cov-reset
-
-coverage-local: www/index.html
+coverage-local: all check www/index.html
 
 .PHONY=coverage-local cov-reset
+.INTERMEDIATE=

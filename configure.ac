@@ -9,6 +9,7 @@ AC_CONFIG_SRCDIR([src/Reservoir.cpp])
 AC_CONFIG_HEADERS([config.h])
 AM_EXTRA_RECURSIVE_TARGETS([coverage])
 
+
 # Checks for programs.
 AC_PROG_CXX
 AC_OPENMP
