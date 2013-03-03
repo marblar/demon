@@ -25,11 +25,9 @@
 
 #include "clangomp.h"
 #include "Measurement.h"
-#include "Stochastic.h"
+#include "InstrumentFactories.h"
 #include "Ising.h"
-#include "System.h"
-#include "Utilities.h"
-#include "ReservoirFactory.h"
+#include "Stochastic.h"
 
 #define print(x) std::cout<<#x <<": " <<x<<std::endl;
 
@@ -124,8 +122,11 @@ int main(int argc, char * argv[]) {
         rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
     }
     
+    SystemFactory *sFactory = new BinomialSystemFactory;
+    
     assert(rFactory);
-
+    assert(sFactory);
+    
     int dimension = 50;
     const double tau = vmap["tau"].as<double>();
 
@@ -136,7 +137,8 @@ int main(int argc, char * argv[]) {
         constants.setEpsilon((k % dimension)/(double)(dimension));
         constants.setDelta(.5 + .5*(k / dimension)/(double)(dimension));
         constants.setTau(tau);
-        Measurement measurement(constants, iterations, rFactory);
+        constants.setNbits(10);
+        Measurement measurement(constants,iterations,rFactory,sFactory);
         MeasurementResult &result = measurement.getResult();
         printf("%s\n",outputString(result).c_str());
     }

@@ -8,19 +8,14 @@
 
 #include "System.h"
 #include "Reservoir.h"
-#include "Utilities.h"
 #include <gsl/gsl_randist.h>
 #include <assert.h>
 #include <math.h>
 
-System::System(gsl_rng *localRNG, Constants constants, int nbits) {
+System::System(Constants constants, int startingBitString) {
     this->bitPosition = 0;
-    this->nbits = nbits;
-    
-    this->startingBitString = \
-        randomShortIntWithBitDistribution(constants.getDelta(), nbits, localRNG);
+    this->startingBitString = startingBitString;
     this->constants = constants;
-    
     this->endingBitString = 0;
     this->mass = 0;
 }
@@ -29,8 +24,9 @@ void System::evolveWithReservoir(Reservoir *reservoir) {
     unsigned int& startingBitString = this->startingBitString;
     unsigned int& endingBitString = this->endingBitString;
     int& bitPosition = this->bitPosition;
+    const int& nbits = constants.getNbits();
     
-    while (this->bitPosition < this->nbits) {
+    while (this->bitPosition < nbits) {
         int oldBit = (startingBitString >> bitPosition) & 1;
         Reservoir::InteractionResult result = reservoir->interactWithBit(oldBit);
         

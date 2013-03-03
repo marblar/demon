@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include "System.h"
-#include "ReservoirFactory.h"
+#include "InstrumentFactories.h"
 
 struct MeasurementResult {
     Constants constants;
@@ -24,7 +24,7 @@ class Measurement {
     Constants constants;
     int iterations;
     ReservoirFactory *rfactory;
-    int nbits;
+    SystemFactory *sfactory;
     bool complete;
     MeasurementResult result;
 protected:
@@ -32,13 +32,14 @@ protected:
     long double *p;
     long double *p_prime;
 public:
-    Measurement(Constants _c, int _it, ReservoirFactory *_rf, int nb = 8) : \
-        constants(_c), iterations(_it), rfactory(_rf), \
-            nbits(nb), complete(false) {
-            
+    Measurement(Constants _c, int _it, ReservoirFactory *_rf, SystemFactory *_sf)
+            : constants(_c), iterations(_it), rfactory(_rf), sfactory(_sf),
+                complete(false) {
+        result.constants = constants;
     }
     MeasurementResult &getResult();
     void performMeasurement();
+    ~Measurement();
 };
 
 long double calculateJ(System &system,long double *p, long double *p_prime);

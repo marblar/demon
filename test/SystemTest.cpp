@@ -11,15 +11,21 @@
 #include "SystemTest.h"
 #include "Reservoir.h"
 #include "Utilities.h"
+#include "InstrumentFactories.h"
 #include <algorithm>
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SystemTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(ConstantsTest);
 
 
-Constants defaultConstants() {
+static Constants defaultConstants() {
     Constants c(.7,.1,.7);
+    c.setNbits(8);
     return c;
+}
+
+static int defaultStartingString() {
+    return 2;
 }
 
 
@@ -64,17 +70,19 @@ void SystemTest::tearDown() {
     gsl_rng_free(rng);
 }
 
-void SystemTest::testStartingString() {
-    int nbits = 8;
-    int resultSize = nbits + 1;
+void SystemTest::testSystemFactory() {
+    Constants c = defaultConstants();
+    BinomialSystemFactory sfactory;
+    int resultSize = c.getNbits()+1;
+    
     int results[resultSize];
     int iterations = 10000;
     
     std::fill(results, results + resultSize, 0);
     
     for (int k = 0; k<iterations; k++) {
-        System *system = new System(rng,defaultConstants());
-        ++results[bitCount(system->startingBitString, 8)];
+        System *system = sfactory.create(rng, c);
+        ++results[bitCount(system->startingBitString, c.getNbits())];
         delete system;
     }
     
@@ -86,40 +94,37 @@ void SystemTest::testStartingString() {
 };
 
 void SystemTest::testConstructor() {
-    int nbits = 8;
-    System system(rng,defaultConstants(),nbits);
+    Constants c = defaultConstants();
+    System system(c,defaultStartingString());
     
-    CPPUNIT_ASSERT_EQUAL(system.nbits, nbits);
-    CPPUNIT_ASSERT_EQUAL(defaultConstants().getEpsilon(), system.constants.getEpsilon());
-    CPPUNIT_ASSERT_EQUAL(defaultConstants().getDelta(), system.constants.getDelta());
-    CPPUNIT_ASSERT_EQUAL(defaultConstants().getTau(), system.constants.getTau());
+    CPPUNIT_ASSERT_EQUAL(c.getEpsilon(), system.constants.getEpsilon());
+    CPPUNIT_ASSERT_EQUAL(c.getDelta(), system.constants.getDelta());
+    CPPUNIT_ASSERT_EQUAL(c.getTau(), system.constants.getTau());
     CPPUNIT_ASSERT_EQUAL(system.bitPosition, 0);
     CPPUNIT_ASSERT_EQUAL(system.mass, 0);
     
 }
 
 void SystemTest::testNbits() {
-    int nbits = 8;
-    System system(rng,defaultConstants(),nbits);
+    Constants c = defaultConstants();
+    System system(c,defaultStartingString());
     MockReservoirFlipDown res(defaultConstants());
     system.evolveWithReservoir(&res);
     
-    CPPUNIT_ASSERT_EQUAL(nbits, res.bitsProvided);
+    CPPUNIT_ASSERT_EQUAL(c.getNbits(), res.bitsProvided);
     
-    nbits = 10;
-    MockReservoirFlipDown res2(defaultConstants());
-    System otherSystem(rng,defaultConstants(),nbits);
+    c.setNbits(10);
+    MockReservoirFlipDown res2(c);
+    System otherSystem(c,defaultStartingString());
     otherSystem.evolveWithReservoir(&res2);
     
-    CPPUNIT_ASSERT_EQUAL(nbits, res2.bitsProvided);
+    CPPUNIT_ASSERT_EQUAL(c.getNbits(), res2.bitsProvided);
 }
 
 void SystemTest::testEndingString() {
-    int nbits = 8;
     unsigned int endString = 6;
-    
     gsl_rng *rng = GSLRandomNumberGenerator();
-    System system(rng,defaultConstants(),nbits);
+    System system(defaultConstants(),defaultStartingString());
     SpecificEndStringReservoir res(defaultConstants(),endString);
     system.evolveWithReservoir(&res);
     

@@ -5,7 +5,7 @@ BRANCH_FLAGS = # --rc lcov_branch_coverage=1
 
 cov-reset:
 	rm -rf www
-	rm *.info
+	rm -f *.info
 	lcov --zerocounters -d ${abs_top_builddir} -q
 
 #TODO: Dependencies!

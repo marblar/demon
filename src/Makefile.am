@@ -4,7 +4,7 @@ noinst_HEADERS = Stochastic.h \
 			Reservoir.h \
 			System.h \
 			Utilities.h \
-			ReservoirFactory.h \
+			InstrumentFactories.h \
 			clangomp.h \
 			Measurement.h
 
@@ -30,7 +30,7 @@ libdemon_la_SOURCES = Stochastic.cpp \
 			Reservoir.cpp \
 			System.cpp \
 			Utilities.cpp \
-			ReservoirFactory.cpp \
+			InstrumentFactories.cpp \
 			Measurement.cpp
 
 libdemon_la_CXXFLAGS = $(GCOV_CFLAGS)

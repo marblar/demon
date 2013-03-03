@@ -7,25 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D28A4A716D66DF40019141B /* libboost_chrono-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AA16D662B20047BE84 /* libboost_chrono-mt.dylib */; };
-		4D28A4A816D66DF40019141B /* libboost_program_options-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AB16D662B20047BE84 /* libboost_program_options-mt.dylib */; };
-		4D28A4A916D66DF40019141B /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AC16D662B20047BE84 /* libboost_system-mt.dylib */; };
-		4D28A4AA16D66DF40019141B /* libboost_timer-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3AD16D662B20047BE84 /* libboost_timer-mt.dylib */; };
-		4D28A4AB16D66DF40019141B /* libgsl.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D02E3A816D660EB0047BE84 /* libgsl.0.dylib */; };
 		4D28A4AC16D66E2B0019141B /* Stochastic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D46888916B5C549009143D0 /* Stochastic.cpp */; };
 		4D28A4AD16D66E2B0019141B /* Ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438216D143C400F8B816 /* Ising.cpp */; };
 		4D28A4AE16D66E2B0019141B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9C2AFF160524A9001FA974 /* main.cpp */; };
-		4D28A4AF16D66E2B0019141B /* ReservoirFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */; };
 		4D28A4B016D66E2B0019141B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
 		4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438516D1443E00F8B816 /* Reservoir.cpp */; };
 		4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
-		4D917D6B16E080DF002ADE1E /* libcppunit-1.12.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */; };
-		4D917D6C16E080F3002ADE1E /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6816E0807B002ADE1E /* core.cpp */; };
+		4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */; };
+		4D8B4B3F16E3FFD0008ECF75 /* InstrumentFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */; };
 		4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6D16E081B4002ADE1E /* SystemTest.cpp */; };
 		4DA8D48616E30F8400D659CF /* Measurement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48416E30F8400D659CF /* Measurement.cpp */; };
 		4DA8D48716E30F8400D659CF /* Measurement.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA8D48516E30F8400D659CF /* Measurement.h */; };
 		4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */; };
 		4DA8D48B16E3A9ED00D659CF /* MeasurementTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA8D48916E3A9ED00D659CF /* MeasurementTest.h */; };
+		4DA8D48C16E3F5D200D659CF /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6816E0807B002ADE1E /* core.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +54,8 @@
 		4D611D0016406A2F008FB029 /* System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = System.h; sourceTree = "<group>"; };
 		4D611D0316406ADE008FB029 /* Utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
 		4D611D0416406ADE008FB029 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentFactories.cpp; sourceTree = "<group>"; };
+		4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentFactories.h; sourceTree = "<group>"; };
 		4D917D6816E0807B002ADE1E /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
 		4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libcppunit-1.12.1.dylib"; path = "../../macports/lib/libcppunit-1.12.1.dylib"; sourceTree = "<group>"; };
 		4D917D6D16E081B4002ADE1E /* SystemTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemTest.cpp; sourceTree = "<group>"; };
@@ -72,8 +69,6 @@
 		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		4DE1438316D143C400F8B816 /* Ising.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Ising.h; sourceTree = "<group>"; };
 		4DE1438516D1443E00F8B816 /* Reservoir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Reservoir.cpp; sourceTree = "<group>"; };
-		4DFFF1F916D1B7B7001BB4E8 /* ReservoirFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservoirFactory.h; sourceTree = "<group>"; };
-		4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReservoirFactory.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,12 +76,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D917D6B16E080DF002ADE1E /* libcppunit-1.12.1.dylib in Frameworks */,
-				4D28A4A716D66DF40019141B /* libboost_chrono-mt.dylib in Frameworks */,
-				4D28A4A816D66DF40019141B /* libboost_program_options-mt.dylib in Frameworks */,
-				4D28A4A916D66DF40019141B /* libboost_system-mt.dylib in Frameworks */,
-				4D28A4AA16D66DF40019141B /* libboost_timer-mt.dylib in Frameworks */,
-				4D28A4AB16D66DF40019141B /* libgsl.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,15 +129,15 @@
 			isa = PBXGroup;
 			children = (
 				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
+				4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */,
 				4DA8D48516E30F8400D659CF /* Measurement.h */,
 				4D46888C16B5C58C009143D0 /* Reservoir.h */,
-				4DFFF1F916D1B7B7001BB4E8 /* ReservoirFactory.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
 				4DE1438716D147BB00F8B816 /* Reservoirs */,
+				4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */,
 				4D9C2AFF160524A9001FA974 /* main.cpp */,
 				4DA8D48416E30F8400D659CF /* Measurement.cpp */,
-				4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
 				4DE1438516D1443E00F8B816 /* Reservoir.cpp */,
 				4D611D0316406ADE008FB029 /* Utilities.cpp */,
@@ -176,6 +165,7 @@
 			files = (
 				4DA8D48716E30F8400D659CF /* Measurement.h in Headers */,
 				4DA8D48B16E3A9ED00D659CF /* MeasurementTest.h in Headers */,
+				4D8B4B3F16E3FFD0008ECF75 /* InstrumentFactories.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,14 +258,14 @@
 				4D28A4AC16D66E2B0019141B /* Stochastic.cpp in Sources */,
 				4D28A4AD16D66E2B0019141B /* Ising.cpp in Sources */,
 				4D28A4AE16D66E2B0019141B /* main.cpp in Sources */,
-				4D28A4AF16D66E2B0019141B /* ReservoirFactory.cpp in Sources */,
 				4D28A4B016D66E2B0019141B /* System.cpp in Sources */,
 				4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */,
 				4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */,
-				4D917D6C16E080F3002ADE1E /* core.cpp in Sources */,
 				4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */,
 				4DA8D48616E30F8400D659CF /* Measurement.cpp in Sources */,
 				4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */,
+				4DA8D48C16E3F5D200D659CF /* core.cpp in Sources */,
+				4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +297,10 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					$HOME/macports/include,
+					/usr/local/include,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../macports/lib\"",
@@ -327,6 +321,10 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					$HOME/macports/include,
+					/usr/local/include,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../macports/lib\"",
@@ -347,6 +345,10 @@
 				DEBUGGING_SYMBOLS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				LIBRARY_SEARCH_PATHS = (
+					"$HOME/macports/lib/**",
+					/usr/local,
+				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -362,6 +364,10 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$HOME/macports/lib/**",
+					/usr/local,
+				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -383,6 +389,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = $HOME/macports/include;
 			};
 			name = Debug;
 		};
@@ -427,7 +434,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = $HOME/macports/include;
+				HEADER_SEARCH_PATHS = (
+					$HOME/macports/include,
+					/usr/local,
+				);
 				LIBRARY_SEARCH_PATHS = "$HOME/macports/lib/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -435,6 +445,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = $HOME/macports/include;
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = $HOME/macports/include;
 			};
 			name = Debug;
 		};
@@ -459,7 +470,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = $HOME/macports/include;
+				HEADER_SEARCH_PATHS = (
+					$HOME/macports/include,
+					/usr/local,
+				);
 				LIBRARY_SEARCH_PATHS = "$HOME/macports/lib/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_LDFLAGS = "";

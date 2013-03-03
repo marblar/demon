@@ -1,5 +1,6 @@
 
 #include <cppunit/XmlOutputter.h>
+#include <cppunit/CompilerOutputter.h>
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/TestResult.h>
@@ -28,6 +29,10 @@ int main(int argc, char* argv[]) {
     std::ofstream xmlFileOut("cpptestresults.xml");
     CppUnit::XmlOutputter xmlOut(&result, xmlFileOut);
     xmlOut.write();
+    
+    
+    CppUnit::CompilerOutputter compileOut(&result,std::cerr);
+    compileOut.write();
 
     // Return error code 1 if the one of test failed.
     return result.testFailuresTotal() ? 1 : 0 ;

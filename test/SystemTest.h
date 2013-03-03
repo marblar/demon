@@ -17,9 +17,8 @@ class SystemTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(SystemTest);
     CPPUNIT_TEST(testNbits);
     CPPUNIT_TEST(testEndingString);
+    CPPUNIT_TEST(testSystemFactory);
     CPPUNIT_TEST(testConstructor);
-    CPPUNIT_TEST(testStartingString);
-    CPPUNIT_TEST(testEndingString);
     CPPUNIT_TEST_SUITE_END();
     gsl_rng *rng;
 public:
@@ -27,7 +26,7 @@ public:
     void tearDown();
     void testConstructor();
     void testNbits();
-    void testStartingString();
+    void testSystemFactory();
     void testEndingString();
 };
 

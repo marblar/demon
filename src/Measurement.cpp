@@ -12,11 +12,12 @@
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_sf.h>
 #include <math.h>
+#include <assert.h>
 #include <limits>
 #include <sstream>
 #include "System.h"
 #include "Reservoir.h"
-#include "ReservoirFactory.h"
+#include "InstrumentFactories.h"
 #include "Utilities.h"
 
 std::string outputHeader() {
@@ -27,14 +28,13 @@ std::string outputString(MeasurementResult &result) {
     std::stringstream out;
     double delta = result.constants.getDelta();
     double epsilon = result.constants.getEpsilon();
-    out << result.constants.getDelta() \
+    out << delta \
         << "," \
-        << result.constants.getEpsilon() \
+        << epsilon \
         << "," \
         << result.averageJ \
         << "," \
-        << result.maxJ \
-        << std::endl;
+        << result.maxJ;
     return out.str();
 }
 
@@ -57,24 +57,28 @@ void Measurement::performMeasurement() {
         std::clog<<"Warning: small tau.\n";
     }
     
+    
     /*! Use this to change the length of the tape. */
     
     int first_pass_iterations = iterations;
+    const int &nbits = constants.getNbits();
+    assert(nbits>0);
+    
     
     histogram = new int[1<<nbits];
     std::fill_n(histogram, 1<<nbits, 0);
     
     p = new long double[1<<nbits];
     p_prime = new long double[1<<nbits];
-    int sum = 0;
     
+    long double sum = 0;
     long double &maxJ = result.maxJ;
     
     gsl_rng *localRNG = GSLRandomNumberGenerator();
     Reservoir *reservoir = rfactory->create(localRNG,constants);
     
     for (int k=0; k<first_pass_iterations; ++k) {
-        System *currentSystem = new System(localRNG, constants,nbits);
+        System *currentSystem = sfactory->create(localRNG, constants);
         currentSystem->evolveWithReservoir(reservoir);
         histogram[currentSystem->endingBitString]++;
         delete currentSystem;
@@ -87,21 +91,24 @@ void Measurement::performMeasurement() {
         p_prime[k]=static_cast<long double>(histogram[k])/(first_pass_iterations);
     }
     
-    delete [] histogram;
-    
     for(int k=0; k<iterations; k++) {
-        System *currentSystem = new System(localRNG, constants, nbits);
+        System *currentSystem = sfactory->create(localRNG, constants);
         currentSystem->evolveWithReservoir(reservoir);
         long double J = calculateJ(*currentSystem, p, p_prime);
         maxJ = J > maxJ ? J : maxJ;
-        sum = sum + J;
+        sum += J;
         delete currentSystem;
         reservoir->reset();
     }
     
-    delete [] p_prime;
-    delete [] p;
+    result.averageJ = sum/iterations;
     
     delete reservoir;
     gsl_rng_free(localRNG);
+}
+
+Measurement::~Measurement() {
+    delete [] p_prime;
+    delete [] p;
+    delete [] histogram;
 }

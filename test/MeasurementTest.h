@@ -13,14 +13,18 @@
 
 class MeasurementTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(MeasurementTest);
-    CPPUNIT_TEST(testOutput);
-    CPPUNIT_TEST(testTrivialReservoir);
+//    CPPUNIT_TEST(testOutput);
+//    CPPUNIT_TEST(testWithTrivialReservoir);
+//    CPPUNIT_TEST(testTrivialCalculateJ);
+    CPPUNIT_TEST(testResultsConstants);
     CPPUNIT_TEST_SUITE_END();
 public:
     void setUp();
     void tearDown();
     void testOutput();
-    void testTrivialReservoir();
+    void testWithTrivialReservoir();
+    void testTrivialCalculateJ();
+    void testResultsConstants();
 };
 
 #endif /* defined(__jdemon__MeasurementTest__) */

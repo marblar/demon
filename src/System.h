@@ -40,23 +40,19 @@ public:
     const double & getDelta() { return delta; }
     Constants (double d, double e, double t) : delta(d),tau(t) {
         setEpsilon(e);
+        setNbits(-1);
     }   
     Constants () {}
 };
 
 struct System {
     int bitPosition;
-    int nbits;
     unsigned int startingBitString;
     unsigned int endingBitString;
     int mass;
     Constants constants;
-    
-    System(gsl_rng *rng, Constants, int nbits = 16);
+    System(Constants,int startingBitString);
     void evolveWithReservoir(Reservoir *reservoir);
 };
-
-
-
 
 #endif /* defined(__thermaleraser__System__) */

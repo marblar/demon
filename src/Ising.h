@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 #include "Reservoir.h"
-#include "ReservoirFactory.h"
+#include "InstrumentFactories.h"
 
 struct Coordinate {
     int x,y;
