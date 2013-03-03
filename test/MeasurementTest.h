@@ -13,9 +13,9 @@
 
 class MeasurementTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(MeasurementTest);
-//    CPPUNIT_TEST(testOutput);
-//    CPPUNIT_TEST(testWithTrivialReservoir);
-//    CPPUNIT_TEST(testTrivialCalculateJ);
+    CPPUNIT_TEST(testOutput);
+    CPPUNIT_TEST(testWithTrivialReservoir);
+    CPPUNIT_TEST(testTrivialCalculateJ);
     CPPUNIT_TEST(testResultsConstants);
     CPPUNIT_TEST_SUITE_END();
 public:
