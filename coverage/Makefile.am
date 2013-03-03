@@ -28,7 +28,8 @@ www/index.html: app.info
 	genhtml $(BRANCH_FLAGS) -t jdemon -o www app.info
 
 all-local: base.info
-check-local: app.info www/index.html
 clean-local: cov-reset 
+coverage-local: app.info www/index.html
+
 
 .PHONY=coverage-local cov-reset

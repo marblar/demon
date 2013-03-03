@@ -18,16 +18,4 @@ int bitCount(unsigned int number, int nbits);
 
 gsl_rng *GSLRandomNumberGenerator();
 
-double mbl_ran_exponential(const gsl_rng *r, double rate);
-
-class FunctionCache {
-private:
-    std::map<double, double> values;
-    double(*function)(double);
-    int capacity;
-public:
-    FunctionCache(double(*function)(double));
-    double evaluate(double value);
-};
-
 #endif /* defined(__thermaleraser__Utilities__) */

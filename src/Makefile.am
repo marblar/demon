@@ -5,7 +5,8 @@ noinst_HEADERS = Stochastic.h \
 			System.h \
 			Utilities.h \
 			ReservoirFactory.h \
-			clangomp.h
+			clangomp.h \
+			Measurement.h
 
 bin_PROGRAMS = ${top_builddir}/jdemon
 
@@ -29,7 +30,8 @@ libdemon_la_SOURCES = Stochastic.cpp \
 			Reservoir.cpp \
 			System.cpp \
 			Utilities.cpp \
-			ReservoirFactory.cpp
+			ReservoirFactory.cpp \
+			Measurement.cpp
 
 libdemon_la_CXXFLAGS = $(GCOV_CFLAGS)
 

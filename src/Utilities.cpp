@@ -40,7 +40,3 @@ gsl_rng *GSLRandomNumberGenerator() {
     
     return gen;
 }
-
-double mbl_ran_exponential(const gsl_rng *r, double rate) {
-    return gsl_ran_exponential(r,1/rate);
-}

@@ -1,7 +1,8 @@
 TESTS = demoncore
 check_PROGRAMS = $(TESTS)
-demoncore_SOURCES = core.cpp\
-			SystemTest.cpp
+demoncore_SOURCES = core.cpp \
+			SystemTest.cpp \
+			MeasurementTest.cpp
 
 demoncore_CXXFLAGS = -I${top_srcdir}/src \
 			$(CPPUNIT_CFLAGS) \
@@ -13,4 +14,4 @@ demoncore_LDFLAGS = $(CPPUNIT_LIBS) \
 demoncore_LIBS = $(GCOV_LIBS) \
 			$(CPPUNIT_LIBS)
 
-noinst_HEADERS = SystemTest.h
+noinst_HEADERS = SystemTest.h MeasurementTest.h

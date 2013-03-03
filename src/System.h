@@ -13,20 +13,35 @@
 
 class Reservoir;
 
-struct Constants {
+class Constants {
     double delta;
     //The initial ratio of 1's to 0's
     
     double epsilon;
     //The weight of the mass.
     
+    double beta;
+    //Derived from epsilon.
+    
     double tau;
     //The duration of the interaction with each bit in the stream.
     
     int nBits;
     //The number of bits the tape interacts with.
-    
-    double beta();
+public:
+    void setDelta(const double&);
+    void setEpsilon(const double&);
+    void setTau(const double&);
+    void setNbits(const int&);
+    const double &getEpsilon() { return epsilon; }
+    const double & getTau() { return tau; }
+    const double & getBeta() { return beta; }
+    const int & getNbits() { return nBits; }
+    const double & getDelta() { return delta; }
+    Constants (double d, double e, double t) : delta(d),tau(t) {
+        setEpsilon(e);
+    }   
+    Constants () {}
 };
 
 struct System {

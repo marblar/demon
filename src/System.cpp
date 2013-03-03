@@ -18,7 +18,7 @@ System::System(gsl_rng *localRNG, Constants constants, int nbits) {
     this->nbits = nbits;
     
     this->startingBitString = \
-        randomShortIntWithBitDistribution(constants.delta, nbits, localRNG);
+        randomShortIntWithBitDistribution(constants.getDelta(), nbits, localRNG);
     this->constants = constants;
     
     this->endingBitString = 0;
@@ -43,8 +43,21 @@ void System::evolveWithReservoir(Reservoir *reservoir) {
     }//End while
 }
 
-double Constants::beta() {
-    return -log((1-epsilon)/(1+epsilon));
+void Constants::setDelta(const double& newDelta) {
+    delta = newDelta;
+}
+
+void Constants::setEpsilon(const double& newEpsi) {
+    epsilon = newEpsi;
+    beta = -log((1-epsilon)/(1+epsilon));
+}
+
+void Constants::setTau(const double& newT) {
+    tau = newT;
+}
+
+void Constants::setNbits(const int& newBits) {
+    nBits = newBits;
 }
 
 

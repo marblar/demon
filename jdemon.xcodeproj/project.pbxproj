@@ -22,6 +22,10 @@
 		4D917D6B16E080DF002ADE1E /* libcppunit-1.12.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */; };
 		4D917D6C16E080F3002ADE1E /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6816E0807B002ADE1E /* core.cpp */; };
 		4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6D16E081B4002ADE1E /* SystemTest.cpp */; };
+		4DA8D48616E30F8400D659CF /* Measurement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48416E30F8400D659CF /* Measurement.cpp */; };
+		4DA8D48716E30F8400D659CF /* Measurement.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA8D48516E30F8400D659CF /* Measurement.h */; };
+		4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */; };
+		4DA8D48B16E3A9ED00D659CF /* MeasurementTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA8D48916E3A9ED00D659CF /* MeasurementTest.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +64,10 @@
 		4D917D6D16E081B4002ADE1E /* SystemTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemTest.cpp; sourceTree = "<group>"; };
 		4D917D6E16E081B4002ADE1E /* SystemTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemTest.h; sourceTree = "<group>"; };
 		4D9C2AFF160524A9001FA974 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4DA8D48416E30F8400D659CF /* Measurement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Measurement.cpp; sourceTree = "<group>"; };
+		4DA8D48516E30F8400D659CF /* Measurement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Measurement.h; sourceTree = "<group>"; };
+		4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeasurementTest.cpp; sourceTree = "<group>"; };
+		4DA8D48916E3A9ED00D659CF /* MeasurementTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeasurementTest.h; sourceTree = "<group>"; };
 		4DAFD7C216B2EC54004D9346 /* clangomp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clangomp.h; sourceTree = "<group>"; };
 		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		4DE1438316D143C400F8B816 /* Ising.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Ising.h; sourceTree = "<group>"; };
@@ -89,6 +97,8 @@
 			isa = PBXGroup;
 			children = (
 				4D917D6816E0807B002ADE1E /* core.cpp */,
+				4DA8D48916E3A9ED00D659CF /* MeasurementTest.h */,
+				4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */,
 				4D917D6E16E081B4002ADE1E /* SystemTest.h */,
 				4D917D6D16E081B4002ADE1E /* SystemTest.cpp */,
 			);
@@ -103,6 +113,7 @@
 				4D02E3AC16D662B20047BE84 /* libboost_system-mt.dylib */,
 				4D02E3AD16D662B20047BE84 /* libboost_timer-mt.dylib */,
 				4D02E3A816D660EB0047BE84 /* libgsl.0.dylib */,
+				4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */,
 			);
 			name = "External Libraries";
 			sourceTree = "<group>";
@@ -110,7 +121,6 @@
 		4DD182E41605213000353837 = {
 			isa = PBXGroup;
 			children = (
-				4D917D6A16E080DF002ADE1E /* libcppunit-1.12.1.dylib */,
 				4D917D6716E0807B002ADE1E /* test */,
 				4DAFD7A716B202EF004D9346 /* External Libraries */,
 				4DD182F21605213000353837 /* src */,
@@ -130,12 +140,14 @@
 			isa = PBXGroup;
 			children = (
 				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
+				4DA8D48516E30F8400D659CF /* Measurement.h */,
 				4D46888C16B5C58C009143D0 /* Reservoir.h */,
 				4DFFF1F916D1B7B7001BB4E8 /* ReservoirFactory.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
-				4DE1438716D147BB00F8B816 /* Reservoirs */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
+				4DE1438716D147BB00F8B816 /* Reservoirs */,
 				4D9C2AFF160524A9001FA974 /* main.cpp */,
+				4DA8D48416E30F8400D659CF /* Measurement.cpp */,
 				4DFFF1FD16D1BE1E001BB4E8 /* ReservoirFactory.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
 				4DE1438516D1443E00F8B816 /* Reservoir.cpp */,
@@ -162,6 +174,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DA8D48716E30F8400D659CF /* Measurement.h in Headers */,
+				4DA8D48B16E3A9ED00D659CF /* MeasurementTest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +274,8 @@
 				4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */,
 				4D917D6C16E080F3002ADE1E /* core.cpp in Sources */,
 				4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */,
+				4DA8D48616E30F8400D659CF /* Measurement.cpp in Sources */,
+				4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,6 +497,7 @@
 				4D917D7316E0DE92002ADE1E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4DD182E91605213000353837 /* Build configuration list for PBXProject "jdemon" */ = {
 			isa = XCConfigurationList;

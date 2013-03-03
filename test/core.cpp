@@ -6,9 +6,9 @@
 #include <cppunit/TestResultCollector.h>
 
 #include "SystemTest.h"
+#include "MeasurementTest.h"
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     CppUnit::TestResult controller;
     CppUnit::TestResultCollector result;
     controller.addListener(&result);

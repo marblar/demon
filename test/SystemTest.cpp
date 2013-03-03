@@ -18,10 +18,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ConstantsTest);
 
 
 Constants defaultConstants() {
-    Constants c;
-    c.delta = .7;
-    c.tau = 1;
-    c.epsilon = .7;
+    Constants c(.7,.1,.7);
     return c;
 }
 
@@ -58,6 +55,9 @@ public:
 
 void SystemTest::setUp() {
     rng = GSLRandomNumberGenerator();
+    // Always set the seed to 0. If anything dependent on this worked once
+    // it will work again on a different box.
+    gsl_rng_set(rng, 0);
 }
 
 void SystemTest::tearDown() {
@@ -65,18 +65,12 @@ void SystemTest::tearDown() {
 }
 
 void SystemTest::testStartingString() {
-    /*! This is a probabilistic test, which makes it basically satan
-        as far as I'm concerned. 
-        
-        TODO: Make sure the fail rate is less than
-        one in a billion. Require failure of several string lengths, combined
-        with 3 sigmas for the delta value?
-     */
     int nbits = 8;
-    int results[9];
+    int resultSize = nbits + 1;
+    int results[resultSize];
     int iterations = 10000;
     
-    std::fill(results, results+9, 0);
+    std::fill(results, results + resultSize, 0);
     
     for (int k = 0; k<iterations; k++) {
         System *system = new System(rng,defaultConstants());
@@ -84,8 +78,8 @@ void SystemTest::testStartingString() {
         delete system;
     }
     
-    for (int k = 0; k<9; k++) {
-        double expected = gsl_ran_binomial_pdf(k, defaultConstants().delta, 8);
+    for (int k = 0; k<resultSize; k++) {
+        double expected = gsl_ran_binomial_pdf(k, defaultConstants().getDelta(), 8);
         double actual = ((double)results[k])/iterations;
         CPPUNIT_ASSERT_DOUBLES_EQUAL(expected, actual, .1);
     }
@@ -96,9 +90,9 @@ void SystemTest::testConstructor() {
     System system(rng,defaultConstants(),nbits);
     
     CPPUNIT_ASSERT_EQUAL(system.nbits, nbits);
-    CPPUNIT_ASSERT_EQUAL(defaultConstants().epsilon, system.constants.epsilon);
-    CPPUNIT_ASSERT_EQUAL(defaultConstants().delta, system.constants.delta);
-    CPPUNIT_ASSERT_EQUAL(defaultConstants().tau, system.constants.tau);
+    CPPUNIT_ASSERT_EQUAL(defaultConstants().getEpsilon(), system.constants.getEpsilon());
+    CPPUNIT_ASSERT_EQUAL(defaultConstants().getDelta(), system.constants.getDelta());
+    CPPUNIT_ASSERT_EQUAL(defaultConstants().getTau(), system.constants.getTau());
     CPPUNIT_ASSERT_EQUAL(system.bitPosition, 0);
     CPPUNIT_ASSERT_EQUAL(system.mass, 0);
     
@@ -133,10 +127,9 @@ void SystemTest::testEndingString() {
 }
 
 void ConstantsTest::testHighTemperature() {
-    Constants c;
-    c.delta = .5;
-    c.epsilon = 0;
-    c.tau = 1;
-    
-    CPPUNIT_ASSERT(c.beta()==0);
+    double delta = .5;
+    double epsilon = 0;
+    double tau = 1;
+    Constants c(delta,epsilon,tau);
+    CPPUNIT_ASSERT(c.getBeta()==0);
 }

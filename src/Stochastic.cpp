@@ -25,8 +25,8 @@ Reservoir::InteractionResult StochasticReservoir::interactWithBit(int oldBit) {
          transition where the bit increases is 1 + epsilon. Implementing this with ^blocks was too slow,
          and subclassing using virtual functions wasn't much better. So I'm doing it inline.*/
         
-        double rate1 = 1 + (currentState->nextState1->bit-currentState->bit)*constants.epsilon;
-        double rate2 = 1 + (currentState->nextState2->bit-currentState->bit)*constants.epsilon;
+        double rate1 = 1 + (currentState->nextState1->bit-currentState->bit)*constants.getEpsilon();
+        double rate2 = 1 + (currentState->nextState2->bit-currentState->bit)*constants.getEpsilon();
         
         /*! The minimum of two exponentials is an exponential with their combined rates. Since there's a
          call to log() in this function, we want to use it as few times as possible. So we simply figure out
@@ -34,7 +34,7 @@ Reservoir::InteractionResult StochasticReservoir::interactWithBit(int oldBit) {
          which came first. */
         double fastestTime = gsl_ran_exponential(RNG, 1/(1/rate1+1/rate2));
     
-        if (fastestTime + time_elapsed > constants.tau) {
+        if (fastestTime + time_elapsed > constants.getTau()) {
             /*! The tape moved first */
             break;
         }

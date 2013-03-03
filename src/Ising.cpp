@@ -31,9 +31,9 @@ Reservoir::InteractionResult IsingReservoir::interactWithBit(int bit) {
         currentState=currentState->bitFlipState;
     }
     
-    assert(ceil(constants.tau)>0 &&
+    assert(ceil(constants.getTau())>0 &&
            "Figure out how tau converts to discrete time.");
-    int iterations = ceil(constants.tau);
+    int iterations = ceil(constants.getTau());
     
     for (int k = 0; k<iterations; k++) {
         parity = 0;
@@ -86,7 +86,7 @@ void IsingReservoir::clusterMethod() {
     currentCell^=1;
 
     
-    double inclusionProbability = 1 - exp(-2*constants.beta());
+    double inclusionProbability = 1 - exp(-2*constants.getBeta());
     assert(inclusionProbability<=1 && inclusionProbability>=0);
     
     //Basic BFT
@@ -290,14 +290,15 @@ Reservoir *IsingReservoir::IsingFactory::create(gsl_rng *RNG, Constants constant
 }
 
 void isingEnergyDistribution(int d, int clusters) {
-    Constants constants;
-    constants.tau = 1;
-    constants.delta = .5;
-    constants.epsilon = 0;
+    double delta = .5;
+    double tau = 1;
+    double epsilon = 0;
+    Constants constants(delta,epsilon,tau);
+    
     gsl_rng *RNG = GSLRandomNumberGenerator();
     for (int energy = 0; energy!=4; energy++) {
-        constants.epsilon = .15*energy+.25;
-        printf("Beta: %lf\n",constants.beta());
+        constants.setEpsilon(.15*energy+.25);
+        printf("Beta: %lf\n",constants.getBeta());
         IsingReservoir *reservoir = new IsingReservoir(RNG,constants,d,clusters);
         reservoir->reset();
         for (int k=0; k<100; k++) {
