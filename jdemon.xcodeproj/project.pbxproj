@@ -16,6 +16,8 @@
 		4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */; };
 		4D8B4B3F16E3FFD0008ECF75 /* InstrumentFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */; };
 		4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6D16E081B4002ADE1E /* SystemTest.cpp */; };
+		4DA3762816E4775000599AA1 /* ClockerXmlHook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3762716E4775000599AA1 /* ClockerXmlHook.cpp */; };
+		4DA3762A16E478C000599AA1 /* ClockerModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3762916E478C000599AA1 /* ClockerModel.cpp */; };
 		4DA8D48616E30F8400D659CF /* Measurement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48416E30F8400D659CF /* Measurement.cpp */; };
 		4DA8D48716E30F8400D659CF /* Measurement.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA8D48516E30F8400D659CF /* Measurement.h */; };
 		4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */; };
@@ -64,6 +66,8 @@
 		4D917D6D16E081B4002ADE1E /* SystemTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemTest.cpp; sourceTree = "<group>"; };
 		4D917D6E16E081B4002ADE1E /* SystemTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemTest.h; sourceTree = "<group>"; };
 		4D9C2AFF160524A9001FA974 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4DA3762716E4775000599AA1 /* ClockerXmlHook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClockerXmlHook.cpp; path = Clocker/ClockerXmlHook.cpp; sourceTree = "<group>"; };
+		4DA3762916E478C000599AA1 /* ClockerModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClockerModel.cpp; path = Clocker/ClockerModel.cpp; sourceTree = "<group>"; };
 		4DA8D48416E30F8400D659CF /* Measurement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Measurement.cpp; sourceTree = "<group>"; };
 		4DA8D48516E30F8400D659CF /* Measurement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Measurement.h; sourceTree = "<group>"; };
 		4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeasurementTest.cpp; sourceTree = "<group>"; };
@@ -119,6 +123,8 @@
 				4DBF803016E44A49002EB147 /* IsingPerformance.cpp */,
 				4DBF802F16E44A49002EB147 /* IsingPerformance.h */,
 				4DBF803216E44A6F002EB147 /* performance.cpp */,
+				4DA3762716E4775000599AA1 /* ClockerXmlHook.cpp */,
+				4DA3762916E478C000599AA1 /* ClockerModel.cpp */,
 			);
 			name = Perfomance;
 			path = test;
@@ -287,6 +293,8 @@
 				4DBF803316E44A6F002EB147 /* performance.cpp in Sources */,
 				4DBF803416E4592D002EB147 /* IsingPerformance.h in Sources */,
 				4DBF803516E45968002EB147 /* IsingPerformance.cpp in Sources */,
+				4DA3762816E4775000599AA1 /* ClockerXmlHook.cpp in Sources */,
+				4DA3762A16E478C000599AA1 /* ClockerModel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

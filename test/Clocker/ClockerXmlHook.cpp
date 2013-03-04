@@ -36,18 +36,16 @@ void
 ClockerXmlHook::addTimedTest( CPPUNIT_NS::XmlElement *parentElement, 
                               int testIndex )
 {
-  std::string elementName = m_model->isSuite( testIndex ) ? "TimedSuite" : "TimedTest";
+  std::string elementName = m_model->isSuite( testIndex ) ? "testsuite" : "testcase";
   CPPUNIT_NS::XmlElement *testElement = new CPPUNIT_NS::XmlElement( elementName );
   parentElement->addElement( testElement );
   testElement->addAttribute( "id", testIndex );
 
   const CPPUNIT_NS::TestPath &path = m_model->testPathFor( testIndex );
-  testElement->addElement( new CPPUNIT_NS::XmlElement( "Name", 
-                                                    path.getChildTest()->getName() ) );
-  testElement->addElement( new CPPUNIT_NS::XmlElement( "TestPath", path.toString() ) );
-  testElement->addElement( new CPPUNIT_NS::XmlElement( "Time", 
-                                 ClockerModel::timeStringFor( 
-                                    m_model->testTimeFor( testIndex ) ) ) );
+    testElement->addAttribute("name",  path.getChildTest()->getName() );
+  testElement->addAttribute( "className", path.toString()  );
+    testElement->addAttribute("time", ClockerModel::timeStringFor(
+                                                                  m_model->testTimeFor( testIndex ) ) ) ;
 
   if ( m_model->isSuite( testIndex ) )
   {
@@ -75,9 +73,9 @@ ClockerXmlHook::successfulTestAdded( CPPUNIT_NS::XmlDocument *document,
   int testIndex = m_model->indexOf( test );
   double time = (testIndex >= 0) ? m_model->testTimeFor( testIndex ) : 0.0;
   const CPPUNIT_NS::TestPath &path = m_model->testPathFor( testIndex );
-  testElement->addElement( new CPPUNIT_NS::XmlElement( "TestPath", path.toString() ) );
-  testElement->addElement( new CPPUNIT_NS::XmlElement( "Time",
-                                   ClockerModel::timeStringFor( time ) ) );
+  testElement->addElement( new CPPUNIT_NS::XmlElement( "path", path.toString() ) );
+  testElement->addElement( new CPPUNIT_NS::XmlElement( "time",
+                                                      ClockerModel::timeStringFor( time ) ) );
 }
 
 
@@ -85,10 +83,5 @@ void
 ClockerXmlHook::statisticsAdded( CPPUNIT_NS::XmlDocument *document,
                                  CPPUNIT_NS::XmlElement *statisticsElement )
 {
-  statisticsElement->addElement( 
-      new CPPUNIT_NS::XmlElement( "TotalElapsedTime",
-           ClockerModel::timeStringFor( m_model->totalElapsedTime() ) ) );
-  statisticsElement->addElement( 
-      new CPPUNIT_NS::XmlElement( "AverageTestCaseTime",
-           ClockerModel::timeStringFor( m_model->averageTestCaseTime() ) ) );
+  statisticsElement->addAttribute("time", ClockerModel::timeStringFor( m_model->totalElapsedTime() ) );
 }
