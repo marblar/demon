@@ -10,7 +10,27 @@
 #include "Clocker/ClockerModel.h"
 #include "Clocker/ClockerXmlHook.h"
 
-#include "IsingPerformance.h"
+#include "ReservoirBenchmark.h"
+#include "InstrumentFactories.h"
+#include "Stochastic.h"
+
+class StochBenchmark : public ReservoirBenchmark
+{
+    CPPUNIT_TEST_SUB_SUITE(StochBenchmark,ReservoirBenchmark);
+    CPPUNIT_TEST_SUITE_END();
+public:
+    virtual int iterations()
+    {
+        return 1000;   
+    }
+    virtual ReservoirFactory *createReservoirFactory()
+    {
+        return new DefaultArgsReservoirFactory<StochasticReservoir>;
+    }   
+};
+
+CPPUNIT_TEST_SUITE_REGISTRATION( StochBenchmark );
+
 
 int main(int argc, char* argv[]) {
     CppUnit::TestResult controller;

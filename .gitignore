@@ -115,3 +115,14 @@ xcuserdata
 *.o
 *.out
 *~
+Makefile.in
+*.m4
+.autotools
+.cproject
+.project
+.settings
+autom4te.cache
+build-aux/*
+config.h.in
+config.log
+configure

@@ -23,9 +23,7 @@
 		4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */; };
 		4DA8D48B16E3A9ED00D659CF /* MeasurementTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA8D48916E3A9ED00D659CF /* MeasurementTest.h */; };
 		4DA8D48C16E3F5D200D659CF /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6816E0807B002ADE1E /* core.cpp */; };
-		4DBF803316E44A6F002EB147 /* performance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF803216E44A6F002EB147 /* performance.cpp */; };
-		4DBF803416E4592D002EB147 /* IsingPerformance.h in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF802F16E44A49002EB147 /* IsingPerformance.h */; };
-		4DBF803516E45968002EB147 /* IsingPerformance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF803016E44A49002EB147 /* IsingPerformance.cpp */; };
+		4DBF803316E44A6F002EB147 /* ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF803216E44A6F002EB147 /* ising.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,9 +71,7 @@
 		4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeasurementTest.cpp; sourceTree = "<group>"; };
 		4DA8D48916E3A9ED00D659CF /* MeasurementTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeasurementTest.h; sourceTree = "<group>"; };
 		4DAFD7C216B2EC54004D9346 /* clangomp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clangomp.h; sourceTree = "<group>"; };
-		4DBF802F16E44A49002EB147 /* IsingPerformance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IsingPerformance.h; sourceTree = "<group>"; };
-		4DBF803016E44A49002EB147 /* IsingPerformance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IsingPerformance.cpp; sourceTree = "<group>"; };
-		4DBF803216E44A6F002EB147 /* performance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = performance.cpp; sourceTree = "<group>"; };
+		4DBF803216E44A6F002EB147 /* ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ising.cpp; sourceTree = "<group>"; };
 		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		4DE1438316D143C400F8B816 /* Ising.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Ising.h; sourceTree = "<group>"; };
 		4DE1438516D1443E00F8B816 /* Reservoir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Reservoir.cpp; sourceTree = "<group>"; };
@@ -120,14 +116,12 @@
 		4DBF803116E44A52002EB147 /* Perfomance */ = {
 			isa = PBXGroup;
 			children = (
-				4DBF803016E44A49002EB147 /* IsingPerformance.cpp */,
-				4DBF802F16E44A49002EB147 /* IsingPerformance.h */,
-				4DBF803216E44A6F002EB147 /* performance.cpp */,
+				4DBF803216E44A6F002EB147 /* ising.cpp */,
 				4DA3762716E4775000599AA1 /* ClockerXmlHook.cpp */,
 				4DA3762916E478C000599AA1 /* ClockerModel.cpp */,
 			);
 			name = Perfomance;
-			path = test;
+			path = test/performance;
 			sourceTree = "<group>";
 		};
 		4DD182E41605213000353837 = {
@@ -290,9 +284,7 @@
 				4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */,
 				4DA8D48C16E3F5D200D659CF /* core.cpp in Sources */,
 				4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */,
-				4DBF803316E44A6F002EB147 /* performance.cpp in Sources */,
-				4DBF803416E4592D002EB147 /* IsingPerformance.h in Sources */,
-				4DBF803516E45968002EB147 /* IsingPerformance.cpp in Sources */,
+				4DBF803316E44A6F002EB147 /* ising.cpp in Sources */,
 				4DA3762816E4775000599AA1 /* ClockerXmlHook.cpp in Sources */,
 				4DA3762A16E478C000599AA1 /* ClockerModel.cpp in Sources */,
 			);
