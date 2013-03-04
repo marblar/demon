@@ -20,6 +20,8 @@
 #include "InstrumentFactories.h"
 #include "Utilities.h"
 
+static InvalidNbitsError NbitsError;
+
 std::string outputHeader() {
     return std::string("delta,epsilon,averageJ,maxJ");
 }
@@ -59,14 +61,21 @@ void Measurement::performMeasurement() {
     
     int first_pass_iterations = iterations;
     const int &nbits = constants.getNbits();
-    assert(nbits>0);
     
+    if (constants.getNbits()<=0) {
+        throw InvalidNbitsError();
+    }
     
-    histogram = new int[1<<nbits];
+    // In the horribly degenerate case where this function runs twice,
+    // we don't want to leak everywhere.
+    if (!initializedArrays) {
+        histogram = new int[1<<nbits];
+        p = new long double[1<<nbits];
+        p_prime = new long double[1<<nbits];
+        initializedArrays = true;
+    }
+    
     std::fill_n(histogram, 1<<nbits, 0);
-    
-    p = new long double[1<<nbits];
-    p_prime = new long double[1<<nbits];
     
     long double sum = 0;
     long double max = 0;
@@ -103,6 +112,7 @@ void Measurement::performMeasurement() {
     assert(result.maxJ!=NAN);
     
     delete reservoir;
+    complete = true;
 }
 
 Measurement::Measurement(Constants _c, int _it, ReservoirFactory *_rf,
@@ -120,12 +130,17 @@ Measurement::Measurement(Constants _c, int _it, ReservoirFactory *_rf,
         ownsRNG = false;
     }
     result.constants = constants;
+    initializedArrays = false;
 }
 
 Measurement::~Measurement() {
-    delete [] p_prime;
-    delete [] p;
-    delete [] histogram;
+    // Prevents a crash if a call to performMeasurement is optimized out.
+    if (initializedArrays) {
+        delete [] p_prime;
+        delete [] p;
+        delete [] histogram;
+    }
+    
     if (ownsRNG) {
         gsl_rng_free(rng);
     }

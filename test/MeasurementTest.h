@@ -18,6 +18,11 @@ class MeasurementTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(testWithTrivialReservoir);
     CPPUNIT_TEST(testTrivialCalculateJ);
     CPPUNIT_TEST(testResultsConstants);
+    CPPUNIT_TEST(testIncompleteDestructor);
+    CPPUNIT_TEST(testCompleteFlag);
+    CPPUNIT_TEST(testZeroBits);
+    CPPUNIT_TEST(testNegativeBits);
+    CPPUNIT_TEST(testCompleteFlag);
     CPPUNIT_TEST_SUITE_END();
     gsl_rng *rng;
 public:
@@ -27,6 +32,10 @@ public:
     void testWithTrivialReservoir();
     void testTrivialCalculateJ();
     void testResultsConstants();
+    void testIncompleteDestructor();
+    void testCompleteFlag();
+    void testZeroBits();
+    void testNegativeBits();
 };
 
 #endif /* defined(__jdemon__MeasurementTest__) */

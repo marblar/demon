@@ -16,7 +16,7 @@ void ReservoirBenchmark::setUp() {
 }
 
 void ReservoirBenchmark::tearDown() {
-    gsl_rng_free(rng);
+//    gsl_rng_free(rng);
 }
 
 void ReservoirBenchmark::performMeasurement() {
@@ -25,14 +25,18 @@ void ReservoirBenchmark::performMeasurement() {
     Constants constants;
     int dimension = 20;
     double tau = 1;
+    
+    CPPUNIT_ASSERT(rFactory);
+    CPPUNIT_ASSERT(sFactory);
 
     for (int k=dimension*dimension; k>=0; k--) {
         constants.setEpsilon((k % dimension)/(double)(dimension));
         constants.setDelta(.5 + .5*(k / dimension)/(double)(dimension));
         constants.setTau(tau);
         constants.setNbits(8);
-        Measurement measurement(constants,iterations(),rFactory,sFactory);
+        Measurement measurement(constants,iterations(),rFactory,sFactory,rng);
         MeasurementResult &result = measurement.getResult();
+        CPPUNIT_ASSERT(measurement.isComplete());
     }
 
     delete rFactory;

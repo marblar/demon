@@ -51,8 +51,7 @@ void MeasurementTest::testWithTrivialReservoir() {
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("averageJ",\
                                          1, result.averageJ, .02);
     // Too lazy to work this out analytically, but this result is consistent,
-    // and so this test will let me know if something actually changes.
-    std::cout<<result.maxJ;
+    // and so this test will lock this functionality in.
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("maxJ",2.56,
                                          result.maxJ, .01);
     delete rfactory;
@@ -115,3 +114,58 @@ void MeasurementTest::testOutput() {
     std::string expectedResultString = "0.7,0,1,1000.93";
     CPPUNIT_ASSERT_EQUAL(actualResultString, expectedResultString);
 }
+
+
+void MeasurementTest::testIncompleteDestructor() {
+    // Regression test for a memory error.
+    {
+        Constants c;
+        ReservoirFactory *rf = new DefaultArgsReservoirFactory<TrivialReservoir>;
+        SystemFactory *sf = new BinomialSystemFactory;
+        Measurement m(c, 1, rf, sf);
+        //If the measurement is not complete, that means that the destructor
+        // will be called without initializing the internal arrays. 
+        CPPUNIT_ASSERT(!m.isComplete());
+    }
+}
+
+void MeasurementTest::testCompleteFlag() {
+    Constants c;
+    c.setTau(1);
+    c.setDelta(1);
+    c.setEpsilon(0);
+    c.setNbits(1);
+    ReservoirFactory *rf = new DefaultArgsReservoirFactory<TrivialReservoir>;
+    SystemFactory *sf = new BinomialSystemFactory;
+    Measurement m(c, 1, rf, sf);
+    CPPUNIT_ASSERT(!m.isComplete());
+    MeasurementResult &result = m.getResult();
+    CPPUNIT_ASSERT(m.isComplete());
+}
+
+void MeasurementTest::testZeroBits() {
+    Constants c;
+    c.setTau(1);
+    c.setDelta(1);
+    c.setEpsilon(0);
+    c.setNbits(0);
+    ReservoirFactory *rf = new DefaultArgsReservoirFactory<TrivialReservoir>;
+    SystemFactory *sf = new BinomialSystemFactory;
+    Measurement m(c, 1, rf, sf);
+    MeasurementResult result;
+    CPPUNIT_ASSERT_THROW(result=m.getResult(), InvalidNbitsError);
+}
+
+void MeasurementTest::testNegativeBits() {
+    Constants c;
+    c.setTau(1);
+    c.setDelta(1);
+    c.setEpsilon(0);
+    c.setNbits(-1000);
+    ReservoirFactory *rf = new DefaultArgsReservoirFactory<TrivialReservoir>;
+    SystemFactory *sf = new BinomialSystemFactory;
+    Measurement m(c, 1, rf, sf);
+    MeasurementResult result;
+    CPPUNIT_ASSERT_THROW(result=m.getResult(), InvalidNbitsError);
+}
+

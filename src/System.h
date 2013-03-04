@@ -10,6 +10,7 @@
 #define __thermaleraser__System__
 
 #include <gsl/gsl_rng.h>
+#include <sstream>
 
 class Reservoir;
 
@@ -53,6 +54,15 @@ struct System {
     Constants constants;
     System(Constants,int startingBitString);
     void evolveWithReservoir(Reservoir *reservoir);
+};
+
+#define InvalidParameter(x)
+class InvalidNbitsError : public std::exception
+{
+    virtual const char* what() const throw()
+    {
+        return "Nbits must be >0";
+    }
 };
 
 #endif /* defined(__thermaleraser__System__) */

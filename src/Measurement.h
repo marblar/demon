@@ -13,6 +13,7 @@
 #include "System.h"
 #include "InstrumentFactories.h"
 #include "Utilities.h"
+#include <memory>
 
 struct MeasurementResult {
     Constants constants;
@@ -31,6 +32,7 @@ class Measurement {
     bool ownsRNG;
     gsl_rng *rng;
 protected:
+    bool initializedArrays;
     int *histogram;
     long double *p;
     long double *p_prime;
@@ -38,6 +40,9 @@ public:
     Measurement(Constants _c, int _it, ReservoirFactory *_rf, SystemFactory *_sf, gsl_rng *RNG = NULL);
     MeasurementResult &getResult();
     void performMeasurement();
+    bool isComplete() {
+        return complete;
+    }
     ~Measurement();
 };
 

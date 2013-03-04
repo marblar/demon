@@ -2,7 +2,7 @@ if PERFORMANCE_TESTS_ENABLED
 PERFORMANCE_DIR = performance
 endif
 
-SUBDIRS = $(PERFORMANCE_DIR)
+SUBDIRS = . $(PERFORMANCE_DIR)
 
 TESTS = demoncore
 
@@ -13,7 +13,7 @@ EXTRA_HEADERS = SystemTest.h MeasurementTest.h
 demoncore_SOURCES = core.cpp \
 			SystemTest.cpp \
 			MeasurementTest.cpp \
-			IsingTest.cpp
+			IsingTest.cpp 
 
 demoncore_CXXFLAGS = -I${top_srcdir}/src \
 			$(CPPUNIT_CFLAGS) \
