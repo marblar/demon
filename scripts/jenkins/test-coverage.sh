@@ -4,5 +4,6 @@ ACLOCAL=aclocal-1.13
 autoreconf --install -I /usr/share/aclocal/
 mkdir -p build
 cd build
-../configure
+../configure --enable-gcov
 make check
+make coverage

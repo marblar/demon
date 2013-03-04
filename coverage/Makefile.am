@@ -22,7 +22,7 @@ src.info: test.info
 
 # FIXME: This pattern blows.
 app.info: src.info
-	lcov $(BRANCH_FLAGS) --extract src.info *src/* -o app.info
+	lcov $(BRANCH_FLAGS) --extract src.info *.cpp -o app.info
 
 www/index.html: app.info
 	genhtml $(BRANCH_FLAGS) -t jdemon -o www app.info
