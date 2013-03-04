@@ -15,6 +15,12 @@ struct Coordinate {
 
 Coordinate makeCoordinate(int x, int y);
 
+// TODO: Encapsulate me!
+typedef std::map<char,SystemState *> TransitionTable;
+typedef std::map<SystemState *, TransitionTable> TransitionRule;
+
+inline TransitionRule defaultTransitionRule();
+
 class IsingReservoir : public Reservoir {
 public:
     enum stepType {
@@ -26,8 +32,7 @@ private:
     char **cells;
     const int isingSide;
     stepType currentStepType;
-    typedef std::map<char, SystemState *> TransitionTable;
-    std::map<SystemState *,TransitionTable> transitions;
+    TransitionRule transitions;
     unsigned char parity;
 protected:
     struct Neighbors {

@@ -8,9 +8,12 @@ TESTS = demoncore
 
 check_PROGRAMS = $(TESTS)
 
+EXTRA_HEADERS = SystemTest.h MeasurementTest.h
+
 demoncore_SOURCES = core.cpp \
 			SystemTest.cpp \
-			MeasurementTest.cpp
+			MeasurementTest.cpp \
+			IsingTest.cpp
 
 demoncore_CXXFLAGS = -I${top_srcdir}/src \
 			$(CPPUNIT_CFLAGS) \

@@ -238,51 +238,57 @@ IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS, int c
 }
 
 inline void IsingReservoir::setupStateTable() {
+    transitions = defaultTransitionRule();
+}
+
+
+inline TransitionRule defaultTransitionRule() {
     //TODO: Custom states. This is goofy.
     //Source: http://imgur.com/FF5TBQh
-    
-    #define init(XX) \
-                TransitionTable XX;\
-                for (char k=0; k<8; k++) \
-                    XX[k]=&State##XX;
-    init(A1);
+    TransitionRule transitions;
+    #define TTable(XX) \
+    	TransitionTable XX;\
+        for (char k=0; k<8; k++) \
+            XX[k]=&State##XX;
+    TTable(A1);
     A1[s(0,0,1)] = &StateB1;
     A1[s(1,0,1)] = &StateB1;
     transitions[&StateA1]=A1;
     
-    init(B1);
+    TTable(B1);
     B1[s(0,0,1)] = &StateA1;
     B1[s(1,0,1)] = &StateA1;
     B1[s(1,1,1)] = &StateC1;
     B1[s(0,1,1)] = &StateC1;
     transitions[&StateB1]=B1;
     
-    init(C1);
+    TTable(C1);
     C1[s(0,1,1)] = &StateB1;
     C1[s(1,1,1)] = &StateB1;
     C1[s(0,0,1)] = &StateA0;
     C1[s(0,0,0)] = &StateA0;
     transitions[&StateC1]=C1;
     
-    init(A0);
+    TTable(A0);
     A0[s(0,1,0)] = &StateC1;
     A0[s(0,1,1)] = &StateC1;
     A0[s(1,0,1)] = &StateB0;
     A0[s(0,0,1)] = &StateB0;
     transitions[&StateA0]=A0;
     
-    init(B0);
+    TTable(B0);
     B0[s(0,0,1)] = &StateB0;
     B0[s(1,0,1)] = &StateB0;
     B0[s(1,1,1)] = &StateA0;
     B0[s(0,1,1)] = &StateA0;
     transitions[&StateB0] = B0;
     
-    init(C0);
+    TTable(C0);
     C0[s(1,1,1)] = &StateB0;
     C0[s(0,1,1)] = &StateB0;
     transitions[&StateC0] = C0;
-    //TODO: TEST ME.
+    
+    return transitions;
 }
 
 Reservoir *IsingReservoir::IsingFactory::create(gsl_rng *RNG, Constants constants) {
