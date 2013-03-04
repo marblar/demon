@@ -46,7 +46,7 @@ Reservoir::InteractionResult IsingReservoir::interactWithBit(int bit) {
     return result;
 }
 
-inline void IsingReservoir::isingStep(InteractionResult &result) {
+void IsingReservoir::isingStep(InteractionResult &result) {
     int row = 0;
     int column = (currentStepType == odd ? row + 1 : row) % 2;
     while (row<isingSide) {

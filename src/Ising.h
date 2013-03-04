@@ -42,10 +42,10 @@ protected:
     void setupStateTable();
     int getEnergy(Coordinate);
 
+public:
     void isingStep(InteractionResult&);
     void wheelStep(InteractionResult&);
     void clusterMethod();
-public:
     int totalEnergy();
     IsingReservoir(gsl_rng *RNG, Constants constants,
                    int IsingSide = 100, int clusters = 20);
