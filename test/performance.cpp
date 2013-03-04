@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     
     // Change the default outputter to a compiler error format
     // outputter
-    std::ofstream xmlFileOut("performance.stats");
+    std::ofstream xmlFileOut("ising.stats");
     CppUnit::XmlOutputter xmlOut(&result, xmlFileOut);
     xmlOut.addHook(&xmlHook);
     xmlOut.write();
