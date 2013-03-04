@@ -56,7 +56,6 @@ struct System {
     void evolveWithReservoir(Reservoir *reservoir);
 };
 
-#define InvalidParameter(x)
 class InvalidNbitsError : public std::exception
 {
     virtual const char* what() const throw()
@@ -65,4 +64,10 @@ class InvalidNbitsError : public std::exception
     }
 };
 
+class InconsistentSystemState : public std::exception {
+    virtual const char* what() const throw()
+    {
+        return "This system has been evolved before.";
+    }
+};
 #endif /* defined(__thermaleraser__System__) */

@@ -17,7 +17,6 @@
 CPPUNIT_TEST_SUITE_REGISTRATION(SystemTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(ConstantsTest);
 
-
 static Constants defaultConstants() {
     Constants c(.7,.1,.7);
     c.setNbits(8);
@@ -129,6 +128,13 @@ void SystemTest::testEndingString() {
     system.evolveWithReservoir(&res);
     
     CPPUNIT_ASSERT_EQUAL(system.endingBitString, endString);
+}
+
+void SystemTest::testReuseSystem() {
+    System system(defaultConstants(),defaultStartingString());
+    system.bitPosition = 1;
+    
+    CPPUNIT_ASSERT_THROW(system.evolveWithReservoir(NULL),InconsistentSystemState);
 }
 
 void ConstantsTest::testHighTemperature() {

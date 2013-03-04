@@ -140,7 +140,6 @@ Measurement::~Measurement() {
         delete [] p;
         delete [] histogram;
     }
-    
     if (ownsRNG) {
         gsl_rng_free(rng);
     }

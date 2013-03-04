@@ -21,6 +21,10 @@ System::System(Constants constants, int startingBitString) {
 }
 
 void System::evolveWithReservoir(Reservoir *reservoir) {
+    if (this->bitPosition!=0) {
+        throw InconsistentSystemState();
+    }
+    
     unsigned int& startingBitString = this->startingBitString;
     unsigned int& endingBitString = this->endingBitString;
     int& bitPosition = this->bitPosition;
