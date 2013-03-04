@@ -12,6 +12,7 @@
 #include <iostream>
 #include "System.h"
 #include "InstrumentFactories.h"
+#include "Utilities.h"
 
 struct MeasurementResult {
     Constants constants;
@@ -27,16 +28,14 @@ class Measurement {
     SystemFactory *sfactory;
     bool complete;
     MeasurementResult result;
+    bool ownsRNG;
+    gsl_rng *rng;
 protected:
     int *histogram;
     long double *p;
     long double *p_prime;
 public:
-    Measurement(Constants _c, int _it, ReservoirFactory *_rf, SystemFactory *_sf)
-            : constants(_c), iterations(_it), rfactory(_rf), sfactory(_sf),
-                complete(false) {
-        result.constants = constants;
-    }
+    Measurement(Constants _c, int _it, ReservoirFactory *_rf, SystemFactory *_sf, gsl_rng *RNG = NULL);
     MeasurementResult &getResult();
     void performMeasurement();
     ~Measurement();

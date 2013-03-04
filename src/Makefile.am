@@ -11,7 +11,7 @@ noinst_HEADERS = Stochastic.h \
 bin_PROGRAMS = ${top_builddir}/jdemon
 
 __top_builddir__jdemon_CXXFLAGS = $(GCOV_CFLAGS)\
-		  $(OPENMP_CXXFLAGS)\
+		  $(OPENMP_CFLAGS)\
 		  $(BOOST_CXXFLAGS)\
 		  $(GSL_CXXFLAGS) 
 

@@ -57,9 +57,6 @@ void Measurement::performMeasurement() {
         std::clog<<"Warning: small tau.\n";
     }
     
-    
-    /*! Use this to change the length of the tape. */
-    
     int first_pass_iterations = iterations;
     const int &nbits = constants.getNbits();
     assert(nbits>0);
@@ -72,13 +69,12 @@ void Measurement::performMeasurement() {
     p_prime = new long double[1<<nbits];
     
     long double sum = 0;
-    long double &maxJ = result.maxJ;
+    long double max = 0;
     
-    gsl_rng *localRNG = GSLRandomNumberGenerator();
-    Reservoir *reservoir = rfactory->create(localRNG,constants);
+    Reservoir *reservoir = rfactory->create(rng,constants);
     
     for (int k=0; k<first_pass_iterations; ++k) {
-        System *currentSystem = sfactory->create(localRNG, constants);
+        System *currentSystem = sfactory->create(rng, constants);
         currentSystem->evolveWithReservoir(reservoir);
         histogram[currentSystem->endingBitString]++;
         delete currentSystem;
@@ -92,23 +88,45 @@ void Measurement::performMeasurement() {
     }
     
     for(int k=0; k<iterations; k++) {
-        System *currentSystem = sfactory->create(localRNG, constants);
+        System *currentSystem = sfactory->create(rng, constants);
         currentSystem->evolveWithReservoir(reservoir);
         long double J = calculateJ(*currentSystem, p, p_prime);
-        maxJ = J > maxJ ? J : maxJ;
+        max = J > max ? J : max;
         sum += J;
         delete currentSystem;
         reservoir->reset();
     }
     
     result.averageJ = sum/iterations;
+    result.maxJ = max;
+    
+    assert(result.maxJ!=NAN);
     
     delete reservoir;
-    gsl_rng_free(localRNG);
+}
+
+Measurement::Measurement(Constants _c, int _it, ReservoirFactory *_rf,
+            SystemFactory *_sf, gsl_rng *RNG) {
+    constants = _c;
+    iterations = _it;
+    rfactory = _rf;
+    sfactory = _sf;
+    complete = false;
+    if (!RNG) {
+        ownsRNG = true;
+        rng = GSLRandomNumberGenerator();
+    } else {
+        rng = RNG;
+        ownsRNG = false;
+    }
+    result.constants = constants;
 }
 
 Measurement::~Measurement() {
     delete [] p_prime;
     delete [] p;
     delete [] histogram;
+    if (ownsRNG) {
+        gsl_rng_free(rng);
+    }
 }

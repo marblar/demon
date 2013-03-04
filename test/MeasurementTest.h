@@ -10,6 +10,7 @@
 #define __jdemon__MeasurementTest__
 
 #include <cppunit/extensions/HelperMacros.h>
+#include <gsl/gsl_rng.h>
 
 class MeasurementTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(MeasurementTest);
@@ -18,6 +19,7 @@ class MeasurementTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(testTrivialCalculateJ);
     CPPUNIT_TEST(testResultsConstants);
     CPPUNIT_TEST_SUITE_END();
+    gsl_rng *rng;
 public:
     void setUp();
     void tearDown();
