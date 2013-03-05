@@ -20,7 +20,7 @@ class IsingBenchmark : public ReservoirBenchmark
 public:
     virtual int iterations() 
     {
-        return 1000;
+        return 100;
     }
     
     virtual ReservoirFactory *createReservoirFactory() 

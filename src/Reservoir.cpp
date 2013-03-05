@@ -59,5 +59,6 @@ SystemState *randomState() {
 }
 
 Reservoir::Reservoir(Constants c) : constants(c) {
+    setupStates();
     this->currentState = randomState();
 }

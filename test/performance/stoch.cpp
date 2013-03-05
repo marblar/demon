@@ -21,7 +21,7 @@ class StochBenchmark : public ReservoirBenchmark
 public:
     virtual int iterations()
     {
-        return 1000;   
+        return 10000;
     }
     virtual ReservoirFactory *createReservoirFactory()
     {
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
     
     // Change the default outputter to a compiler error format
     // outputter
-    std::ofstream xmlFileOut("ising.stats");
+    std::ofstream xmlFileOut("stoch.stats");
     CppUnit::XmlOutputter xmlOut(&result, xmlFileOut);
     xmlOut.addHook(&xmlHook);
     xmlOut.write();

@@ -23,7 +23,7 @@ void ReservoirBenchmark::performMeasurement() {
     ReservoirFactory *rFactory = createReservoirFactory();   
     SystemFactory *sFactory = new BinomialSystemFactory;
     Constants constants;
-    int dimension = 20;
+    int dimension = 10;
     double tau = 1;
     
     CPPUNIT_ASSERT(rFactory);
