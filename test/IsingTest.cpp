@@ -93,3 +93,20 @@ void IsingReservoirTest::testEmptyTransitionRule() {
     Reservoir::InteractionResult result;
     CPPUNIT_ASSERT_THROW(reservoir.wheelStep(result), EmptyTransitionRuleError);
 }
+
+void IsingReservoirTest::testDeadEndTransitionRule() {
+    TransitionRule deadEndRule;
+    TransitionTable emptyTable;
+    for (char k=0; k<8; k++) {
+        emptyTable[k] = NULL;
+    }
+    
+    Reservoir::InteractionResult result;    
+    StateSet states = getValidStates();
+    
+    for (StateSet::iterator it = states.begin(); it!=states.end(); ++it) {
+        deadEndRule[*it] = emptyTable;
+    }
+    IsingReservoir reservoir(rng,defaultConstants(),5,5,deadEndRule);
+    CPPUNIT_ASSERT_THROW(reservoir.wheelStep(result),TransitionDeadEndError);
+}

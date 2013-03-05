@@ -104,16 +104,19 @@ void IsingReservoir::clusterMethod() {
                 neighborCell^=1;
             }
         }
-        assert(workStack.size()<SQUARED(isingSide));
-    }
+        assert(workStack.size()<SQUARED((unsigned)isingSide));
+    };
     
 }
 
 void IsingReservoir::wheelStep(InteractionResult &result) {
     char &s1 = getCell(interactionCells.first);
     char &s2 = getCell(interactionCells.second);
+    char s3 = parity & 1;
+    int inputState = s(s1, s2, s3);
     
-    int inputState = s(s1,s2,parity % 2);
+    CheckTransitionRuleError(inputState<8 && inputState>=0,
+                             InvalidInputStateError);
     
     SystemState *lastState = currentState;
     
@@ -123,9 +126,6 @@ void IsingReservoir::wheelStep(InteractionResult &result) {
     TransitionTable currentTable = transitions[currentState];
     SystemState *nextState = currentTable[inputState];
     
-    CheckTransitionRuleError(inputState<8 && inputState>=0 &&
-                                "Invalid input state.",
-                             InvalidInputStateError);
     CheckTransitionRuleError(currentTable.size() == 8 &&
                                 "Transition table size should be 8",
                              InvalidTableSizeError);
@@ -138,7 +138,7 @@ void IsingReservoir::wheelStep(InteractionResult &result) {
     //The abstraction is leaking, but this saves a very complicated table.
     if (oldBit != newBit) {
         int initialEnergy = getEnergy(interactionCells.first) \
-                                + getEnergy(interactionCells.second) - s1 ^ s2;
+                                + getEnergy(interactionCells.second) - (s1 ^ s2);
         
         if (newBit>oldBit) {
             s1 = 0;
@@ -149,7 +149,7 @@ void IsingReservoir::wheelStep(InteractionResult &result) {
         }
         
         int finalEnergy = getEnergy(interactionCells.first) \
-                                + getEnergy(interactionCells.second) - s1 ^ s2;
+                                + getEnergy(interactionCells.second) - (s1 ^ s2);
         
         result.work += initialEnergy - finalEnergy;
     }
@@ -252,6 +252,11 @@ TransitionRule defaultTransitionRule() {
     //Source: http://imgur.com/FF5TBQh
     
     TransitionRule transitions;
+    
+    #define TTable(XX) \
+        TransitionTable XX;\
+        for (char k=0; k<8; k++) \
+            XX[k]=&State##XX;
     
     TTable(A1);
     A1[s(0,0,1)] = &StateB1;

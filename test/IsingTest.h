@@ -32,6 +32,7 @@ class IsingReservoirTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(IsingReservoirTest);
     CPPUNIT_TEST(testWheelStep);
     CPPUNIT_TEST(testEmptyTransitionRule);
+    CPPUNIT_TEST(testDeadEndTransitionRule);
     CPPUNIT_TEST_SUITE_END();
     gsl_rng *rng;
 public:
@@ -39,6 +40,7 @@ public:
     void tearDown();
     void testWheelStep();
     void testEmptyTransitionRule();
+    void testDeadEndTransitionRule();
 };
 
 

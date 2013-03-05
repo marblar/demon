@@ -75,7 +75,7 @@ public:
 
 
 #define CheckTransitionRuleError(expr,class) \
-    if (!expr) { throw class(#expr); }
+    if (!(expr)) { throw class(#expr); }
 
 class InvalidTransitionRuleError : public std::exception {
     const char *assertionText;
@@ -101,11 +101,6 @@ InvalidTransitionSubclass(TransitionDeadEndError);
 InvalidTransitionSubclass(InvalidTableSizeError);
 
 #undef InvalidTransitionSubclass
-
-#define TTable(XX) \
-    TransitionTable XX;\
-    for (char k=0; k<8; k++) \
-        XX[k]=&State##XX;
 
 void isingEnergyDistribution(int d, int clusters);
 

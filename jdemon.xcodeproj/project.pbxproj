@@ -491,6 +491,7 @@
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = $HOME/macports/include;
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = $HOME/macports/include;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -525,6 +526,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = $HOME/macports/include;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};
