@@ -117,14 +117,20 @@ void IsingReservoir::wheelStep(InteractionResult &result) {
     
     SystemState *lastState = currentState;
     
-    CheckTransitionRuleError(transitions.count(currentState));
+    CheckTransitionRuleError(transitions.count(currentState),
+                             EmptyTransitionRuleError);
     
     TransitionTable currentTable = transitions[currentState];
     SystemState *nextState = currentTable[inputState];
     
-    CheckTransitionRuleError(inputState<8 && inputState>=0 && "Invalid input state.");
-    CheckTransitionRuleError(currentTable.size() == 8 && "Transition table size should be 8");
-    CheckTransitionRuleError(nextState && "nextState must not be null.");
+    CheckTransitionRuleError(inputState<8 && inputState>=0 &&
+                                "Invalid input state.",
+                             InvalidInputStateError);
+    CheckTransitionRuleError(currentTable.size() == 8 &&
+                                "Transition table size should be 8",
+                             InvalidTableSizeError);
+    CheckTransitionRuleError(nextState && "nextState must not be null.",
+                             TransitionDeadEndError);
     
     const int &oldBit = nextState->bit;
     const int &newBit = currentState->bit;
@@ -227,9 +233,10 @@ IsingReservoir::~IsingReservoir() {
     delete [] cells;
 }
 
-IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS, int cls) :
+IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants,
+                               int IS, int cls, TransitionRule rule) :
         Reservoir(constants), isingSide(IS), RNG(RNG_), clusters(cls) {
-    setupStateTable();
+    transitions = rule;
     cells = new char *[IS];
     for (int k=0; k<IS; k++) {
         cells[k]=new char[IS];
@@ -238,10 +245,6 @@ IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS, int c
     }
     this->initializeCellsWithRNG(RNG);
     currentState = randomState();
-}
-
-void IsingReservoir::setupStateTable() {
-    transitions = defaultTransitionRule();
 }
 
 

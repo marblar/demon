@@ -86,3 +86,10 @@ void IsingReservoirTest::testWheelStep() {
     Reservoir::InteractionResult result;
     CPPUNIT_ASSERT_NO_THROW(reservoir.wheelStep(result));
 }
+
+void IsingReservoirTest::testEmptyTransitionRule() {
+    TransitionRule emptyRule;
+    IsingReservoir reservoir(rng,defaultConstants(),5,5,emptyRule);
+    Reservoir::InteractionResult result;
+    CPPUNIT_ASSERT_THROW(reservoir.wheelStep(result), EmptyTransitionRuleError);
+}

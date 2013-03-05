@@ -44,7 +44,6 @@ protected:
     char &getCell(Coordinate x);
     int countHigh(Neighbors);
     int countHighNeighbors(Coordinate);
-    void setupStateTable();
     int getEnergy(Coordinate);
 
 public:
@@ -53,7 +52,8 @@ public:
     void clusterMethod();
     int totalEnergy();
     IsingReservoir(gsl_rng *RNG, Constants constants,
-                   int IsingSide = 100, int clusters = 20);
+                   int IsingSide = 20, int clusters = 20,
+                   TransitionRule rule = defaultTransitionRule());
     ~IsingReservoir();
     
     //The default is {IsingSide/2,IsingSide/2} and the cell to its right.
@@ -74,8 +74,8 @@ public:
 };
 
 
-#define CheckTransitionRuleError(expr) \
-    if (expr) { throw InvalidTransitionRuleError(#expr); }
+#define CheckTransitionRuleError(expr,class) \
+    if (expr) { throw class(#expr); }
 
 class InvalidTransitionRuleError : public std::exception {
     const char *assertionText;
@@ -88,6 +88,17 @@ public:
         assertionText = text;
     }
 };
+
+#define InvalidTransitionSubclass(ClassName) \
+    class ClassName : public InvalidTransitionRuleError { \
+    public: \
+        ClassName(const char *text) : InvalidTransitionRuleError(text) {}\
+    };
+
+InvalidTransitionSubclass(EmptyTransitionRuleError);
+InvalidTransitionSubclass(InvalidInputStateError);
+InvalidTransitionSubclass(TransitionDeadEndError);
+InvalidTransitionSubclass(InvalidTableSizeError);
 
 void isingEnergyDistribution(int d, int clusters);
 
