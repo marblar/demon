@@ -249,13 +249,10 @@ IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants,
 
 
 TransitionRule defaultTransitionRule() {
-    //TODO: Custom states. This is goofy.
     //Source: http://imgur.com/FF5TBQh
+    
     TransitionRule transitions;
-    #define TTable(XX) \
-    	TransitionTable XX;\
-        for (char k=0; k<8; k++) \
-            XX[k]=&State##XX;
+    
     TTable(A1);
     A1[s(0,0,1)] = &StateB1;
     A1[s(1,0,1)] = &StateB1;
