@@ -8,11 +8,11 @@
 #define SQUARED(x) x*x
 
 namespace ising {
-    inline int s(char x,char y,char z) {
+    int s(char x,char y,char z) {
         return (x<<2) + (y<<1) + (z);
     }
     
-    inline int boundsCheck(int x, const int max) {
+    int boundsCheck(int x, const int max) {
         if (x < 0) {
             return max + x;
         }
@@ -109,7 +109,7 @@ void IsingReservoir::clusterMethod() {
     
 }
 
-inline void IsingReservoir::wheelStep(InteractionResult &result) {
+void IsingReservoir::wheelStep(InteractionResult &result) {
     char &s1 = getCell(interactionCells.first);
     char &s2 = getCell(interactionCells.second);
     
@@ -117,14 +117,14 @@ inline void IsingReservoir::wheelStep(InteractionResult &result) {
     
     SystemState *lastState = currentState;
     
-    assert(transitions.count(currentState));
+    CheckTransitionRuleError(transitions.count(currentState));
     
     TransitionTable currentTable = transitions[currentState];
     SystemState *nextState = currentTable[inputState];
     
-    assert(inputState<8 && inputState>=0 && "Invalid input state.");
-    assert(currentTable.size() == 8 && "Transition table size should be 8");
-    assert(nextState && "nextState must not be null.");
+    CheckTransitionRuleError(inputState<8 && inputState>=0 && "Invalid input state.");
+    CheckTransitionRuleError(currentTable.size() == 8 && "Transition table size should be 8");
+    CheckTransitionRuleError(nextState && "nextState must not be null.");
     
     const int &oldBit = nextState->bit;
     const int &newBit = currentState->bit;
@@ -151,7 +151,7 @@ inline void IsingReservoir::wheelStep(InteractionResult &result) {
     currentState = nextState;
 }
 
-inline int IsingReservoir::getEnergy(Coordinate c) {
+int IsingReservoir::getEnergy(Coordinate c) {
     int highNeighbors = countHighNeighbors(c);
     
     if (getCell(c) == 1) {
@@ -161,7 +161,7 @@ inline int IsingReservoir::getEnergy(Coordinate c) {
     }
 }
 
-inline int IsingReservoir::countHighNeighbors(Coordinate c) {
+int IsingReservoir::countHighNeighbors(Coordinate c) {
     Neighbors neighbors = getNeighbors(c);
     return countHigh(neighbors);
 }
@@ -170,12 +170,12 @@ void IsingReservoir::initializeCellsWithRNG(gsl_rng *RNG, int N) {
     reset();
 }
 
-inline char &IsingReservoir::getCell(const Coordinate c) {
+char &IsingReservoir::getCell(const Coordinate c) {
     //FIXME: Bounds check?
     return cells[c.y][c.x];
 }
 
-inline int IsingReservoir::countHigh(Neighbors list) {
+int IsingReservoir::countHigh(Neighbors list) {
     int highCount = 0;
     for (int k=0; k<4; k++) {
         highCount+=getCell(list.coordinates[k]);
@@ -240,12 +240,12 @@ IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS, int c
     currentState = randomState();
 }
 
-inline void IsingReservoir::setupStateTable() {
+void IsingReservoir::setupStateTable() {
     transitions = defaultTransitionRule();
 }
 
 
-inline TransitionRule defaultTransitionRule() {
+TransitionRule defaultTransitionRule() {
     //TODO: Custom states. This is goofy.
     //Source: http://imgur.com/FF5TBQh
     TransitionRule transitions;

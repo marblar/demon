@@ -13,6 +13,15 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TransitionRuleTest);
 
+static Constants defaultConstants() {
+    Constants c;
+    c.setDelta(.5);
+    c.setEpsilon(0);
+    c.setTau(1);
+    c.setNbits(8);
+    return c;
+}
+
 void TransitionRuleTest::setUp() {
     rule = defaultTransitionRule();
     validStates = getValidStates();
@@ -59,4 +68,20 @@ void TransitionRuleTest::testValidTargetStates() {
             CPPUNIT_ASSERT(validStates.count(targetState));
         }
     }
+}
+
+void IsingReservoirTest::setUp() {
+    rng = GSLRandomNumberGenerator();
+    gsl_rng_set(rng, 0);
+}
+
+void IsingReservoirTest::tearDown() {
+    gsl_rng_free(rng);
+}
+
+
+void IsingReservoirTest::testWheelStep() {
+    IsingReservoir reservoir(rng,defaultConstants(),5,5);
+    Reservoir::InteractionResult result;
+    CPPUNIT_ASSERT_NO_THROW(reservoir.wheelStep(result));
 }

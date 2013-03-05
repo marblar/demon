@@ -15,8 +15,7 @@ __top_builddir__jdemon_CXXFLAGS = $(GCOV_CFLAGS)\
 		  $(BOOST_CXXFLAGS)\
 		  $(GSL_CFLAGS) 
 
-__top_builddir__jdemon_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
-		 $(GSL_LDFLAGS)
+__top_builddir__jdemon_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) 
 
 __top_builddir__jdemon_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS) \
 	       $(GSL_LIBS) \

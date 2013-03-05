@@ -28,4 +28,18 @@ public:
     void testValidTargetStates();
 };
 
+class IsingReservoirTest : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(IsingReservoirTest);
+    CPPUNIT_TEST(testWheelStep);
+    CPPUNIT_TEST_SUITE_END();
+    gsl_rng *rng;
+public:
+    void setUp();
+    void tearDown();
+    void testWheelStep();
+};
+
+
+
+
 #endif /* defined(__jdemon__IsingTest__) */

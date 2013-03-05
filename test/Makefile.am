@@ -20,9 +20,7 @@ demoncore_CXXFLAGS = -I${top_srcdir}/src \
 			$(GCOV_CFLAGS) \
 			$(GSL_CFLAGS)
 
-demoncore_LDFLAGS = $(CPPUNIT_LIBS) \
-			${top_builddir}/src/libdemon.la
-
-demoncore_LIBS = $(GCOV_LIBS) \
+demoncore_LDADD = $(CPPUNIT_LIBS) \
+			${top_builddir}/src/libdemon.la \
 			$(CPPUNIT_LIBS) \
 			$(GSL_LIBS)

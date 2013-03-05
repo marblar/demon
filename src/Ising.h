@@ -19,7 +19,7 @@ Coordinate makeCoordinate(int x, int y);
 typedef std::map<char,SystemState *> TransitionTable;
 typedef std::map<SystemState *, TransitionTable> TransitionRule;
 
-inline TransitionRule defaultTransitionRule();
+TransitionRule defaultTransitionRule();
 
 class IsingReservoir : public Reservoir {
 public:
@@ -71,6 +71,22 @@ public:
     int clusters;
     virtual void reset();
     gsl_rng *RNG;
+};
+
+
+#define CheckTransitionRuleError(expr) \
+    if (expr) { throw InvalidTransitionRuleError(#expr); }
+
+class InvalidTransitionRuleError : public std::exception {
+    const char *assertionText;
+    virtual const char* what() const throw()
+    {
+        return assertionText;
+    }
+public:
+    InvalidTransitionRuleError(const char *text) {
+        assertionText = text;
+    }
 };
 
 void isingEnergyDistribution(int d, int clusters);
