@@ -236,6 +236,7 @@ IsingReservoir::~IsingReservoir() {
 IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants,
                                int IS, int cls, TransitionRule rule) :
         Reservoir(constants), isingSide(IS), RNG(RNG_), clusters(cls) {
+    parity = 0;
     transitions = rule;
     cells = new char *[IS];
     for (int k=0; k<IS; k++) {
