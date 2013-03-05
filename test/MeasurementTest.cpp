@@ -70,8 +70,8 @@ void MeasurementTest::testTrivialCalculateJ() {
     system.startingBitString = 1;
     system.endingBitString = 1;
     
-    delete p;
-    delete p_prime;
+    delete [] p;
+    delete [] p_prime;
     
     double J = calculateJ(system, p, p_prime);
     CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Trivial J", 1, J, .001);
