@@ -19,11 +19,13 @@ class TransitionRuleTest : public CppUnit::TestFixture {
     CPPUNIT_TEST(testTableDeadEnds);
     CPPUNIT_TEST_SUITE_END();
     TransitionRule rule;
+    std::set<SystemState *> validStates;
 public:
     void setUp();
     void tearDown();
     void testTableSize();
     void testTableDeadEnds();
+    void testValidTargetStates();
 };
 
 #endif /* defined(__jdemon__IsingTest__) */

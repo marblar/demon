@@ -20,7 +20,7 @@ AC_DEFUN([ML_PERFORMANCE_TEST],
 
     # Force the user to turn off optimization
     AC_MSG_NOTICE([Performance tests enabled, adding "-g -O3" to CFLAGS])
-    AS_COMPILER_FLAGS(CXXFLAGS, "-g -O3")
+    AS_COMPILER_FLAGS(CXXFLAGS, "-g -O0")
   fi
   AM_CONDITIONAL(PERFORMANCE_TESTS_ENABLED, test x$enable_performance_tests = xyes)
 ])

@@ -8,12 +8,16 @@
 
 #include "IsingTest.h"
 #include "Ising.h"
+#include "Utilities.h"
+#include <set>
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TransitionRuleTest);
 
 void TransitionRuleTest::setUp() {
     rule = defaultTransitionRule();
+    validStates = getValidStates();
 }
+
 void TransitionRuleTest::tearDown() {
     
 }
@@ -36,6 +40,23 @@ void TransitionRuleTest::testTableDeadEnds() {
         for (TableIterator currentTableIterator = currentRule.begin();\
              currentTableIterator != currentRule.end(); ++currentTableIterator) {
             CPPUNIT_ASSERT(currentTableIterator->second);
+        }
+    }
+}
+
+void TransitionRuleTest::testValidTargetStates() {
+    typedef TransitionRule::iterator RuleIterator;
+    typedef TransitionTable::iterator TableIterator;
+    
+    for (RuleIterator currentRuleIterator = rule.begin(); \
+         currentRuleIterator!=rule.end(); ++currentRuleIterator) {
+        
+        TransitionTable currentRule = currentRuleIterator->second;
+        
+        for (TableIterator currentTableIterator = currentRule.begin();\
+             currentTableIterator != currentRule.end(); ++currentTableIterator) {
+            SystemState *targetState = currentTableIterator->second;
+            CPPUNIT_ASSERT(validStates.count(targetState));
         }
     }
 }

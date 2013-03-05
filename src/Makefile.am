@@ -13,7 +13,7 @@ bin_PROGRAMS = ${top_builddir}/jdemon
 __top_builddir__jdemon_CXXFLAGS = $(GCOV_CFLAGS)\
 		  $(OPENMP_CFLAGS)\
 		  $(BOOST_CXXFLAGS)\
-		  $(GSL_CXXFLAGS) 
+		  $(GSL_CFLAGS) 
 
 __top_builddir__jdemon_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
 		 $(GSL_LDFLAGS)
@@ -33,7 +33,8 @@ libdemon_la_SOURCES = Stochastic.cpp \
 			InstrumentFactories.cpp \
 			Measurement.cpp
 
-libdemon_la_CXXFLAGS = $(GCOV_CFLAGS)
+libdemon_la_CXXFLAGS = $(GCOV_CFLAGS) \
+			$(GSL_CFLAGS)
 
 libdemon_la_LIBADD = $(GSL_LIBS) \
 		     $(GCOV_LIBS)

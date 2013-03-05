@@ -17,10 +17,12 @@ demoncore_SOURCES = core.cpp \
 
 demoncore_CXXFLAGS = -I${top_srcdir}/src \
 			$(CPPUNIT_CFLAGS) \
-			$(GCOV_CFLAGS)
+			$(GCOV_CFLAGS) \
+			$(GSL_CFLAGS)
 
 demoncore_LDFLAGS = $(CPPUNIT_LIBS) \
 			${top_builddir}/src/libdemon.la
 
 demoncore_LIBS = $(GCOV_LIBS) \
-			$(CPPUNIT_LIBS)
+			$(CPPUNIT_LIBS) \
+			$(GSL_LIBS)

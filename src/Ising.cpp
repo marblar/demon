@@ -68,7 +68,6 @@ void IsingReservoir::isingStep(InteractionResult &result) {
 }
 
 void IsingReservoir::reset() {
-    currentState = randomState();
     for (int k = 0; k<clusters; k++) {
         clusterMethod();
     }
@@ -117,6 +116,9 @@ inline void IsingReservoir::wheelStep(InteractionResult &result) {
     int inputState = s(s1,s2,parity % 2);
     
     SystemState *lastState = currentState;
+    
+    assert(transitions.count(currentState));
+    
     TransitionTable currentTable = transitions[currentState];
     SystemState *nextState = currentTable[inputState];
     
@@ -235,6 +237,7 @@ IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS, int c
         std::fill(cells[k], cells[k]+IS, 0);
     }
     this->initializeCellsWithRNG(RNG);
+    currentState = randomState();
 }
 
 inline void IsingReservoir::setupStateTable() {

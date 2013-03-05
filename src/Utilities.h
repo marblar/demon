@@ -11,7 +11,12 @@
 
 #include <iostream>
 #include <gsl/gsl_rng.h>
-#include <map>
+#include <set>
+#include "Reservoir.h"
+
+typedef std::set<SystemState *> StateSet;
+
+StateSet getValidStates();
 
 unsigned int randomShortIntWithBitDistribution(double ratioOfOnesToZeroes, int nbits, gsl_rng* generator);
 int bitCount(unsigned int number, int nbits);

@@ -40,3 +40,15 @@ gsl_rng *GSLRandomNumberGenerator() {
     
     return gen;
 }
+
+StateSet getValidStates() {
+    StateSet states;
+    #define StateInsert(XX) states.insert(&State##XX)
+    StateInsert(A1);
+    StateInsert(B1);
+    StateInsert(C1);
+    StateInsert(A0);
+    StateInsert(B0);
+    StateInsert(C0);
+    return states;
+}
