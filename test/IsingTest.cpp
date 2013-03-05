@@ -12,6 +12,7 @@
 #include <set>
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TransitionRuleTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(IsingReservoirTest);
 
 static Constants defaultConstants() {
     Constants c;
