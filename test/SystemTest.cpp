@@ -132,9 +132,10 @@ void SystemTest::testEndingString() {
 
 void SystemTest::testReuseSystem() {
     System system(defaultConstants(),defaultStartingString());
+    Reservoir *res = new MockReservoirFlipDown(defaultConstants());
     system.bitPosition = 1;
     
-    CPPUNIT_ASSERT_THROW(system.evolveWithReservoir(NULL),InconsistentSystemState);
+    CPPUNIT_ASSERT_THROW(system.evolveWithReservoir(res),InconsistentSystemState);
 }
 
 void ConstantsTest::testHighTemperature() {
