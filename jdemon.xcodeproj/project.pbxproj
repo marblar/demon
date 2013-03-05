@@ -13,6 +13,8 @@
 		4D28A4B016D66E2B0019141B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
 		4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438516D1443E00F8B816 /* Reservoir.cpp */; };
 		4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
+		4D4F4DD816E662CA00B7F5A4 /* StochTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4F4DD616E662CA00B7F5A4 /* StochTest.cpp */; };
+		4D4F4DD916E662CA00B7F5A4 /* StochTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D4F4DD716E662CA00B7F5A4 /* StochTest.h */; };
 		4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */; };
 		4D8B4B3F16E3FFD0008ECF75 /* InstrumentFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */; };
 		4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6D16E081B4002ADE1E /* SystemTest.cpp */; };
@@ -57,6 +59,8 @@
 		4D46888916B5C549009143D0 /* Stochastic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stochastic.cpp; sourceTree = "<group>"; };
 		4D46888A16B5C549009143D0 /* Stochastic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Stochastic.h; sourceTree = "<group>"; };
 		4D46888C16B5C58C009143D0 /* Reservoir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reservoir.h; sourceTree = "<group>"; };
+		4D4F4DD616E662CA00B7F5A4 /* StochTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StochTest.cpp; sourceTree = "<group>"; };
+		4D4F4DD716E662CA00B7F5A4 /* StochTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StochTest.h; sourceTree = "<group>"; };
 		4D611CFF16406A2F008FB029 /* System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = System.cpp; sourceTree = "<group>"; };
 		4D611D0016406A2F008FB029 /* System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = System.h; sourceTree = "<group>"; };
 		4D611D0316406ADE008FB029 /* Utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
@@ -99,6 +103,8 @@
 		4D917D6716E0807B002ADE1E /* test */ = {
 			isa = PBXGroup;
 			children = (
+				4D4F4DD616E662CA00B7F5A4 /* StochTest.cpp */,
+				4D4F4DD716E662CA00B7F5A4 /* StochTest.h */,
 				4DA3762C16E53B8300599AA1 /* IsingTest.h */,
 				4DA8D48916E3A9ED00D659CF /* MeasurementTest.h */,
 				4D917D6E16E081B4002ADE1E /* SystemTest.h */,
@@ -197,6 +203,7 @@
 				4DA8D48B16E3A9ED00D659CF /* MeasurementTest.h in Headers */,
 				4D8B4B3F16E3FFD0008ECF75 /* InstrumentFactories.h in Headers */,
 				4DA3763216E54C2A00599AA1 /* ReservoirBenchmark.h in Headers */,
+				4D4F4DD916E662CA00B7F5A4 /* StochTest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +310,7 @@
 				4DA3762D16E53CF700599AA1 /* IsingTest.cpp in Sources */,
 				4DA3763116E54C2A00599AA1 /* ReservoirBenchmark.cpp in Sources */,
 				4DA3763316E54C2A00599AA1 /* stoch.cpp in Sources */,
+				4D4F4DD816E662CA00B7F5A4 /* StochTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
