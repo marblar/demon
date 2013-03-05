@@ -9,7 +9,7 @@
 
 namespace ising {
     int s(char x,char y,char z) {
-        return (x<<2) + (y<<1) + (z);
+        return (x<<2) + (y<<1) + (z & 1);
     }
     
     int boundsCheck(int x, const int max) {
@@ -112,7 +112,7 @@ void IsingReservoir::clusterMethod() {
 void IsingReservoir::wheelStep(InteractionResult &result) {
     char &s1 = getCell(interactionCells.first);
     char &s2 = getCell(interactionCells.second);
-    char s3 = parity & 1;
+    char s3 = parity;
     int inputState = s(s1, s2, s3);
     
     CheckTransitionRuleError(inputState<8 && inputState>=0,

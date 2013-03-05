@@ -43,6 +43,16 @@ public:
     void testDeadEndTransitionRule();
 };
 
+class IsingUtilityTest : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(IsingUtilityTest);
+    CPPUNIT_TEST(testNonbinaryParity);
+    CPPUNIT_TEST_SUITE_END();
+public:
+    void testNonbinaryParity();
+    void setUp();
+    void tearDown();
+};
+
 
 
 

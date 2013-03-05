@@ -110,3 +110,16 @@ void IsingReservoirTest::testDeadEndTransitionRule() {
     IsingReservoir reservoir(rng,defaultConstants(),5,5,deadEndRule);
     CPPUNIT_ASSERT_THROW(reservoir.wheelStep(result),TransitionDeadEndError);
 }
+
+void IsingUtilityTest::testNonbinaryParity() {
+    int inputState = ising::s(0,0,157);
+    CPPUNIT_ASSERT(inputState == 1);
+}
+
+void IsingUtilityTest::setUp() {
+    
+}
+
+void IsingUtilityTest::tearDown() {
+    
+}

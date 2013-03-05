@@ -19,6 +19,12 @@ Coordinate makeCoordinate(int x, int y);
 typedef std::map<char,SystemState *> TransitionTable;
 typedef std::map<SystemState *, TransitionTable> TransitionRule;
 
+
+namespace ising {
+    int s(char x,char y,char z);
+    int boundsCheck(int x, const int max);
+}
+
 TransitionRule defaultTransitionRule();
 
 class IsingReservoir : public Reservoir {
