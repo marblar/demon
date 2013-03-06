@@ -19,21 +19,19 @@ AM_PATH_CPPUNIT(1.12.1)
 DEMON_ENABLE_GCOV
 LT_INIT
 
-AX_OPENMP
-AX_MPI
-
 AC_CONFIG_MACRO_DIR([build-aux/m4])
-ACLOCAL_AMFLAGS= -I build-aux/m4
 
 # Check for Boost
-BOOST_REQUIRE([1.40])
-BOOST_PROGRAM_OPTIONS
+AX_BOOST_BASE([1.41])
+AX_BOOST_PROGRAM_OPTIONS
 # TODO: Optional libraries?
 # BOOST_FIND_LIB(timer,,timer/timer.hpp,,AC_DEFINE(
 # BOOST_SYSTEM
 
 # Check for GSL
 AX_PATH_GSL([1.13])
+AX_OPENMP
+AX_MPI
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
