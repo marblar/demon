@@ -2,6 +2,6 @@
 autoreconf --install
 mkdir -p build
 cd build
-../configure
+../configure CXX=clang++
 make distcheck
 make dist

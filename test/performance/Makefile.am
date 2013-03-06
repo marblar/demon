@@ -35,6 +35,4 @@ stoch_SOURCES = stoch.cpp \
 			$(SOURCES_PERFORMANCE)
 
 clean-local:
-	if [ -f *.stats ]; then
-		rm *.stats
-	fi
+	rm -f *.stats

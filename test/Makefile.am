@@ -27,6 +27,4 @@ demoncore_LDADD = $(CPPUNIT_LIBS) \
 			$(GSL_LIBS)
 
 clean-local:
-	if [ -f *.xml]; then 
-		rm *.xml
-	fi
+	rm -f *.xml
