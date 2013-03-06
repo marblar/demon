@@ -2,5 +2,6 @@
 autoreconf --install
 mkdir -p build
 cd build
-../configure --enable-performance-tests --disable-openmp CXX=clang++
+EXPORT OMPI_CXX=clang++
+../configure --enable-performance-tests --with-mpi CXX=clang++
 make check

@@ -1,7 +1,7 @@
-#!/bin/bash
 autoreconf --install
 mkdir -p build
 cd build
-../configure CXX=clang++
+export OMPI_CXX=clang++
+../configure --with-mpi
 make distcheck
 make dist
