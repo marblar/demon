@@ -111,6 +111,25 @@ void IsingReservoirTest::testDeadEndTransitionRule() {
     CPPUNIT_ASSERT_THROW(reservoir.wheelStep(result),TransitionDeadEndError);
 }
 
+void IsingReservoirTest::testTooSmallTransitionTable() {
+    TransitionRule invalidRule;
+    TransitionTable tooSmallTable;
+    
+    for (char k=0; k<3; k++) {
+        tooSmallTable[k] = NULL;
+    }
+    
+    StateSet states = getValidStates();
+    
+    for (StateSet::iterator it = states.begin(); it!=states.end(); ++it) {
+        invalidRule[*it] = tooSmallTable;
+    }
+    
+    IsingReservoir reservoir(rng,defaultConstants(),5,5,invalidRule);
+    Reservoir::InteractionResult result;
+    CPPUNIT_ASSERT_THROW(reservoir.wheelStep(result),InvalidTableSizeError);
+}
+
 void IsingUtilityTest::testNonbinaryParity() {
     int inputState = ising::s(0,0,157);
     CPPUNIT_ASSERT(inputState == 1);

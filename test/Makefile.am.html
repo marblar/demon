@@ -1,0 +1,33 @@
+<!-- Generator: GNU source-highlight 3.1.4
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><b><font color="#0000FF">if</font></b> PERFORMANCE_TESTS_ENABLED
+<font color="#009900">PERFORMANCE_DIR =</font> performance
+endif
+
+<font color="#009900">SUBDIRS =</font> <font color="#990000">.</font> <font color="#009900">$(PERFORMANCE_DIR)</font>
+
+<font color="#009900">TESTS =</font> demoncore
+
+<font color="#009900">check_PROGRAMS =</font> <font color="#009900">$(TESTS)</font>
+
+<font color="#009900">EXTRA_HEADERS =</font> SystemTest.h MeasurementTest.h
+
+<font color="#009900">demoncore_SOURCES =</font> core.cpp <font color="#990000">\</font>
+			SystemTest.cpp <font color="#990000">\</font>
+			MeasurementTest.cpp <font color="#990000">\</font>
+			IsingTest.cpp 
+
+<font color="#009900">demoncore_CXXFLAGS =</font> -I<font color="#009900">${top_srcdir}</font>/src <font color="#990000">\</font>
+			<font color="#009900">$(CPPUNIT_CFLAGS)</font> <font color="#990000">\</font>
+			<font color="#009900">$(GCOV_CFLAGS)</font> <font color="#990000">\</font>
+			<font color="#009900">$(GSL_CFLAGS)</font>
+
+<font color="#009900">demoncore_LDFLAGS =</font> <font color="#009900">$(CPPUNIT_LIBS)</font> <font color="#990000">\</font>
+			<font color="#009900">${top_builddir}</font>/src/libdemon.la
+
+<font color="#009900">demoncore_LIBS =</font> <font color="#009900">$(GCOV_LIBS)</font> <font color="#990000">\</font>
+			<font color="#009900">$(CPPUNIT_LIBS)</font> <font color="#990000">\</font>
+			<font color="#009900">$(GSL_LIBS)</font>
+</tt></pre>
