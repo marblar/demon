@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4D28A4AC16D66E2B0019141B /* Stochastic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D46888916B5C549009143D0 /* Stochastic.cpp */; };
 		4D28A4AD16D66E2B0019141B /* Ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438216D143C400F8B816 /* Ising.cpp */; };
-		4D28A4AE16D66E2B0019141B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9C2AFF160524A9001FA974 /* main.cpp */; };
 		4D28A4B016D66E2B0019141B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
 		4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438516D1443E00F8B816 /* Reservoir.cpp */; };
 		4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
@@ -324,7 +323,6 @@
 			files = (
 				4D28A4AC16D66E2B0019141B /* Stochastic.cpp in Sources */,
 				4D28A4AD16D66E2B0019141B /* Ising.cpp in Sources */,
-				4D28A4AE16D66E2B0019141B /* main.cpp in Sources */,
 				4D28A4B016D66E2B0019141B /* System.cpp in Sources */,
 				4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */,
 				4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */,

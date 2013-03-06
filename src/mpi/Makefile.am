@@ -6,11 +6,13 @@ __top_builddir__jdemon_mpi_CXXFLAGS = $(GCOV_CFLAGS)\
                   $(GSL_CFLAGS)\
 		  -I${top_srcdir}/src/lib/
 
-__top_builddir__jdemon_mpi_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
+__top_builddir__jdemon_mpi_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_MPI_LDFLAGS) $(BOOST_SERIALIZATION_LDFLAGS)
 
 __top_builddir__jdemon_mpi_LDADD = $(BOOST_PROGRAM_OPTIONS_LIBS) \
                $(GSL_LIBS) \
                $(GCOV_LIBS) \
+		$(BOOST_MPI_LIBS) \
+		$(BOOST_SERIALIZATION_LIBS) \
 	       ${top_builddir}/src/libdemon.la
 
 __top_builddir__jdemon_mpi_SOURCES = main.cpp
