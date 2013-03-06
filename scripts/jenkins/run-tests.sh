@@ -1,5 +1,5 @@
 #!/bin/bash
-autoreconf --install -I /usr/share/aclocal/
+autoreconf --install
 mkdir -p build
 cd build
 
