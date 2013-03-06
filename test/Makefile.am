@@ -16,7 +16,7 @@ demoncore_SOURCES = core.cpp \
 			IsingTest.cpp \
 			StochTest.cpp
 
-demoncore_CXXFLAGS = -I${top_srcdir}/src \
+demoncore_CXXFLAGS = -I${top_srcdir}/src/lib \
 			$(CPPUNIT_CFLAGS) \
 			$(GCOV_CFLAGS) \
 			$(GSL_CFLAGS)

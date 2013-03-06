@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		4D28A4AC16D66E2B0019141B /* Stochastic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D46888916B5C549009143D0 /* Stochastic.cpp */; };
 		4D28A4AD16D66E2B0019141B /* Ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438216D143C400F8B816 /* Ising.cpp */; };
-		4D28A4AE16D66E2B0019141B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9C2AFF160524A9001FA974 /* main.cpp */; };
+		4D28A4AE16D66E2B0019141B /* openmp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D9C2AFF160524A9001FA974 /* openmp.cpp */; };
 		4D28A4B016D66E2B0019141B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
 		4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438516D1443E00F8B816 /* Reservoir.cpp */; };
 		4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
@@ -70,7 +70,7 @@
 		4D917D6816E0807B002ADE1E /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
 		4D917D6D16E081B4002ADE1E /* SystemTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemTest.cpp; sourceTree = "<group>"; };
 		4D917D6E16E081B4002ADE1E /* SystemTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemTest.h; sourceTree = "<group>"; };
-		4D9C2AFF160524A9001FA974 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4D9C2AFF160524A9001FA974 /* openmp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = openmp.cpp; sourceTree = "<group>"; };
 		4DA3762716E4775000599AA1 /* ClockerXmlHook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClockerXmlHook.cpp; path = Clocker/ClockerXmlHook.cpp; sourceTree = "<group>"; };
 		4DA3762916E478C000599AA1 /* ClockerModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClockerModel.cpp; path = Clocker/ClockerModel.cpp; sourceTree = "<group>"; };
 		4DA3762B16E53B8300599AA1 /* IsingTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IsingTest.cpp; sourceTree = "<group>"; };
@@ -128,6 +128,14 @@
 			name = "External Libraries";
 			sourceTree = "<group>";
 		};
+		4DB2EE0C16E6F60F00D24443 /* Frontends */ = {
+			isa = PBXGroup;
+			children = (
+				4D9C2AFF160524A9001FA974 /* openmp.cpp */,
+			);
+			name = Frontends;
+			sourceTree = "<group>";
+		};
 		4DBF803116E44A52002EB147 /* Perfomance */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +172,7 @@
 		4DD182F21605213000353837 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				4DB2EE0C16E6F60F00D24443 /* Frontends */,
 				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
 				4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */,
 				4DA8D48516E30F8400D659CF /* Measurement.h */,
@@ -172,7 +181,6 @@
 				4D611D0416406ADE008FB029 /* Utilities.h */,
 				4DE1438716D147BB00F8B816 /* Reservoirs */,
 				4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */,
-				4D9C2AFF160524A9001FA974 /* main.cpp */,
 				4DA8D48416E30F8400D659CF /* Measurement.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
 				4DE1438516D1443E00F8B816 /* Reservoir.cpp */,
@@ -295,7 +303,7 @@
 			files = (
 				4D28A4AC16D66E2B0019141B /* Stochastic.cpp in Sources */,
 				4D28A4AD16D66E2B0019141B /* Ising.cpp in Sources */,
-				4D28A4AE16D66E2B0019141B /* main.cpp in Sources */,
+				4D28A4AE16D66E2B0019141B /* openmp.cpp in Sources */,
 				4D28A4B016D66E2B0019141B /* System.cpp in Sources */,
 				4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */,
 				4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */,

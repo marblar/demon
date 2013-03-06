@@ -4,8 +4,8 @@
 AC_PREREQ([2.63])
 AC_INIT([demon],[0.1],[pub@mblar.us])
 AC_CONFIG_AUX_DIR([build-aux])
-AM_INIT_AUTOMAKE([1.11 foreign no-define])
-AC_CONFIG_SRCDIR([src/Reservoir.cpp])
+AM_INIT_AUTOMAKE([1.11 foreign no-define silent-rules])
+AC_CONFIG_SRCDIR([src/lib/Reservoir.cpp])
 AC_CONFIG_HEADERS([config.h])
 AM_EXTRA_RECURSIVE_TARGETS([coverage])
 
@@ -13,12 +13,14 @@ ML_PERFORMANCE_TEST
 
 # Checks for programs.
 AC_PROG_CXX
-AC_OPENMP
 AC_PROG_LIBTOOL
 AC_LIBTOOL_DLOPEN
 AM_PATH_CPPUNIT(1.12.1)
 DEMON_ENABLE_GCOV
 LT_INIT
+
+AX_OPENMP
+AX_MPI
 
 AC_CONFIG_MACRO_DIR([build-aux/m4])
 ACLOCAL_AMFLAGS= -I build-aux/m4
@@ -39,6 +41,9 @@ AC_C_INLINE
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([src/Makefile])
+AC_CONFIG_FILES([src/lib/Makefile])
+AC_CONFIG_FILES([src/mpi/Makefile])
+AC_CONFIG_FILES([src/openmp/Makefile])
 AC_CONFIG_FILES([test/Makefile])
 AC_CONFIG_FILES([test/performance/Makefile])
 AC_CONFIG_FILES([coverage/Makefile])

@@ -1,4 +1,4 @@
-SRC_BUILDDIR =  ${abs_top_builddir}/src
+SRC_BUILDDIR =  ${abs_top_builddir}/src/lib
 COVERAGE_DIR =  ${abs_builddir}
 BUILDDIR =      ${abs_top_builddir}
 BRANCH_FLAGS = # --rc lcov_branch_coverage=1 
@@ -21,11 +21,8 @@ src.info: test.info
 	lcov $(BRANCH_FLAGS) -a base.info -a test.info -o src.info
 
 # FIXME: This pattern blows.
-src.main.info : src.info
-	lcov $(BRANCH_FLAGS) --extract src.info *.cpp -o src.main.info
-
-app.info : src.main.info
-	lcov $(BRANCH_FLAGS) --remove src.main.info main.cpp -o app.info
+app.info : src.info
+	lcov $(BRANCH_FLAGS) --extract src.info *.cpp -o app.info
 
 www/index.html: app.info
 	genhtml $(BRANCH_FLAGS) -t jdemon -o www app.info
