@@ -22,11 +22,8 @@ LT_INIT
 AC_CONFIG_MACRO_DIR([build-aux/m4])
 
 # Check for Boost
-AX_BOOST_BASE([1.41])
-AX_BOOST_PROGRAM_OPTIONS
-# TODO: Optional libraries?
-# BOOST_FIND_LIB(timer,,timer/timer.hpp,,AC_DEFINE(
-# BOOST_SYSTEM
+BOOST_REQUIRE([1.41])
+BOOST_PROGRAM_OPTIONS
 
 # Check for GSL
 AX_PATH_GSL([1.13])
