@@ -9,7 +9,7 @@ noinst_HEADERS = clocker/ClockerListener.h \
 
 LDADD = ${top_builddir}/src/libdemon.la
 
-AM_CPPFLAGS = -I${top_srcdir}/src \
+AM_CPPFLAGS = -I${top_srcdir}/src/lib \
 		$(GSL_CFLAGS) \
 		$(CPPUNIT_CFLAGS)
 
