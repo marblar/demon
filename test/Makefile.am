@@ -13,7 +13,8 @@ EXTRA_HEADERS = SystemTest.h MeasurementTest.h
 demoncore_SOURCES = core.cpp \
 			SystemTest.cpp \
 			MeasurementTest.cpp \
-			IsingTest.cpp 
+			IsingTest.cpp \
+			StochTest.cpp
 
 demoncore_CXXFLAGS = -I${top_srcdir}/src \
 			$(CPPUNIT_CFLAGS) \

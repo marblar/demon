@@ -31,8 +31,15 @@ void StochReservoirTest::tearDown() {
 }
 
 void StochReservoirTest::testInteractBit() {
-    StochasticReservoir res(rng, defaultConstants());
-    Reservoir::InteractionResult result = res.interactWithBit(0);
-    CPPUNIT_ASSERT(result.bit);
+    // This test is volatile with changes to
+    // the random number generator.
+    Constants c = defaultConstants();
+    c.setEpsilon(1);
+    StochasticReservoir res(rng, c);
+    Reservoir::InteractionResult result = res.interactWithBit(1);
+    CPPUNIT_ASSERT(!result.bit);
 }
 
+void StochReservoirTest::testInvalidParameters() {
+    
+}

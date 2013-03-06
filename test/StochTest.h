@@ -15,12 +15,14 @@
 class StochReservoirTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(StochReservoirTest);
     CPPUNIT_TEST(testInteractBit);
+    CPPUNIT_TEST(testInvalidParameters);
     CPPUNIT_TEST_SUITE_END();
     gsl_rng *rng;
 public:
     void setUp();
     void tearDown();
     void testInteractBit();
+    void testInvalidParameters();
 };
 
 #endif /* defined(__jdemon__StochTest__) */
