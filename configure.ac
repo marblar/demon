@@ -11,7 +11,6 @@ AM_EXTRA_RECURSIVE_TARGETS([coverage])
 
 ML_PERFORMANCE_TEST
 
-
 # Prompt to enable openmpi
   AC_ARG_WITH(mpi, [AS_HELP_STRING([--with-mpi],
       [compile with MPI (parallelization) support. If none is found,
@@ -39,6 +38,7 @@ AC_CONFIG_MACRO_DIR([m4])
 # Check for Boost
 BOOST_REQUIRE([1.41])
 BOOST_PROGRAM_OPTIONS
+BOOST_MPI
 
 # Check for GSL
 AX_PATH_GSL([1.13])
