@@ -8,7 +8,7 @@ TESTS = demoncore
 
 check_PROGRAMS = $(TESTS)
 
-EXTRA_HEADERS = SystemTest.h MeasurementTest.h
+noinst_HEADERS = SystemTest.h MeasurementTest.h StochTest.h IsingTest.h
 
 demoncore_SOURCES = core.cpp \
 			SystemTest.cpp \
@@ -25,3 +25,8 @@ demoncore_LDADD = $(CPPUNIT_LIBS) \
 			${top_builddir}/src/libdemon.la \
 			$(CPPUNIT_LIBS) \
 			$(GSL_LIBS)
+
+clean-local:
+	if [ -f *.xml]; then 
+		rm *.xml
+	fi

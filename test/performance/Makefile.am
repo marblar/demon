@@ -33,3 +33,8 @@ ising_SOURCES = ising.cpp \
 
 stoch_SOURCES = stoch.cpp \
 			$(SOURCES_PERFORMANCE)
+
+clean-local:
+	if [ -f *.stats ]; then
+		rm *.stats
+	fi
