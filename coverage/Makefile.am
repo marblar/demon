@@ -29,6 +29,6 @@ www/index.html: app.info
 
 all-local: base.info
 clean-local: cov-reset 
-coverage-local: app.info www/index.html
+coverage: app.info www/index.html
 
 .PHONY=coverage-local cov-reset

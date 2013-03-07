@@ -7,7 +7,6 @@ AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.11 foreign no-define silent-rules])
 AC_CONFIG_SRCDIR([src/lib/Reservoir.cpp])
 AC_CONFIG_HEADERS([config.h])
-AM_EXTRA_RECURSIVE_TARGETS([coverage])
 
 ML_PERFORMANCE_TEST
 
