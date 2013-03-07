@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( testSystemFactory ) {
     c.setNbits(5);
     int resultSize = c.getNbits()+1;
     int results[resultSize];
-    int iterations = 10000;
+    int iterations = 100000;
     
     std::fill(results, results + resultSize, 0);
     

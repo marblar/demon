@@ -91,7 +91,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4D917D6716E0807B002ADE1E /* test */ = {
+		4D917D6716E0807B002ADE1E /* lib */ = {
 			isa = PBXGroup;
 			children = (
 				4D917D6E16E081B4002ADE1E /* TestFixtures.h */,
@@ -102,7 +102,7 @@
 				4DA3762B16E53B8300599AA1 /* IsingTest.cpp */,
 				4DB2EE1516E9086200D24443 /* core.cpp */,
 			);
-			name = test;
+			name = lib;
 			path = test/lib;
 			sourceTree = "<group>";
 		};
@@ -145,6 +145,15 @@
 			path = ../openmp;
 			sourceTree = "<group>";
 		};
+		4DB2EE1716E92BB600D24443 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				4D917D6716E0807B002ADE1E /* lib */,
+				4DBF803116E44A52002EB147 /* Perfomance */,
+			);
+			name = test;
+			sourceTree = "<group>";
+		};
 		4DBF803116E44A52002EB147 /* Perfomance */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,9 +168,8 @@
 		4DD182E41605213000353837 = {
 			isa = PBXGroup;
 			children = (
-				4DBF803116E44A52002EB147 /* Perfomance */,
-				4D917D6716E0807B002ADE1E /* test */,
 				4DAFD7A716B202EF004D9346 /* External Libraries */,
+				4DB2EE1716E92BB600D24443 /* test */,
 				4DD182F21605213000353837 /* src */,
 				4DD182F01605213000353837 /* Products */,
 			);
@@ -179,13 +187,13 @@
 			isa = PBXGroup;
 			children = (
 				4DB2EE0C16E6F60F00D24443 /* Frontends */,
+				4DE1438716D147BB00F8B816 /* Reservoirs */,
 				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
 				4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */,
 				4DA8D48516E30F8400D659CF /* Measurement.h */,
 				4D46888C16B5C58C009143D0 /* Reservoir.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
-				4DE1438716D147BB00F8B816 /* Reservoirs */,
 				4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */,
 				4DA8D48416E30F8400D659CF /* Measurement.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
