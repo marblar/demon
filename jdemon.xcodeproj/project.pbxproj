@@ -28,6 +28,7 @@
 		4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */; };
 		4DA8D48B16E3A9ED00D659CF /* MeasurementTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA8D48916E3A9ED00D659CF /* MeasurementTest.h */; };
 		4DA8D48C16E3F5D200D659CF /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6816E0807B002ADE1E /* core.cpp */; };
+		4DB2EE1016E7CAEF00D24443 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB2EE0F16E7BDD800D24443 /* main.cpp */; };
 		4DBF803316E44A6F002EB147 /* ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF803216E44A6F002EB147 /* ising.cpp */; };
 /* End PBXBuildFile section */
 
@@ -338,6 +339,7 @@
 				4DA3763116E54C2A00599AA1 /* ReservoirBenchmark.cpp in Sources */,
 				4DA3763316E54C2A00599AA1 /* stoch.cpp in Sources */,
 				4D4F4DD816E662CA00B7F5A4 /* StochTest.cpp in Sources */,
+				4DB2EE1016E7CAEF00D24443 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

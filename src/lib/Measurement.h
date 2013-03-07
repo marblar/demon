@@ -46,6 +46,16 @@ public:
     ~Measurement();
 };
 
+struct Experiment {
+    int iterations;
+    int dimension;
+    ReservoirFactory *rfactory;
+    SystemFactory *sfactory;
+    typedef std::pair<int,int> range;
+    void performWork(range work);
+    void performMeasurement();
+};
+
 long double calculateJ(System &system,long double *p, long double *p_prime);
 std::string outputString(MeasurementResult&);
 std::string outputHeader();

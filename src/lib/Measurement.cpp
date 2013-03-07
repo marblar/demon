@@ -115,6 +115,22 @@ void Measurement::performMeasurement() {
     complete = true;
 }
 
+void Experiment::performWork(Experiment::range work) {
+    Constants constants;
+    // TODO: This whole class be turned into a result iterator
+    //    so that we can test it.
+    for (int k=work.first; k!=work.second; ++k) {
+        constants.setEpsilon((k % dimension)/(double)(dimension));
+        constants.setDelta(.5 + .5*(k / dimension)/(double)(dimension));
+        constants.setTau(1);
+        constants.setNbits(10);
+        Measurement measurement(constants,iterations,rfactory,sfactory);
+        MeasurementResult &result = measurement.getResult();
+        printf("%s\n",outputString(result).c_str());
+    }
+
+}
+
 Measurement::Measurement(Constants _c, int _it, ReservoirFactory *_rf,
             SystemFactory *_sf, gsl_rng *RNG) {
     constants = _c;
