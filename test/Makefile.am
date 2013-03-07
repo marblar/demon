@@ -8,10 +8,9 @@ TESTS = demoncore
 
 check_PROGRAMS = $(TESTS)
 
-noinst_HEADERS = SystemTest.h MeasurementTest.h StochTest.h IsingTest.h
+noinst_HEADERS = TestFixtures.h MockObjects.h
 
-demoncore_SOURCES = core.cpp \
-			SystemTest.cpp \
+demoncore_SOURCES = SystemTest.cpp \
 			MeasurementTest.cpp \
 			IsingTest.cpp \
 			StochTest.cpp
@@ -21,9 +20,10 @@ demoncore_CXXFLAGS = -I${top_srcdir}/src/lib \
 			$(GCOV_CFLAGS) \
 			$(GSL_CFLAGS)
 
-demoncore_LDADD = $(CPPUNIT_LIBS) \
+demoncore_LDFLAGS = $(BOOST_LDFLAGS)
+
+demoncore_LDADD = $(BOOST_UNIT_TEST_FRAMEWORK_LIB) \
 			${top_builddir}/src/libdemon.la \
-			$(CPPUNIT_LIBS) \
 			$(GSL_LIBS)
 
 clean-local:

@@ -25,7 +25,6 @@
 		4DA8D48616E30F8400D659CF /* Measurement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48416E30F8400D659CF /* Measurement.cpp */; };
 		4DA8D48716E30F8400D659CF /* Measurement.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA8D48516E30F8400D659CF /* Measurement.h */; };
 		4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */; };
-		4DA8D48C16E3F5D200D659CF /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6816E0807B002ADE1E /* core.cpp */; };
 		4DB2EE1016E7CAEF00D24443 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB2EE0F16E7BDD800D24443 /* main.cpp */; };
 		4DB2EE1216E8273B00D24443 /* MockObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DB2EE1116E8273B00D24443 /* MockObjects.h */; };
 		4DBF803316E44A6F002EB147 /* ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF803216E44A6F002EB147 /* ising.cpp */; };
@@ -65,7 +64,6 @@
 		4D611D0416406ADE008FB029 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentFactories.cpp; sourceTree = "<group>"; };
 		4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentFactories.h; sourceTree = "<group>"; };
-		4D917D6816E0807B002ADE1E /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
 		4D917D6D16E081B4002ADE1E /* SystemTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemTest.cpp; sourceTree = "<group>"; };
 		4D917D6E16E081B4002ADE1E /* TestFixtures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFixtures.h; sourceTree = "<group>"; };
 		4D9C2AFF160524A9001FA974 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../openmp/main.cpp; sourceTree = "<group>"; };
@@ -103,7 +101,6 @@
 			children = (
 				4D917D6E16E081B4002ADE1E /* TestFixtures.h */,
 				4DB2EE1116E8273B00D24443 /* MockObjects.h */,
-				4D917D6816E0807B002ADE1E /* core.cpp */,
 				4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */,
 				4D917D6D16E081B4002ADE1E /* SystemTest.cpp */,
 				4D4F4DD616E662CA00B7F5A4 /* StochTest.cpp */,
@@ -324,7 +321,6 @@
 				4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */,
 				4DA8D48616E30F8400D659CF /* Measurement.cpp in Sources */,
 				4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */,
-				4DA8D48C16E3F5D200D659CF /* core.cpp in Sources */,
 				4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */,
 				4DBF803316E44A6F002EB147 /* ising.cpp in Sources */,
 				4DA3762816E4775000599AA1 /* ClockerXmlHook.cpp in Sources */,

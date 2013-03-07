@@ -22,7 +22,6 @@ struct MeasurementResult {
 };
 
 class Measurement {
-    friend class MeasurementTest;
     Constants constants;
     int iterations;
     ReservoirFactory *rfactory;
