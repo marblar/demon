@@ -4,9 +4,9 @@ endif
 
 SUBDIRS = . $(PERFORMANCE_DIR)
 
-TESTS = demoncore
+TESTS = demoncore-wrapper.sh
 
-check_PROGRAMS = $(TESTS)
+check_PROGRAMS = demoncore
 
 noinst_HEADERS = TestFixtures.h MockObjects.h
 
