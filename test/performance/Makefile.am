@@ -2,37 +2,21 @@ TESTS = ising stoch
 
 check_PROGRAMS = ising stoch
 
-noinst_HEADERS = clocker/ClockerListener.h \
-			clocker/ClockerXmlHook.h \
-			clocker/Timer.h \
-			ReservoirBenchmark.h
-
-LDADD = ${top_builddir}/src/libdemon.la
+AM_DEFAULT_SOURCE_EXT = .cpp
 
 AM_CPPFLAGS = -I${top_srcdir}/src/lib \
 		$(GSL_CFLAGS) \
-		$(CPPUNIT_CFLAGS)
+		-DBOOST_TEST_DYN_LINK \
+		-DBOOST_TEST_MODULE
 
-AM_LDFLAGS = $(CPPUNIT_LIBS) \
+AM_LDFLAGS = $(BOOST_LDFLAGS) \
 		$(GSL_LIBS)
 
-# Shared variables
-
-SOURCES_PERFORMANCE = clocker/ClockerListener.cpp \
-                        clocker/ClockerModel.cpp \
-			clocker/ClockerXmlHook.cpp \
-			clocker/Timer.cpp \
-			ReservoirBenchmark.cpp
+LDADD = $(GSL_LIBS) \
+		$(BOOST_UNIT_TEST_FRAMEWORK_LIB) \
+		${top_builddir}/src/libdemon.la
 
 # Ising Performance Test:
-
-ising_SOURCES = ising.cpp \
-			$(SOURCES_PERFORMANCE)
-
-# Stochastic Performance Test:
-
-stoch_SOURCES = stoch.cpp \
-			$(SOURCES_PERFORMANCE)
 
 clean-local:
 	rm -f *.stats

@@ -1,38 +1,28 @@
-//
-//  IsingPerformance.h
-//  jdemon
-//
-//  Created by Mark Larus on 3/3/13.
-//  Copyright (c) 2013 Kenyon College. All rights reserved.
-//
-
-#ifndef __jdemon__IsingPerformance__
-#define __jdemon__IsingPerformance__
-
-#include <cppunit/extensions/HelperMacros.h>
+#include <boost/test/unit_test.hpp>
 #include <gsl/gsl_rng.h>
-#include <cppunit/extensions/RepeatedTest.h>
 #include "InstrumentFactories.h"
+#include "Measurement.h"
+#include "Utilities.h"
 
-class ReservoirBenchmark : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(ReservoirBenchmark);
-    CPPUNIT_TEST_SUITE_ADD_CUSTOM_TESTS(addTest);
-    CPPUNIT_TEST_SUITE_END_ABSTRACT();
-    gsl_rng *rng;
-public:
-    void setUp();
-    void tearDown();
-    void performMeasurement();
-    static void addTest(TestSuiteBuilderContextType &context) {
-        using namespace CppUnit;
-        Test *repeatMe = new CPPUNIT_NS::TestCaller<TestFixtureType>(
-            context.getTestNameFor( "Measurement" ),
-            &ReservoirBenchmark::performMeasurement,
-            context.makeFixture());
-        context.addTest( new RepeatedTest(repeatMe,5) );
+
+void reservoirBenchmark(ReservoirFactory *rFactory,int iterations) {
+    gsl_rng *rng = GSLRandomNumberGenerator();
+    gsl_rng_set(rng,0);
+    SystemFactory *sFactory = new BinomialSystemFactory;
+    Constants constants;
+    int dimension = 10;
+    double tau = 1;
+    BOOST_REQUIRE(rFactory);
+    BOOST_REQUIRE(sFactory);
+    for (int k=dimension*dimension; k>=0; k--) {
+        constants.setEpsilon((k % dimension)/(double)(dimension));
+        constants.setDelta(.5 + .5*(k / dimension)/(double)(dimension));
+        constants.setTau(tau);
+        constants.setNbits(8);
+        Measurement measurement(constants,iterations,rFactory,sFactory,rng);
+        MeasurementResult &result = measurement.getResult();
+        BOOST_REQUIRE(measurement.isComplete());
     }
-    virtual ReservoirFactory *createReservoirFactory() = 0;
-    virtual int iterations() = 0;
-};
-
-#endif
+    delete sFactory;
+    gsl_rng_free(rng);
+}
