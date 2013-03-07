@@ -14,6 +14,8 @@
 
 class Reservoir;
 
+#pragma mark -- Constants --
+
 class Constants {
     double delta;
     //The initial ratio of 1's to 0's
@@ -46,6 +48,9 @@ public:
     Constants () {}
 };
 
+
+#pragma mark -- System --
+
 struct System {
     int bitPosition;
     unsigned int startingBitString;
@@ -56,13 +61,8 @@ struct System {
     void evolveWithReservoir(Reservoir *reservoir);
 };
 
-class InvalidNbitsError : public std::exception
-{
-    virtual const char* what() const throw()
-    {
-        return "Nbits must be >0";
-    }
-};
+
+#pragma mark -- Exceptions --
 
 class InconsistentSystemState : public std::exception {
     virtual const char* what() const throw()
@@ -70,4 +70,29 @@ class InconsistentSystemState : public std::exception {
         return "This system has been evolved before.";
     }
 };
+
+class InvalidConstantsError : public std::exception {
+    const char* what() const throw()
+    {
+        std::stringstream stream;
+        stream << "Invalid parameter: " << name << std::endl;
+        stream << "Reason: " << reason;
+        return stream.str().c_str();
+    }
+    const std::string name;
+    const std::string reason;
+protected:
+    InvalidConstantsError(std::string name, std::string msg) : reason(msg) {}
+};
+
+#define INVALID_CONSTANTS_EXCEPTION(cls,name)\
+    class cls : public InvalidConstantsError {\
+    public: \
+        cls(std::string msg) : InvalidConstantsError(#name,msg) {}\
+    };
+    
+INVALID_CONSTANTS_EXCEPTION(InvalidNbitsError, nBits);
+INVALID_CONSTANTS_EXCEPTION(InvalidTauError, tau);
+INVALID_CONSTANTS_EXCEPTION(InvalidEpsilonError, epsilon);
+                
 #endif /* defined(__thermaleraser__System__) */

@@ -30,6 +30,10 @@ void System::evolveWithReservoir(Reservoir *reservoir) {
     int& bitPosition = this->bitPosition;
     const int& nbits = constants.getNbits();
     
+    if (nbits<=0) {
+        throw InvalidNbitsError("nbits<=0");
+    }
+    
     while (this->bitPosition < nbits) {
         int oldBit = (startingBitString >> bitPosition) & 1;
         Reservoir::InteractionResult result = reservoir->interactWithBit(oldBit);

@@ -100,4 +100,28 @@ BOOST_AUTO_TEST_CASE ( testHighTemperature ) {
     BOOST_CHECK_EQUAL(c.getBeta(),0);
 }
 
+BOOST_AUTO_TEST_CASE( testZeroBits ) {
+    c.setNbits(0);
+    System s(c,defaultStartingString());
+    
+    // The reservoir gets the correct number of bits.
+    Constants b = c;
+    b.setNbits(1);
+    Reservoir *res = new TrivialReservoir(rng,b);
+    
+    BOOST_REQUIRE_THROW(s.evolveWithReservoir(res), InvalidNbitsError);
+}
+
+BOOST_AUTO_TEST_CASE( testNegativeBits ) {
+    c.setNbits(-1);
+    System s(c,defaultStartingString());
+    
+    // The reservoir gets the correct number of bits.
+    Constants b = c;
+    b.setNbits(1);
+    Reservoir *res = new TrivialReservoir(rng,b);
+    
+    BOOST_REQUIRE_THROW(s.evolveWithReservoir(res), InvalidNbitsError);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
