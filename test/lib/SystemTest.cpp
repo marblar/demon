@@ -44,9 +44,9 @@ BOOST_AUTO_TEST_CASE( testSystemFactory ) {
     }
     
     for (int k = 0; k<resultSize; k++) {
-        double expected = gsl_ran_binomial_pdf(k, c.getDelta(), 8);
+        double expected = gsl_ran_binomial_pdf(k, c.getDelta(), c.getNbits());
         double actual = ((double)results[k])/iterations;
-        BOOST_REQUIRE_CLOSE(expected, actual, .1);
+        BOOST_REQUIRE_CLOSE(expected, actual, 10);
     }
 };
 
