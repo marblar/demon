@@ -15,13 +15,14 @@ int main(int argc, char* argv[])
 {
     mpi::environment env(argc, argv);
     mpi::communicator world;
-    
+    char hostname[256];
     int requester;
     const int dimension = 50;
-    const int iterations = 1<<23;
+    const int iterations = 1000;
     
+    gethostname(hostname,255);
+    printf("Hello world from host %s.\n",hostname);
     if (world.rank() == 0) {
-        printf("Hello world of size %d.\n",world.size());
         mpi::request reqs[1];
         int currentPosition = 0;
         while (currentPosition<dimension*dimension) {
