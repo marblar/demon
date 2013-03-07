@@ -1,2 +1,2 @@
 # The openmp subdir is deprecated
-SUBDIRS = lib mpi openmp
+SUBDIRS = lib mpi
