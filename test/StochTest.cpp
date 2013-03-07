@@ -6,40 +6,32 @@
 //  Copyright (c) 2013 Kenyon College. All rights reserved.
 //
 
+#include <boost/test/included/unit_test.hpp>
+
 #include "StochTest.h"
 #include "Utilities.h"
 #include "Stochastic.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION(StochReservoirTest);
+#include "TestFixtures.h"
 
-static Constants defaultConstants() {
-    Constants c;
-    c.setDelta(.5);
-    c.setEpsilon(0);
-    c.setTau(1);
-    c.setNbits(8);
-    return c;
-}
+struct StochTestFixture : \
+    public ConstantsTestFixture, \
+    public RandomNumberTestFixture \
+{};
 
-void StochReservoirTest::setUp() {
-    rng = GSLRandomNumberGenerator();
-    gsl_rng_set(rng, 0);
-}
+BOOST_FIXTURE_TEST_SUITE(StochReservoirTest, StochTestFixture);
 
-void StochReservoirTest::tearDown() {
-    gsl_rng_free(rng);
-}
-
-void StochReservoirTest::testInteractBit() {
+BOOST_AUTO_TEST_CASE( testInteractBit ) {
     // This test is volatile with changes to
     // the random number generator.
-    Constants c = defaultConstants();
     c.setEpsilon(1);
     StochasticReservoir res(rng, c);
     Reservoir::InteractionResult result = res.interactWithBit(1);
-    CPPUNIT_ASSERT(!result.bit);
+    BOOST_REQUIRE(!result.bit);
 }
 
-void StochReservoirTest::testInvalidParameters() {
+BOOST_AUTO_TEST_CASE ( testInvalidParameters ) {
     
 }
+
+BOOST_AUTO_TEST_SUITE_END()

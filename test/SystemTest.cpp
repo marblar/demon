@@ -7,73 +7,31 @@
 //
 
 #include <gsl/gsl_randist.h>
+#include <algorithm>
+#include <boost/test/included/unit_test.hpp>
 
-#include "SystemTest.h"
+#include "TestFixtures.h"
+#include "MockObjects.h"
+
 #include "Reservoir.h"
 #include "Utilities.h"
 #include "InstrumentFactories.h"
-#include <algorithm>
-
-CPPUNIT_TEST_SUITE_REGISTRATION(SystemTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(ConstantsTest);
-
-static Constants defaultConstants() {
-    Constants c(.7,.1,.7);
-    c.setNbits(8);
-    return c;
-}
 
 static int defaultStartingString() {
     return 2;
 }
 
+struct SystemTestFixture : \
+    public ConstantsTestFixture, \
+    public RandomNumberTestFixture \
+{};
 
-class MockReservoirFlipDown : public Reservoir {
-public:
-    InteractionResult interactWithBit(int bit) {
-        InteractionResult result;
-        result.work = 1;
-        result.bit = 0;
-        ++bitsProvided;
-        return result;
-    };
-    void reset() { /* Do nothing */ }
-    int bitsProvided;
-    MockReservoirFlipDown(Constants constants) : bitsProvided(0), Reservoir(constants) {}
-};
+BOOST_FIXTURE_TEST_SUITE(SystemTest,SystemTestFixture);
 
-class SpecificEndStringReservoir : public Reservoir {
-public:
-    InteractionResult interactWithBit(int bit) {
-        InteractionResult result;
-        result.work = 1;
-        result.bit = (end>>bitPos)&1;
-        bitPos++;
-        return result;
-    };
-    void reset() { /* Do nothing */ }
-    int end;
-    int bitPos;
-    SpecificEndStringReservoir(Constants constants, int end_) :
-    Reservoir(constants), end(end_), bitPos(0) {}
-};
-
-void SystemTest::setUp() {
-    rng = GSLRandomNumberGenerator();
-    // Always set the seed to 0. If anything dependent on this worked once
-    // it will work again on a different box.
-    gsl_rng_set(rng, 0);
-}
-
-void SystemTest::tearDown() {
-    gsl_rng_free(rng);
-}
-
-void SystemTest::testSystemFactory() {
-    Constants c = defaultConstants();
+BOOST_AUTO_TEST_CASE( testSystemFactory ) {
     BinomialSystemFactory sfactory;
-    int resultSize = c.getNbits()+1;
     
+    int resultSize = c.getNbits()+1;
     int results[resultSize];
     int iterations = 10000;
     
@@ -86,62 +44,60 @@ void SystemTest::testSystemFactory() {
     }
     
     for (int k = 0; k<resultSize; k++) {
-        double expected = gsl_ran_binomial_pdf(k, defaultConstants().getDelta(), 8);
+        double expected = gsl_ran_binomial_pdf(k, c.getDelta(), 8);
         double actual = ((double)results[k])/iterations;
-        CPPUNIT_ASSERT_DOUBLES_EQUAL(expected, actual, .1);
+        BOOST_REQUIRE_CLOSE(expected, actual, .1);
     }
 };
 
-void SystemTest::testConstructor() {
-    Constants c = defaultConstants();
+BOOST_AUTO_TEST_CASE( testConstructor ) {
     System system(c,defaultStartingString());
     
-    CPPUNIT_ASSERT_EQUAL(c.getEpsilon(), system.constants.getEpsilon());
-    CPPUNIT_ASSERT_EQUAL(c.getDelta(), system.constants.getDelta());
-    CPPUNIT_ASSERT_EQUAL(c.getTau(), system.constants.getTau());
-    CPPUNIT_ASSERT_EQUAL(system.bitPosition, 0);
-    CPPUNIT_ASSERT_EQUAL(system.mass, 0);
-    
+    BOOST_CHECK_EQUAL(c.getEpsilon(), system.constants.getEpsilon());
+    BOOST_CHECK_EQUAL(c.getDelta(), system.constants.getDelta());
+    BOOST_CHECK_EQUAL(c.getTau(), system.constants.getTau());
+    BOOST_CHECK_EQUAL(system.bitPosition, 0);
+    BOOST_CHECK_EQUAL(system.mass, 0);
 }
 
-void SystemTest::testNbits() {
-    Constants c = defaultConstants();
+BOOST_AUTO_TEST_CASE( testNbits )  {
     System system(c,defaultStartingString());
-    MockReservoirFlipDown res(defaultConstants());
+    MockReservoirFlipDown res(c);
     system.evolveWithReservoir(&res);
     
-    CPPUNIT_ASSERT_EQUAL(c.getNbits(), res.bitsProvided);
+    BOOST_CHECK_EQUAL(c.getNbits(), res.bitsProvided);
     
     c.setNbits(10);
     MockReservoirFlipDown res2(c);
     System otherSystem(c,defaultStartingString());
     otherSystem.evolveWithReservoir(&res2);
     
-    CPPUNIT_ASSERT_EQUAL(c.getNbits(), res2.bitsProvided);
+    BOOST_CHECK_EQUAL(c.getNbits(), res2.bitsProvided);
 }
 
-void SystemTest::testEndingString() {
+BOOST_AUTO_TEST_CASE( testEndingString ) {
     unsigned int endString = 6;
-    gsl_rng *rng = GSLRandomNumberGenerator();
-    System system(defaultConstants(),defaultStartingString());
-    SpecificEndStringReservoir res(defaultConstants(),endString);
+    System system(c,defaultStartingString());
+    SpecificEndStringReservoir res(c,endString);
     system.evolveWithReservoir(&res);
     
-    CPPUNIT_ASSERT_EQUAL(system.endingBitString, endString);
+    BOOST_REQUIRE_EQUAL(system.endingBitString, endString);
 }
 
-void SystemTest::testReuseSystem() {
-    System system(defaultConstants(),defaultStartingString());
-    Reservoir *res = new MockReservoirFlipDown(defaultConstants());
+BOOST_AUTO_TEST_CASE ( testReuseSystem ) {
+    System system(c,defaultStartingString());
+    Reservoir *res = new MockReservoirFlipDown(c);
     system.bitPosition = 1;
     
-    CPPUNIT_ASSERT_THROW(system.evolveWithReservoir(res),InconsistentSystemState);
+    BOOST_REQUIRE_THROW(system.evolveWithReservoir(res),InconsistentSystemState);
 }
 
-void ConstantsTest::testHighTemperature() {
+BOOST_AUTO_TEST_CASE ( testHighTemperature ) {
     double delta = .5;
     double epsilon = 0;
     double tau = 1;
     Constants c(delta,epsilon,tau);
-    CPPUNIT_ASSERT(c.getBeta()==0);
+    BOOST_CHECK_EQUAL(c.getBeta(),0);
 }
+
+BOOST_AUTO_TEST_SUITE_END()

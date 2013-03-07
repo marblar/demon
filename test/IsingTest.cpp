@@ -6,112 +6,101 @@
 //  Copyright (c) 2013 Kenyon College. All rights reserved.
 //
 
-#include "IsingTest.h"
-#include "Ising.h"
-#include "Utilities.h"
+#include <boost/test/included/unit_test.hpp>
 #include <set>
 
-CPPUNIT_TEST_SUITE_REGISTRATION(TransitionRuleTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(IsingReservoirTest);
+#include "Ising.h"
+#include "Utilities.h"
 
-static Constants defaultConstants() {
-    Constants c;
-    c.setDelta(.5);
-    c.setEpsilon(0);
-    c.setTau(1);
-    c.setNbits(8);
-    return c;
-}
+#include "TestFixtures.h"
+#include "MockObjects.h"
 
-void TransitionRuleTest::setUp() {
-    rule = defaultTransitionRule();
-    validStates = getValidStates();
-}
+class TransitionRuleTestFixture : \
+    public DefaultTransitionRuleTestFixture, \
+    public ValidStatesTestFixture \
+{};
 
-void TransitionRuleTest::tearDown() {
-    
-}
+BOOST_FIXTURE_TEST_SUITE(TransitionRuleTest, TransitionRuleTestFixture);
 
-void TransitionRuleTest::testTableSize() {
-    for (TransitionRule::iterator it = rule.begin(); it!=rule.end(); ++it) {
-        CPPUNIT_ASSERT(it->second.size() == 8 && "Transition table size should be 8");
+BOOST_AUTO_TEST_CASE ( testTableSize ) {
+    for (TransitionRule::iterator it = defaultRule.begin(); it!=defaultRule.end(); ++it) {
+        BOOST_REQUIRE(it->second.size() == 8 && "Transition table size should be 8");
     }
 }
 
-void TransitionRuleTest::testTableDeadEnds() {
+BOOST_AUTO_TEST_CASE ( testTableDeadEnds ) {
     typedef TransitionRule::iterator RuleIterator;
     typedef TransitionTable::iterator TableIterator;
     
-    for (RuleIterator currentRuleIterator = rule.begin(); \
-         currentRuleIterator!=rule.end(); ++currentRuleIterator) {
+    for (RuleIterator currentRuleIterator = defaultRule.begin(); \
+         currentRuleIterator!=defaultRule.end(); ++currentRuleIterator) {
         
         TransitionTable currentRule = currentRuleIterator->second;
         
         for (TableIterator currentTableIterator = currentRule.begin();\
              currentTableIterator != currentRule.end(); ++currentTableIterator) {
-            CPPUNIT_ASSERT(currentTableIterator->second);
+            BOOST_CHECK(currentTableIterator->second);
         }
     }
 }
 
-void TransitionRuleTest::testValidTargetStates() {
+BOOST_AUTO_TEST_CASE ( testValidTargetStates ) {
     typedef TransitionRule::iterator RuleIterator;
     typedef TransitionTable::iterator TableIterator;
     
-    for (RuleIterator currentRuleIterator = rule.begin(); \
-         currentRuleIterator!=rule.end(); ++currentRuleIterator) {
+    for (RuleIterator currentRuleIterator = defaultRule.begin(); \
+         currentRuleIterator!=defaultRule.end(); ++currentRuleIterator) {
         
         TransitionTable currentRule = currentRuleIterator->second;
         
         for (TableIterator currentTableIterator = currentRule.begin();\
              currentTableIterator != currentRule.end(); ++currentTableIterator) {
             SystemState *targetState = currentTableIterator->second;
-            CPPUNIT_ASSERT(validStates.count(targetState));
+            BOOST_CHECK(validStates.count(targetState));
         }
     }
 }
 
-void IsingReservoirTest::setUp() {
-    rng = GSLRandomNumberGenerator();
-    gsl_rng_set(rng, 0);
-}
+BOOST_AUTO_TEST_SUITE_END()
 
-void IsingReservoirTest::tearDown() {
-    gsl_rng_free(rng);
-}
+class IsingReservoirTestFixture : \
+    public RandomNumberTestFixture,
+    public ConstantsTestFixture,
+    public ValidStatesTestFixture
+{};
 
+BOOST_FIXTURE_TEST_SUITE(IsingReservoirTest, IsingReservoirTestFixture);
 
-void IsingReservoirTest::testWheelStep() {
-    IsingReservoir reservoir(rng,defaultConstants(),5,5);
+BOOST_AUTO_TEST_CASE ( testWheelStep ) {
+    IsingReservoir reservoir(rng,c,5,5);
     Reservoir::InteractionResult result;
-    CPPUNIT_ASSERT_NO_THROW(reservoir.wheelStep(result));
+    BOOST_REQUIRE_NO_THROW(reservoir.wheelStep(result));
 }
 
-void IsingReservoirTest::testEmptyTransitionRule() {
+BOOST_AUTO_TEST_CASE ( testEmptyTransitionRule ) {
     TransitionRule emptyRule;
-    IsingReservoir reservoir(rng,defaultConstants(),5,5,emptyRule);
+    IsingReservoir reservoir(rng,c,5,5,emptyRule);
     Reservoir::InteractionResult result;
-    CPPUNIT_ASSERT_THROW(reservoir.wheelStep(result), EmptyTransitionRuleError);
+    BOOST_REQUIRE_THROW(reservoir.wheelStep(result), EmptyTransitionRuleError);
 }
 
-void IsingReservoirTest::testDeadEndTransitionRule() {
+BOOST_AUTO_TEST_CASE ( testDeadEndTransitionRule ) {
     TransitionRule deadEndRule;
     TransitionTable emptyTable;
     for (char k=0; k<8; k++) {
         emptyTable[k] = NULL;
     }
     
-    Reservoir::InteractionResult result;    
-    StateSet states = getValidStates();
+    Reservoir::InteractionResult result;
     
-    for (StateSet::iterator it = states.begin(); it!=states.end(); ++it) {
+    for (StateSet::iterator it = validStates.begin(); it!=validStates.end(); ++it) {
         deadEndRule[*it] = emptyTable;
     }
-    IsingReservoir reservoir(rng,defaultConstants(),5,5,deadEndRule);
-    CPPUNIT_ASSERT_THROW(reservoir.wheelStep(result),TransitionDeadEndError);
+    IsingReservoir reservoir(rng,c,5,5,deadEndRule);
+    BOOST_REQUIRE_THROW(reservoir.wheelStep(result),TransitionDeadEndError);
 }
 
-void IsingReservoirTest::testTooSmallTransitionTable() {
+BOOST_AUTO_TEST_CASE ( testTooSmallTransitionTable ) {
     TransitionRule invalidRule;
     TransitionTable tooSmallTable;
     
@@ -119,26 +108,22 @@ void IsingReservoirTest::testTooSmallTransitionTable() {
         tooSmallTable[k] = NULL;
     }
     
-    StateSet states = getValidStates();
-    
-    for (StateSet::iterator it = states.begin(); it!=states.end(); ++it) {
+    for (StateSet::iterator it = validStates.begin(); it!=validStates.end(); ++it) {
         invalidRule[*it] = tooSmallTable;
     }
     
-    IsingReservoir reservoir(rng,defaultConstants(),5,5,invalidRule);
+    IsingReservoir reservoir(rng,c,5,5,invalidRule);
     Reservoir::InteractionResult result;
-    CPPUNIT_ASSERT_THROW(reservoir.wheelStep(result),InvalidTableSizeError);
+    BOOST_REQUIRE_THROW(reservoir.wheelStep(result),InvalidTableSizeError);
 }
 
-void IsingUtilityTest::testNonbinaryParity() {
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(IsingUtilityTest)
+
+BOOST_AUTO_TEST_CASE( testNonbinaryParity ) {
     int inputState = ising::s(0,0,157);
-    CPPUNIT_ASSERT(inputState == 1);
+    BOOST_REQUIRE(inputState == 1);
 }
 
-void IsingUtilityTest::setUp() {
-    
-}
-
-void IsingUtilityTest::tearDown() {
-    
-}
+BOOST_AUTO_TEST_SUITE_END()

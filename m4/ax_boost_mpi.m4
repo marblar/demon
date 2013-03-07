@@ -66,10 +66,10 @@ AC_DEFUN([AX_BOOST_MPI],
         AC_CACHE_CHECK(whether the Boost::Mpi library is available,
 					   ax_cv_boost_mpi,
         [AC_LANG_PUSH([C++])
-		 AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[@%:@include <boost/mpi.hpp>]],
-                                   [[namespace mpi=boost::mpi;  mpi::environment env;  mpi::communicator world;
+		 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <boost/mpi.hpp>]],
+                                   [AC_LANG_SOURCE([namespace mpi=boost::mpi;  mpi::environment env;  mpi::communicator world;
                                      return 0;
-                                   ]]),
+                                   ])])],
          ax_cv_boost_mpi=yes, ax_cv_boost_mpi=yes)
          AC_LANG_POP([C++])
 		])
