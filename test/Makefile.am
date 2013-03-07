@@ -10,3 +10,4 @@ EXTRA_DIST = demoncore-wrapper.sh
 
 clean-local:
 	rm -f *.xml
+	rm -f *.log
