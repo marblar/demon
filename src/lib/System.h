@@ -11,6 +11,7 @@
 
 #include <gsl/gsl_rng.h>
 #include <sstream>
+#include <stdexcept>
 
 class Reservoir;
 
@@ -64,35 +65,26 @@ struct System {
 
 #pragma mark -- Exceptions --
 
-class InconsistentSystemState : public std::exception {
-    virtual const char* what() const throw()
-    {
-        return "This system has been evolved before.";
-    }
+class InconsistentSystemState : public std::runtime_error {
+public:
+    InconsistentSystemState() : std::runtime_error("This system has been used before.") {}
 };
 
-class InvalidConstantsError : public std::exception {
-    const char* what() const throw()
-    {
-        std::stringstream stream;
-        stream << "Invalid parameter: " << name << std::endl;
-        stream << "Reason: " << reason;
-        return stream.str().c_str();
-    }
-    const std::string name;
-    const std::string reason;
+class InvalidConstantsError : public std::runtime_error {
 protected:
-    InvalidConstantsError(std::string name, std::string msg) : reason(msg) {}
+        InvalidConstantsError(std::string msg) : std::runtime_error(msg) {}
 };
 
-#define INVALID_CONSTANTS_EXCEPTION(cls,name)\
+#define INVALID_CONSTANTS_EXCEPTION(cls)\
     class cls : public InvalidConstantsError {\
     public: \
-        cls(std::string msg) : InvalidConstantsError(#name,msg) {}\
+        cls(std::string msg) : InvalidConstantsError(msg) {}\
     };
     
-INVALID_CONSTANTS_EXCEPTION(InvalidNbitsError, nBits);
-INVALID_CONSTANTS_EXCEPTION(InvalidTauError, tau);
-INVALID_CONSTANTS_EXCEPTION(InvalidEpsilonError, epsilon);
-                
+INVALID_CONSTANTS_EXCEPTION(InvalidNbitsError);
+INVALID_CONSTANTS_EXCEPTION(InvalidTauError);
+INVALID_CONSTANTS_EXCEPTION(InvalidEpsilonError);
+
+#undef INVALID_CONSTANTS_EXCEPTION
+
 #endif /* defined(__thermaleraser__System__) */

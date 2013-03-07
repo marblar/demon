@@ -20,7 +20,7 @@
 #include "InstrumentFactories.h"
 #include "Utilities.h"
 
-static InvalidNbitsError NbitsError;
+static InvalidNbitsError NbitsError("Too few bits.");
 
 std::string outputHeader() {
     return std::string("delta,epsilon,averageJ,maxJ");
@@ -63,7 +63,7 @@ void Measurement::performMeasurement() {
     const int &nbits = constants.getNbits();
     
     if (constants.getNbits()<=0) {
-        throw InvalidNbitsError();
+        throw NbitsError;
     }
     
     // In the horribly degenerate case where this function runs twice,
