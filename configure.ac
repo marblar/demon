@@ -53,6 +53,7 @@ AC_CONFIG_FILES([src/lib/Makefile])
 AC_CONFIG_FILES([src/mpi/Makefile])
 AC_CONFIG_FILES([src/openmp/Makefile])
 AC_CONFIG_FILES([test/Makefile])
+AC_CONFIG_FILES([test/lib/Makefile])
 AC_CONFIG_FILES([test/performance/Makefile])
 AC_CONFIG_FILES([coverage/Makefile])
 AC_OUTPUT

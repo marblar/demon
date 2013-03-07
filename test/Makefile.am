@@ -2,32 +2,11 @@ if PERFORMANCE_TESTS_ENABLED
 PERFORMANCE_DIR = performance
 endif
 
-SUBDIRS = . $(PERFORMANCE_DIR)
+SUBDIRS = $(PERFORMANCE_DIR) lib
 
 TESTS = demoncore-wrapper.sh
 
-check_PROGRAMS = demoncore
-
-noinst_HEADERS = TestFixtures.h MockObjects.h
-
-demoncore_SOURCES = SystemTest.cpp \
-			MeasurementTest.cpp \
-			IsingTest.cpp \
-			StochTest.cpp \
-			core.cpp
-
-demoncore_CXXFLAGS = -I${top_srcdir}/src/lib \
-			$(CPPUNIT_CFLAGS) \
-			$(GCOV_CFLAGS) \
-			$(GSL_CFLAGS)
-
-demoncore_CPPFLAGS = -DBOOST_TEST_DYN_LINK
-
-demoncore_LDFLAGS = $(BOOST_LDFLAGS)
-
-demoncore_LDADD = $(BOOST_UNIT_TEST_FRAMEWORK_LIB) \
-			${top_builddir}/src/libdemon.la \
-			$(GSL_LIBS)
+EXTRA_DIST = demoncore-wrapper.sh
 
 clean-local:
 	rm -f *.xml
