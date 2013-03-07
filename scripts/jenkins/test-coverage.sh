@@ -2,8 +2,7 @@
 autoreconf --install
 mkdir -p build
 cd build
-export OMPI_CXX=clang++
-../configure --enable-gcov --with-mpi
+../configure --enable-gcov
 make all
 make check
 make coverage

@@ -14,7 +14,7 @@ ML_PERFORMANCE_TEST
   AC_ARG_WITH(mpi, [AS_HELP_STRING([--with-mpi],
       [compile with MPI (parallelization) support. If none is found,
       MPI is not used. Default: auto])
-  ],,[with_mpi=auto])
+  ],,[with_mpi=yes])
   AX_PROG_CXX_MPI([test x"$with_mpi" != xno],[use_mpi=yes],[
     use_mpi=no
     if test x"$with_mpi" = xyes; then
