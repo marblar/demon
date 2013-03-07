@@ -30,7 +30,7 @@ BOOST_FIXTURE_TEST_SUITE(SystemTest,SystemTestFixture);
 
 BOOST_AUTO_TEST_CASE( testSystemFactory ) {
     BinomialSystemFactory sfactory;
-    
+    c.setNbits(5);
     int resultSize = c.getNbits()+1;
     int results[resultSize];
     int iterations = 10000;
