@@ -83,16 +83,9 @@ public:
 #define CheckTransitionRuleError(expr,class) \
     if (!(expr)) { throw class(#expr); }
 
-class InvalidTransitionRuleError : public std::exception {
-    const char *assertionText;
-    virtual const char* what() const throw()
-    {
-        return assertionText;
-    }
+class InvalidTransitionRuleError : public std::runtime_error {
 public:
-    InvalidTransitionRuleError(const char *text) {
-        assertionText = text;
-    }
+    InvalidTransitionRuleError(const char *text) : std::runtime_error(text) {}
 };
 
 #define InvalidTransitionSubclass(ClassName) \
