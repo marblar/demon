@@ -1,6 +1,8 @@
-TESTS = ising stoch
-
 check_PROGRAMS = ising stoch
+
+EXTRA_DIST = ising-wrapper.sh stoch-wrapper.sh
+
+TESTS = $(EXTRA_DIST)
 
 AM_DEFAULT_SOURCE_EXT = .cpp
 
