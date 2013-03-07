@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Kenyon College. All rights reserved.
 //
 
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include <map>
 
 #include "TestFixtures.h"
@@ -62,10 +62,10 @@ BOOST_AUTO_TEST_CASE( testResultsConstants ) {
     SystemFactory *sfactory = new BinomialSystemFactory;
     Measurement measurement(c,1,rfactory,sfactory);
     MeasurementResult result = measurement.getResult();
-    BOOST_CHECK_CLOSE(c.getBeta(), result.constants.getBeta(), 0);
-    BOOST_CHECK_CLOSE(c.getDelta(), result.constants.getDelta(), 0);
-    BOOST_CHECK_CLOSE(c.getEpsilon(), result.constants.getEpsilon(), 0);
-    BOOST_CHECK_CLOSE(c.getNbits(), result.constants.getNbits(), 0);
+    BOOST_CHECK_EQUAL(c.getBeta(), result.constants.getBeta());
+    BOOST_CHECK_EQUAL(c.getDelta(), result.constants.getDelta());
+    BOOST_CHECK_EQUAL(c.getEpsilon(), result.constants.getEpsilon());
+    BOOST_CHECK_EQUAL(c.getNbits(), result.constants.getNbits());
     delete rfactory;
     delete sfactory;
 }

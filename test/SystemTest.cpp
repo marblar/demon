@@ -8,7 +8,7 @@
 
 #include <gsl/gsl_randist.h>
 #include <algorithm>
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 
 #include "TestFixtures.h"
 #include "MockObjects.h"

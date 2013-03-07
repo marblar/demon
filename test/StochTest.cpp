@@ -6,9 +6,8 @@
 //  Copyright (c) 2013 Kenyon College. All rights reserved.
 //
 
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 
-#include "StochTest.h"
 #include "Utilities.h"
 #include "Stochastic.h"
 
