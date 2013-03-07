@@ -1,8 +1,7 @@
 check_PROGRAMS = ising stoch
 
-EXTRA_DIST = ising-wrapper.sh stoch-wrapper.sh
-
-TESTS = $(EXTRA_DIST)
+TESTS = ising-wrapper.sh stoch-wrapper.sh
+EXTRA_DIST = $(TESTS) junit.xslt
 
 AM_DEFAULT_SOURCE_EXT = .cpp
 
@@ -17,6 +16,9 @@ AM_LDFLAGS = $(BOOST_LDFLAGS) \
 LDADD = $(GSL_LIBS) \
 		$(BOOST_UNIT_TEST_FRAMEWORK_LIB) \
 		${top_builddir}/src/libdemon.la
+
+all-local:
+	cp ${srcdir}/junit.xslt ${builddir}/junit.xslt
 
 # Ising Performance Test:
 
