@@ -23,6 +23,7 @@
 		4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */; };
 		4DB2EE1016E7CAEF00D24443 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB2EE0F16E7BDD800D24443 /* main.cpp */; };
 		4DB2EE1216E8273B00D24443 /* MockObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DB2EE1116E8273B00D24443 /* MockObjects.h */; };
+		4DB2EE1616E9086300D24443 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB2EE1516E9086200D24443 /* core.cpp */; };
 		4DBF803316E44A6F002EB147 /* ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF803216E44A6F002EB147 /* ising.cpp */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 		4DB2EE0F16E7BDD800D24443 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4DB2EE1116E8273B00D24443 /* MockObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockObjects.h; sourceTree = "<group>"; };
 		4DB2EE1416E8EEF500D24443 /* ReservoirBenchmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservoirBenchmark.h; sourceTree = "<group>"; };
+		4DB2EE1516E9086200D24443 /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
 		4DBF803216E44A6F002EB147 /* ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ising.cpp; sourceTree = "<group>"; };
 		4DE1438216D143C400F8B816 /* Ising.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ising.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		4DE1438316D143C400F8B816 /* Ising.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Ising.h; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				4D917D6D16E081B4002ADE1E /* SystemTest.cpp */,
 				4D4F4DD616E662CA00B7F5A4 /* StochTest.cpp */,
 				4DA3762B16E53B8300599AA1 /* IsingTest.cpp */,
+				4DB2EE1516E9086200D24443 /* core.cpp */,
 			);
 			name = test;
 			path = test/lib;
@@ -317,6 +320,7 @@
 				4DA3763316E54C2A00599AA1 /* stoch.cpp in Sources */,
 				4D4F4DD816E662CA00B7F5A4 /* StochTest.cpp in Sources */,
 				4DB2EE1016E7CAEF00D24443 /* main.cpp in Sources */,
+				4DB2EE1616E9086300D24443 /* core.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
