@@ -6,7 +6,7 @@
 BOOST_AUTO_TEST_SUITE(IsingBenchmark);
 
 BOOST_AUTO_TEST_CASE( performMeasurement ) {
-    int iterations = 500;
+    int iterations = 100;
     ReservoirFactory *rFactory = new IsingReservoir::IsingFactory(20,20);
     reservoirBenchmark(rFactory,iterations);
 }

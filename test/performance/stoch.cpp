@@ -6,7 +6,7 @@
 BOOST_AUTO_TEST_SUITE(IsingBenchmark);
 
 BOOST_AUTO_TEST_CASE( performMeasurement ) {
-    int iterations = 50000;
+    int iterations = 10000;
     ReservoirFactory *rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
     reservoirBenchmark(rFactory,iterations);
 }
