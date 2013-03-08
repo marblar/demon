@@ -220,37 +220,32 @@ int IsingReservoir::countHigh(Neighbors list) {
 
 IsingReservoir::Neighbors getNeighbors(const Coordinate c,int dimension){
     IsingReservoir::Neighbors neighbors;
-    for (int k = 0; k<4; k++) {
-        Coordinate neighbor;
-        switch (k) {
-            case 0: // North
-                neighbor.x = c.x;
-                neighbor.y = c.y - 1;
-                break;
-            
-            case 1: // South
-                neighbor.x = c.x;
-                neighbor.y = c.y + 1;
-                break;
-                
-            case 2: // East
-                neighbor.x = c.x - 1;
-                neighbor.y = c.y;
-                break;
-                
-            case 3: // West
-                neighbor.x = c.x + 1;
-                neighbor.y = c.y;
-                break;
-                
-            default: // We should never be here.
-                assert(0 && "Unreachable.");
-                break;
-        }
-        neighbor.x = boundsCheck(neighbor.x, dimension);
-        neighbor.y = boundsCheck(neighbor.y, dimension);
-        neighbors.coordinates[k] = neighbor;
-    }
+    Coordinate neighbor;
+    
+    neighbor.x = c.x;
+    neighbor.y = c.y - 1;
+    neighbor.x = boundsCheck(neighbor.x, dimension);
+    neighbor.y = boundsCheck(neighbor.y, dimension);
+    neighbors.coordinates[0]=neighbor;
+    
+    neighbor.x = c.x;
+    neighbor.y = c.y + 1;
+    neighbor.x = boundsCheck(neighbor.x, dimension);
+    neighbor.y = boundsCheck(neighbor.y, dimension);
+    neighbors.coordinates[1]=neighbor;
+    
+    neighbor.x = c.x - 1;
+    neighbor.y = c.y;
+    neighbor.x = boundsCheck(neighbor.x, dimension);
+    neighbor.y = boundsCheck(neighbor.y, dimension);
+    neighbors.coordinates[2]=neighbor;
+ 
+    neighbor.x = c.x + 1;
+    neighbor.y = c.y;
+    neighbor.x = boundsCheck(neighbor.x, dimension);
+    neighbor.y = boundsCheck(neighbor.y, dimension);
+    neighbors.coordinates[3] = neighbor;
+
     return neighbors;
 }
             
