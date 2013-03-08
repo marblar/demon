@@ -11,6 +11,9 @@ struct Coordinate {
     int x,y;
     Coordinate(int x_, int y_) : x(x_), y(y_) {}
     Coordinate() : x(0), y(0) {}
+    bool operator==(Coordinate &rhs) {
+        return (x==rhs.x) && (y==rhs.y);
+    }
 };
 
 Coordinate makeCoordinate(int x, int y);
@@ -33,6 +36,9 @@ public:
         odd,
         even
     };
+    struct Neighbors {
+        Coordinate coordinates[4];
+    };
 private:
     //Avoid messing with this as much as possible
     char **cells;
@@ -41,12 +47,7 @@ private:
     TransitionRule transitions;
     unsigned char parity;
 protected:
-    struct Neighbors {
-        Coordinate coordinates[4];
-    };
-
     //Methods for accesing stuff:
-    Neighbors getNeighbors(Coordinate);
     char &getCell(Coordinate x);
     int countHigh(Neighbors);
     int countHighNeighbors(Coordinate);
@@ -79,6 +80,7 @@ public:
     gsl_rng *RNG;
 };
 
+IsingReservoir::Neighbors getNeighbors(Coordinate,int);
 
 #define CheckTransitionRuleError(expr,class) \
     if (!(expr)) { throw class(#expr); }

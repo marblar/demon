@@ -8,6 +8,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <set>
+#include <algorithm>
 
 #include "Ising.h"
 #include "Utilities.h"
@@ -124,6 +125,80 @@ BOOST_AUTO_TEST_SUITE(IsingUtilityTest)
 BOOST_AUTO_TEST_CASE( testNonbinaryParity ) {
     int inputState = ising::s(0,0,157);
     BOOST_REQUIRE(inputState == 1);
+}
+
+void requireNeighbor(Coordinate center,int dimension,Coordinate neighbor) {
+    IsingReservoir::Neighbors neighbors = getNeighbors(center, dimension);
+    bool found = false;
+    
+    for (int k=0; k<4; ++k) {
+        found = (neighbors.coordinates[k] == neighbor);
+    }
+    BOOST_CHECK(found);
+}
+
+BOOST_AUTO_TEST_CASE ( testGetNeighbors ) {
+    Coordinate c(10,10);
+    
+    requireNeighbor(c,
+                    20,
+                    Coordinate(10,11)
+                    );
+    
+    requireNeighbor(c,
+                    20,
+                    Coordinate(11,10)
+                    );
+    
+    requireNeighbor(c,
+                    20,
+                    Coordinate(9,10)
+                    );
+    
+    requireNeighbor(c,
+                    20,
+                    Coordinate(10,9)
+                    );
+}
+
+BOOST_AUTO_TEST_CASE( testTopEdgeNeighbor ) {
+    requireNeighbor(Coordinate(4,0),
+                    20,
+                    Coordinate(4,19)
+                    );
+}
+
+BOOST_AUTO_TEST_CASE( testBottomEdgeNeighbor ) {
+    requireNeighbor(Coordinate(4,12),
+                    13,
+                    Coordinate(4,0)
+                    );
+}
+
+BOOST_AUTO_TEST_CASE( testLeftEdgeNeighbor ) {
+    requireNeighbor(Coordinate(0,10),
+                    20,
+                    Coordinate(19,10)
+                    );
+}
+
+BOOST_AUTO_TEST_CASE( testRightEdgeNeighbor ) {
+    requireNeighbor(Coordinate(39,5),
+                    40,
+                    Coordinate(0,5)
+                    );
+}
+
+BOOST_AUTO_TEST_CASE( testCornerCase ) {
+    Coordinate center(0,0);
+    requireNeighbor(center,
+                    20,
+                    Coordinate(19,0)
+                    );
+    requireNeighbor(center,
+                    20,
+                    Coordinate(0,19)
+                    );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

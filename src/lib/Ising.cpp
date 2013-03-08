@@ -93,7 +93,7 @@ void IsingReservoir::clusterMethod() {
         currentCoord = workStack.top();
         char &currentCell = getCell(currentCoord);
         workStack.pop();
-        Neighbors neighbors = getNeighbors(currentCoord);
+        Neighbors neighbors = getNeighbors(currentCoord,isingSide);
         for (int k=0; k<4; k++) {
             Coordinate neighborCoord = neighbors.coordinates[k];
             char &neighborCell = getCell(neighborCoord);
@@ -168,7 +168,7 @@ int IsingReservoir::getEnergy(Coordinate c) {
 }
 
 int IsingReservoir::countHighNeighbors(Coordinate c) {
-    Neighbors neighbors = getNeighbors(c);
+    Neighbors neighbors = getNeighbors(c,isingSide);
     return countHigh(neighbors);
 }
 
@@ -190,8 +190,8 @@ int IsingReservoir::countHigh(Neighbors list) {
 }
 
 
-IsingReservoir::Neighbors IsingReservoir::getNeighbors(const Coordinate c){
-    Neighbors neighbors;
+IsingReservoir::Neighbors getNeighbors(const Coordinate c,int dimension){
+    IsingReservoir::Neighbors neighbors;
     for (int k = 0; k<4; k++) {
         Coordinate neighbor;
         switch (k) {
@@ -219,8 +219,8 @@ IsingReservoir::Neighbors IsingReservoir::getNeighbors(const Coordinate c){
                 assert(0 && "Unreachable.");
                 break;
         }
-        neighbor.x = boundsCheck(neighbor.x, isingSide);
-        neighbor.y = boundsCheck(neighbor.y, isingSide);
+        neighbor.x = boundsCheck(neighbor.x, dimension);
+        neighbor.y = boundsCheck(neighbor.y, dimension);
         neighbors.coordinates[k] = neighbor;
     }
     return neighbors;
