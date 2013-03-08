@@ -10,7 +10,8 @@ noinst_HEADERS = Stochastic.h \
                         Utilities.h \
                         InstrumentFactories.h \
                         clangomp.h \
-                        Measurement.h
+                        Measurement.h \
+			cli.h
 
 __top_builddir__src_libdemon_la_SOURCES = Stochastic.cpp \
                         Ising.cpp \
@@ -18,10 +19,14 @@ __top_builddir__src_libdemon_la_SOURCES = Stochastic.cpp \
                         System.cpp \
                         Utilities.cpp \
                         InstrumentFactories.cpp \
-                        Measurement.cpp
+                        Measurement.cpp \
+			cli.cpp
+
+__top_builddir__src_libdemon_la_CPPFLAGS = $(BOOST_CPPFLAGS)
 
 __top_builddir__src_libdemon_la_CXXFLAGS = $(GCOV_CFLAGS) \
-                        $(GSL_CFLAGS)
+			                        $(GSL_CFLAGS)
 
 __top_builddir__src_libdemon_la_LIBADD = $(GSL_LIBS) \
-                     $(GCOV_LIBS)
+						$(GCOV_LIBS) \
+						$(BOOST_PROGRAM_OPTIONS_LIB)
