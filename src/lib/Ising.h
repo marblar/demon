@@ -57,6 +57,7 @@ public:
     void isingStep(InteractionResult&);
     void wheelStep(InteractionResult&);
     void clusterMethod();
+    void metropolisAlgorithm();
     int totalEnergy();
     IsingReservoir(gsl_rng *RNG, Constants constants,
                    int IsingSide = 20, int clusters = 20,

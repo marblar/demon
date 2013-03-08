@@ -68,8 +68,14 @@ void IsingReservoir::isingStep(InteractionResult &result) {
 }
 
 void IsingReservoir::reset() {
-    for (int k = 0; k<clusters; k++) {
-        clusterMethod();
+    if (constants.getEpsilon()<.7) {
+        for (int k = 0; k<clusters; k++) {
+            clusterMethod();
+        }
+    } else {
+        for (int k = 0; k<clusters; ++k) {
+            metropolisAlgorithm();
+        }
     }
 }
 
@@ -107,6 +113,28 @@ void IsingReservoir::clusterMethod() {
         assert(workStack.size()<SQUARED((unsigned)isingSide));
     };
     
+}
+
+void IsingReservoir::metropolisAlgorithm() {
+    Coordinate coord;
+    coord.x = (int)gsl_rng_uniform_int(RNG,isingSide);
+    coord.y = (int)gsl_rng_uniform_int(RNG,isingSide);
+    
+    char &cell = getCell(coord);
+    
+    int dE = 0;
+    if (cell == 0) {
+        dE = 4 - 2 * countHighNeighbors(coord);
+    } else {
+        //dE = 4 - 2 * (4 - countHigh(neighbors));
+        //dE = 4 - 8 + 2 * countHigh(neighbors);
+        dE = 2 * countHighNeighbors(coord) - 4;
+    }
+    
+    if ( exp(constants.getBeta() * dE) < gsl_rng_uniform(RNG) ) {
+        char &cell = getCell(coord);
+        cell = (cell + 1) % 2;
+    }
 }
 
 void IsingReservoir::wheelStep(InteractionResult &result) {
