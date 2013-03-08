@@ -12,6 +12,15 @@
 
 Reservoir::InteractionResult StochasticReservoir::interactWithBit(int oldBit) {
     InteractionResult result;
+    if (constants.getTau()<=0) {
+        throw InvalidTauError("Tau must be a positive floating point number.");
+    }
+    if (constants.getEpsilon()< 0 || constants.getEpsilon()>1) {
+        throw InvalidEpsilonError("Epsilon \\not\\in [0,1]");
+    }
+    if (constants.getDelta()<.50 || constants.getDelta()>1.0) {
+        throw InvalidDeltaError("Delta must be \\in [.5,1]");
+    }
     
     if (currentState->bit != oldBit) {
         currentState=currentState->bitFlipState;
@@ -51,7 +60,7 @@ Reservoir::InteractionResult StochasticReservoir::interactWithBit(int oldBit) {
 }
 
 StochasticReservoir::StochasticReservoir(gsl_rng *RNG, Constants constants) :
-        Reservoir(constants) {
+Reservoir(constants) {
     this->RNG = RNG;
 }
 

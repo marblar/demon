@@ -30,33 +30,40 @@ BOOST_AUTO_TEST_CASE( testInteractBit ) {
 }
 
 BOOST_AUTO_TEST_CASE ( testInvalidEpsilon ) {
-    c.setEpsilon(1.01);
-    StochasticReservoir *res;
-    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidEpsilonError);
-    delete res;
-    c.setEpsilon(-0.01);
-    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidEpsilonError);
-    delete res;
+    c.setEpsilon(1.05);
+    StochasticReservoir res(rng,c);
+    BOOST_CHECK_THROW(res.interactWithBit(1), InvalidEpsilonError);
+    
+    c.setEpsilon(-0.05);
+    StochasticReservoir res2(rng,c);
+    BOOST_CHECK_THROW(res2.interactWithBit(1), InvalidEpsilonError);
 }
 
 BOOST_AUTO_TEST_CASE ( testInvalidTau ) {
     c.setTau(-1);
-    StochasticReservoir *res;
-    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidTauError);
-    delete res;
+    StochasticReservoir res(rng,c);
+    BOOST_CHECK_THROW(res.interactWithBit(1), InvalidTauError);
     c.setTau(0);
-    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidTauError);
-    delete res;
+    StochasticReservoir res2(rng,c);
+    BOOST_CHECK_THROW(res2.interactWithBit(1), InvalidTauError);
 }
 
 BOOST_AUTO_TEST_CASE( testInvalidDelta ) {
-    c.setDelta(.49);
-    StochasticReservoir *res;
-    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidDeltaError);
-    delete res;
+    c.setEpsilon(.5);
+    c.setDelta(.47);
+    StochasticReservoir res(rng,c);
+    BOOST_CHECK_THROW(res.interactWithBit(1), InvalidDeltaError);
+    
     c.setDelta(1.01);
-    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidDeltaError);
-    delete res;
+    StochasticReservoir res2(rng,c);
+    BOOST_CHECK_THROW(res2.interactWithBit(1), InvalidDeltaError);
+}
+
+BOOST_AUTO_TEST_CASE ( validEpsilon ) {
+    // Regression: Make sure e=0 is still valid.
+    c.setEpsilon(0);
+    StochasticReservoir res(rng,c);
+    BOOST_CHECK_NO_THROW(res.interactWithBit(1));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

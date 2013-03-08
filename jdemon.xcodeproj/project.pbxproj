@@ -28,13 +28,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4D28A4B316D66FB90019141B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4DD182E61605213000353837 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 4D28A4A216D66DC40019141B;
-			remoteInfo = libjdemon;
-		};
 		4D917D7416E0DE99002ADE1E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4DD182E61605213000353837 /* Project object */;
@@ -240,7 +233,6 @@
 			buildToolPath = /usr/bin/make;
 			buildWorkingDirectory = "$(SOURCE_ROOT)/build/";
 			dependencies = (
-				4D28A4B416D66FB90019141B /* PBXTargetDependency */,
 			);
 			name = jdemon;
 			passBuildSettingsInEnvironment = 1;
@@ -335,11 +327,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4D28A4B416D66FB90019141B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 4D28A4A216D66DC40019141B /* libjdemon */;
-			targetProxy = 4D28A4B316D66FB90019141B /* PBXContainerItemProxy */;
-		};
 		4D917D7516E0DE99002ADE1E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4D28A4A216D66DC40019141B /* libjdemon */;
