@@ -29,8 +29,34 @@ BOOST_AUTO_TEST_CASE( testInteractBit ) {
     BOOST_REQUIRE(!result.bit);
 }
 
-BOOST_AUTO_TEST_CASE ( testInvalidParameters ) {
-    
+BOOST_AUTO_TEST_CASE ( testInvalidEpsilon ) {
+    c.setEpsilon(1.01);
+    StochasticReservoir *res;
+    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidEpsilonError);
+    delete res;
+    c.setEpsilon(-0.01);
+    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidEpsilonError);
+    delete res;
+}
+
+BOOST_AUTO_TEST_CASE ( testInvalidTau ) {
+    c.setTau(-1);
+    StochasticReservoir *res;
+    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidTauError);
+    delete res;
+    c.setTau(0);
+    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidTauError);
+    delete res;
+}
+
+BOOST_AUTO_TEST_CASE( testInvalidDelta ) {
+    c.setDelta(.49);
+    StochasticReservoir *res;
+    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidDeltaError);
+    delete res;
+    c.setDelta(1.01);
+    BOOST_CHECK_THROW(res = new StochasticReservoir(rng,c), InvalidDeltaError);
+    delete res;
 }
 
 BOOST_AUTO_TEST_SUITE_END()
