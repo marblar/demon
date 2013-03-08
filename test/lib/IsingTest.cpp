@@ -133,6 +133,9 @@ void requireNeighbor(Coordinate center,int dimension,Coordinate neighbor) {
     
     for (int k=0; k<4; ++k) {
         found = (neighbors.coordinates[k] == neighbor);
+        if (found) {
+            break;
+        }
     }
     BOOST_CHECK(found);
 }
