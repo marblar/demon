@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     experiment.sfactory=sFactory;
     experiment.rfactory=rFactory;
     
-    for (int k=world.rank(); k<iterations; k+=world.size()) {
+    for (int k=world.rank(); k<dimension*dimension; k+=world.size()) {
         MeasurementResult result = experiment.performIteration(k);
         printf("%s\n",outputString(result).c_str());
     }
