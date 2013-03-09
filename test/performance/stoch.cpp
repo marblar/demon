@@ -1,14 +1,24 @@
 #include <boost/test/unit_test.hpp>
-
 #include "ReservoirBenchmark.h"
 #include "Stochastic.h"
+using namespace boost::unit_test;
 
-BOOST_AUTO_TEST_SUITE(IsingBenchmark);
-
-BOOST_AUTO_TEST_CASE( performMeasurement ) {
+void performMeasurement() {
     int iterations = 10000;
     ReservoirFactory *rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
     reservoirBenchmark(rFactory,iterations);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+
+bool init_function() {
+    for (int k=0; k<5; ++k) {
+        framework::master_test_suite().add(BOOST_TEST_CASE(&performMeasurement),0,60);
+    }
+    framework::master_test_suite().p_name.value = "StochBenchmark";
+    return true;
+}
+
+int main( int argc, char* argv[] )
+{
+    return ::boost::unit_test::unit_test_main( &init_function, argc, argv );
+}
