@@ -52,6 +52,7 @@ struct Experiment {
     SystemFactory *sfactory;
     typedef std::pair<int,int> range;
     void performWork(range work);
+    MeasurementResult performIteration(int k);
     void performMeasurement();
 };
 

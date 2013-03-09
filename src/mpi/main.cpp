@@ -21,54 +21,22 @@ int main(int argc, char* argv[])
     const int iterations = 1000;
     
     gethostname(hostname,255);
-    printf("Hello world from host %s.\n",hostname);
-    if (world.rank() == 0) {
-        mpi::request reqs[1];
-        int currentPosition = 0;
-        while (currentPosition<dimension*dimension) {
-            world.recv(mpi::any_source, 1, requester);
-            if (requester) {
-                // TODO: This too would make an awesome iterator
-                Experiment::range work;
-                int remaining = dimension*dimension - currentPosition;
-                int chunkSize = remaining/world.size() + 1;
-                work.first = currentPosition;
-                work.second = currentPosition + chunkSize;
-                currentPosition += chunkSize + 1;
-                world.send(requester, 1, work);
-            }
-        }
-        std::set<int> notFinished;
-        for(int k=1; k<world.size(); k++) {
-            notFinished.insert(k);
-        }
-        while (!notFinished.empty()) {
-            world.recv(mpi::any_source, 1, requester);
-            if (requester) {
-                Experiment::range work(-1,0);
-                world.send(requester,1,work);
-                notFinished.erase(requester);
-            }
-        }
-        std::clog<<"Master finished.\n";
-    } else {
-        ReservoirFactory *rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
-        SystemFactory *sFactory = new BinomialSystemFactory;
-        Experiment::range work;
-        Experiment experiment;
-        experiment.iterations = iterations;
-        experiment.dimension = dimension;
-        experiment.sfactory=sFactory;
-        experiment.rfactory=rFactory;
-        
-        world.send(0, 1, world.rank());
-        world.recv(0, 1, work);
-        do {
-            experiment.performWork(work);
-            world.send(0, 1, world.rank());
-            world.recv(0, 1, work);
-        } while(work.first!=-1);
-        std::clog<<"Node "<<world.rank()<<" finished.\n";
+    std::clog << "Hello world from host " << hostname << std::endl;
+
+    ReservoirFactory *rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
+    SystemFactory *sFactory = new BinomialSystemFactory;
+    Experiment::range work;
+    Experiment experiment;
+    experiment.iterations = iterations;
+    experiment.dimension = dimension;
+    experiment.sfactory=sFactory;
+    experiment.rfactory=rFactory;
+    
+    for (int k=world.rank(); k<iterations; k+=world.size()) {
+        MeasurementResult result = experiment.performIteration(k);
+        printf("%s\n",outputString(result).c_str());
     }
+    
+    std::clog<<"Node "<<world.rank()<<" finished.\n";
     return 0;
 }

@@ -120,15 +120,19 @@ void Experiment::performWork(Experiment::range work) {
     // TODO: This whole class be turned into a result iterator
     //    so that we can test it.
     for (int k=work.first; k!=work.second; ++k) {
-        constants.setEpsilon((k % dimension)/(double)(dimension));
-        constants.setDelta(.5 + .5*(k / dimension)/(double)(dimension));
-        constants.setTau(1);
-        constants.setNbits(10);
-        Measurement measurement(constants,iterations,rfactory,sfactory);
-        MeasurementResult &result = measurement.getResult();
+        MeasurementResult result = performIteration(k);
         printf("%s\n",outputString(result).c_str());
     }
+}
 
+MeasurementResult Experiment::performIteration(int k) {
+    Constants constants;
+    constants.setEpsilon((k % dimension)/(double)(dimension));
+    constants.setDelta(.5 + .5*(k / dimension)/(double)(dimension));
+    constants.setTau(1);
+    constants.setNbits(10);
+    Measurement measurement(constants,iterations,rfactory,sfactory);
+    return measurement.getResult();
 }
 
 Measurement::Measurement(Constants _c, int _it, ReservoirFactory *_rf,
