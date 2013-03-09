@@ -2,5 +2,5 @@
 autoreconf --install
 mkdir -p build
 cd build
-../configure
+../configure --cache-file=$HOME/demon-cache
 make check
