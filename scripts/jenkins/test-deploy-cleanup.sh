@@ -1,2 +1,2 @@
 #!/bin/sh
-starcluster stop -c $BUILD_TAG
+starcluster terminate -c $BUILD_TAG
