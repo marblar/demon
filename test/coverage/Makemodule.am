@@ -1,0 +1,6 @@
+coverage.xml : check
+	gcovr --root=src -x -o test/coverage.xml
+
+coverage : coverage.xml
+
+.PHONY=coverage

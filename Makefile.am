@@ -1,9 +1,5 @@
-if DEMON_GCOV_ENABLED
-COVERAGE_DIR=coverage
-endif
-
 AUTOMAKE_OPTIONS = foreign
-SUBDIRS = src test $(COVERAGE_DIR)
+SUBDIRS = src test
 ACLOCAL_AMFLAGS = -I m4
 AM_CXXFLAGS = -g -O3 -Wall 
 AM_CPPFLAGS = -I${top_srcdir}/src
@@ -20,6 +16,7 @@ clean-local:
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version  
 
-coverage : all check
-	make -C coverage coverage
+if DEMON_GCOV_ENABLED
+include test/coverage/Makemodule.am
+endif
 
