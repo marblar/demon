@@ -122,6 +122,7 @@ Makefile.in
 .project
 .settings
 .version
+coverage.xml
 autom4te.cache
 build-aux
 config.h.in
