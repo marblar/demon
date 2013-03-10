@@ -1,5 +1,5 @@
 coverage.xml : check
-	gcovr --root=src -x -o test/coverage.xml
+	gcovr --root=${top_srcdir}/src/lib -x -o test/coverage.xml
 
 coverage : coverage.xml
 
