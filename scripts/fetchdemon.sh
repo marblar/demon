@@ -5,4 +5,4 @@ mkdir -p build
 cd build
 ../configure
 make
-qrsh -b y -cwd -pe orte 2 mpirun jdemon-mpi
+qrsh -b y -cwd -pe orte 2 mpirun jdemon-mpi --iterations 1000
