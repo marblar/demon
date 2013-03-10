@@ -2,7 +2,10 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT([demon],[0.1],[pub@mblar.us])
+AC_INIT([jdemon],
+         m4_esyscmd([build-aux/git-version-gen .tarball-version]),                                   
+         [pub@mblar.us])
+
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.11 foreign no-define silent-rules])
 AC_CONFIG_SRCDIR([src/lib/Reservoir.cpp])

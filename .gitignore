@@ -121,6 +121,7 @@ Makefile.in
 .cproject
 .project
 .settings
+.version
 autom4te.cache
 build-aux
 config.h.in
