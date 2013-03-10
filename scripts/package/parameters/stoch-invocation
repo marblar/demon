@@ -1,1 +1,1 @@
-ARGS=--stoch -n 32768
+ARGS=--stoch -n 262144 
