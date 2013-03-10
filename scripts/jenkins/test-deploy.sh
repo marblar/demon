@@ -2,8 +2,8 @@
 
 # Test the URL before we start the cluster.
 
-DOWNSTREAM_URL=`curl $JENKINS_URL/job/package-demon/api/xml?depth=1&xpath=/freeStyleProject/build%5Baction/cause/upstreamProject=%22$UPSTREAM_JOB_NAME%22%20and%20action/cause/upstreamBuild=$UPSTREAM_BUILD_ID%5D/url/text()`
-DOWNSTREAM_FILENAME=`curl $JENKINS_URL/job/package-demon/api/xml?depth=1&xpath=/freeStyleProject/build%5Baction/cause/upstreamProject=%22$UPSTREAM_JOB_NAME%22%20and%20action/cause/upstreamBuild=$UPSTREAM_BUILD_ID%5D/artifact/fileName/text()`
+DOWNSTREAM_URL=`curl "$JENKINS_URL/job/package-demon/api/xml?depth=1&xpath=/freeStyleProject/build%5Baction/cause/upstreamProject=%22$UPSTREAM_JOB_NAME%22%20and%20action/cause/upstreamBuild=$UPSTREAM_BUILD_ID%5D/url/text()"`
+DOWNSTREAM_FILENAME=`curl "$JENKINS_URL/job/package-demon/api/xml?depth=1&xpath=/freeStyleProject/build%5Baction/cause/upstreamProject=%22$UPSTREAM_JOB_NAME%22%20and%20action/cause/upstreamBuild=$UPSTREAM_BUILD_ID%5D/artifact/fileName/text()"`
 TARBALL_URL=$DOWNSTREAM_URL/artifact/build/$DOWNSTREAM_FILENAME
 
 curl $TARBALL_URL | tar xz
