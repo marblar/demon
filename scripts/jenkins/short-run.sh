@@ -1,14 +1,23 @@
 #!/bin/sh
-
-# Fetches the only artifiact from the upstream job and pipe it into tar xz.
-# I hope it's a tarball.
-UPSTREAM_FILENAME=`curl "${JENKINS_URL}job/$UPSTREAM_BUILD_NAME/api/xml?depth=1&xpath=/freeStyleProject/build%5Bnumber=$UPSTREAM_BUILD_NUMBER%5D/artifact/relativePath/text()"`
-TARBALL_URL=${JENKINS_URL}job/$UPSTREAM_BUILD_NAME/$UPSTREAM_BUILD_NUMBER/artifact/$UPSTREAM_FILENAME
-curl $TARBALL_URL | tar xz
-
-cd jdemon-*
+cd $FOLDER
 mkdir -p build
 cd build
 ../configure --with-boost=$BOOST_ROOT
 make
-mpirun -np $NODE_FREE_PROCESSES jdemon-mpi $ARGS
+
+INVOCATION="mpirun -np 8 jdemon-mpi --stoch -n 262144"
+OUTPUT_FILE=stoch-result.csv
+PLOT_SCRIPT=../scripts/plot/3dscatter.py
+
+# Perform the stochastic run
+$INVOCATION | tee $OUTPUT_FILE
+python $PLOT_SCRIPT "${FOLDER}:$INVOCATION"  < $OUTPUT_FILE
+mv plot.png ising-plot.png
+
+INVOCATION="mpirun -np 8 jdemon-mpi --ising -n 4096 -d 20 --clusters 20"
+OUTPUT_FILE=ising-result.csv
+
+#Perform the ising run
+$INVOCATION | tee $OUTPUT_FILE
+python $PLOT_SCRIPT "${FOLDER}:$INVOCATION" < $OUTPUT_FILE
+mv plot.png stoch-plot.png
