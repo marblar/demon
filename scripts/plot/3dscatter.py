@@ -57,18 +57,18 @@ m = cm.ScalarMappable(cmap=RYB)
 m.set_array(col)
 fig.colorbar(m,boundaries=numpy.arange(0,2,.01),values=numpy.array(map(colorBy,drange(0,2,.01))[:-1]))
 
-ax.set_xlim(.5,1)
-ax.set_ylim(0,1)
-ax.set_zlim(0,5)
+ax.set_xlim3d(.5,1)
+ax.set_ylim3d(0,1)
+ax.set_zlim3d(0,5)
 
 ax.set_xlabel(u"\u2202")
 ax.set_ylabel(u"\u0395")
 ax.set_zlabel('J')
 
 print "Axes:"
-print "%s: (%s)" % (header[0],ax.get_xlim())
-print "%s: (%s)" % (header[1],ax.get_ylim())
-print "%s: (%s)" % (header[2],ax.get_zlim())
+print "%s: (%s)" % (header[0],ax.get_xlim3d())
+print "%s: (%s)" % (header[1],ax.get_ylim3d())
+print "%s: (%s)" % (header[2],ax.get_zlim3d())
 #fig.show()
 #import time
 #time.sleep(10)
