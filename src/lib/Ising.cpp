@@ -151,7 +151,7 @@ void IsingReservoir::wheelStep(InteractionResult &result) {
     CheckTransitionRuleError(transitions.count(currentState),
                              EmptyTransitionRuleError);
     
-    TransitionTable currentTable = transitions[currentState];
+    TransitionTable &currentTable = transitions[currentState];
     SystemState *nextState = currentTable[inputState];
     
     CheckTransitionRuleError(currentTable.size() == 8 &&
