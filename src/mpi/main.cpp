@@ -10,6 +10,16 @@
 #include "Measurement.h"
 #include "cli.h"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+
+#ifndef HAVE_CONFIG_H
+#define PACKAGE_STRING UNKNOWN
+#define PACKAGE_VERSION UNKNOWN
+#endif
+
 namespace mpi = boost::mpi;
 namespace opt = boost::program_options;
 
@@ -63,12 +73,23 @@ int main(int argc, char* argv[]) {
     char hostname[256];
     int requester;
     
-    gethostname(hostname,255);
-    std::clog << "Hello world from host " << hostname << std::endl;
-    
-    if(world.rank()==0) {
-        std::cout << outputHeader() << std::endl;
+    if (world.rank()==0) {
+        std::clog << "Running v" << PACKAGE_VERSION << " on " << world.size()
+                    << " nodes." << std::endl;
+        std::clog << (double)(dimension*dimension*iterations)/world.size()
+                    << " simulations per node." << std::endl;
+        printf("%s\n",outputHeader().c_str());
     }
+    
+    world.barrier();
+    
+    gethostname(hostname,255);
+    std::clog << "Hello world from host "
+                << hostname
+                << " (rank "
+                << world.rank()
+                << ")"
+                << std::endl;
     
     Experiment::range work;
     Experiment experiment;
@@ -82,6 +103,6 @@ int main(int argc, char* argv[]) {
         printf("%s\n",outputString(result).c_str());
     }
     
-    std::clog<<"Node "<<world.rank()<<" finished.\n";
+    std::clog<<"Rank "<< world.rank()<<" finished.\n";
     return 0;
 }
