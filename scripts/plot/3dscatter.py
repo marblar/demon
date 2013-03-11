@@ -23,6 +23,7 @@ args = parser.parse_args()
 
 reader = csv.reader(stdin)
 values = itertools.chain(reader)
+invocation = values.next()
 header = values.next()
 
 x, y, z = [], [], []
@@ -46,7 +47,7 @@ def drange(start, stop, step):
 col = numpy.array(map(RYB,map(colorBy,z)))
 
 fig = plt.figure(figsize=(10,5))
-fig.suptitle(args.name,fontsize=14,fontweight='bold')
+fig.suptitle(invocation,fontsize=14,fontweight='bold')
 ax = fig.add_subplot(111, projection='3d')
 
 ax.set_title('<J>=%s' % round(numpy.mean(z),2),position=(0,0),ha='center')
@@ -75,4 +76,4 @@ print "%s: (%s)" % (header[2],ax.get_zlim3d())
 
 
 
-fig.savefig("plot.png")
+fig.savefig(args.name)

@@ -74,6 +74,11 @@ int main(int argc, char* argv[]) {
     int requester;
     
     if (world.rank()==0) {
+        std::string args;
+        for (int k=1; k!=argc; ++k) {
+            args += argv[k];
+        }
+        printf("%s%s\n",PACKAGE_STRING,args.c_str());
         std::clog << "Running v" << PACKAGE_VERSION << " on " << world.size()
                     << " nodes." << std::endl;
         std::clog << (double)(dimension*dimension*iterations)/world.size()

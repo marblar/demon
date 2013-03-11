@@ -11,13 +11,11 @@ PLOT_SCRIPT=../scripts/plot/3dscatter.py
 
 # Perform the stochastic run
 $INVOCATION | tee $OUTPUT_FILE
-python $PLOT_SCRIPT "${FOLDER}:$INVOCATION"  < $OUTPUT_FILE
-mv plot.png ising-plot.png
+python $PLOT_SCRIPT stoch-plot.png  < $OUTPUT_FILE
 
 INVOCATION="mpirun -np 8 jdemon-mpi --ising -n 4096 -d 20 --clusters 20"
 OUTPUT_FILE=ising-result.csv
 
 #Perform the ising run
 $INVOCATION | tee $OUTPUT_FILE
-python $PLOT_SCRIPT "${FOLDER}:$INVOCATION" < $OUTPUT_FILE
-mv plot.png stoch-plot.png
+python $PLOT_SCRIPT ising-plot.png < $OUTPUT_FILE
