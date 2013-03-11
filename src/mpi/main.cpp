@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
     
     verbose = vmap.count("verbose");
     
-    int iterations = vmap["iterations"].as<int>();
+    size_t iterations = vmap["iterations"].as<size_t>();
     
     ReservoirFactory *rFactory = NULL;
     if ( vmap.count("ising") )  {
@@ -57,7 +57,6 @@ int main(int argc, char* argv[]) {
     
     int dimension = 50;
     const double tau = vmap["tau"].as<double>();
-
     
     mpi::environment env(argc, argv);
     mpi::communicator world;
@@ -75,8 +74,8 @@ int main(int argc, char* argv[]) {
     Experiment experiment;
     experiment.iterations = iterations;
     experiment.dimension = dimension;
-    experiment.sfactory=sFactory;
-    experiment.rfactory=rFactory;
+    experiment.sfactory = sFactory;
+    experiment.rfactory = rFactory;
     
     for (int k=world.rank(); k<dimension*dimension; k+=world.size()) {
         MeasurementResult result = experiment.performIteration(k);

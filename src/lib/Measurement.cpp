@@ -59,7 +59,7 @@ void Measurement::performMeasurement() {
         std::clog<<"Warning: small tau.\n";
     }
     
-    int first_pass_iterations = iterations;
+    size_t first_pass_iterations = iterations;
     const int &nbits = constants.getNbits();
     
     if (constants.getNbits()<=0) {
@@ -82,7 +82,7 @@ void Measurement::performMeasurement() {
     
     Reservoir *reservoir = rfactory->create(rng,constants);
     
-    for (int k=0; k<first_pass_iterations; ++k) {
+    for (size_t k=0; k<first_pass_iterations; ++k) {
         System *currentSystem = sfactory->create(rng, constants);
         currentSystem->evolveWithReservoir(reservoir);
         histogram[currentSystem->endingBitString]++;
@@ -90,13 +90,13 @@ void Measurement::performMeasurement() {
         reservoir->reset();
     }
     
-    for(int k=0; k<1<<nbits; k++) {
+    for(size_t k=0; k<1<<nbits; k++) {
         int setBits = bitCount(k,nbits);
         p[k] = gsl_ran_binomial_pdf(setBits, constants.getDelta(), nbits)/gsl_sf_choose(nbits,setBits);
         p_prime[k]=static_cast<long double>(histogram[k])/(first_pass_iterations);
     }
     
-    for(int k=0; k<iterations; k++) {
+    for(size_t k=0; k<iterations; k++) {
         System *currentSystem = sfactory->create(rng, constants);
         currentSystem->evolveWithReservoir(reservoir);
         long double J = calculateJ(*currentSystem, p, p_prime);

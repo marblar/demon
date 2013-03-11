@@ -46,7 +46,7 @@ public:
 };
 
 struct Experiment {
-    int iterations;
+    size_t iterations;
     int dimension;
     ReservoirFactory *rfactory;
     SystemFactory *sfactory;

@@ -14,7 +14,7 @@ namespace opt = boost::program_options;
 opt::options_description optionsDescription() {
     opt::options_description desc("Allowed options");
     desc.add_options()
-    ("iterations,n",opt::value<int>()->default_value(1<<16),
+    ("iterations,n",opt::value<size_t>()->default_value(1<<16),
      "Number of iterations.")
     ("help","Show help message")
     ("verbose,v", "Show extensive debugging info")
