@@ -59,7 +59,7 @@ fig.colorbar(m,boundaries=numpy.arange(0,2,.01),values=numpy.array(map(colorBy,d
 
 ax.set_xlim(.5,1)
 ax.set_ylim(0,1)
-ax.set_zlim(-1,5)
+ax.set_zlim(0,5)
 
 ax.set_xlabel(u"\u2202")
 ax.set_ylabel(u"\u0395")
