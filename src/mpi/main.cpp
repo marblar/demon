@@ -67,6 +67,10 @@ int main(int argc, char* argv[]) {
     gethostname(hostname,255);
     std::clog << "Hello world from host " << hostname << std::endl;
     
+    if(world.rank()==0) {
+        std::cout << outputHeader() << std::endl;
+    }
+    
     Experiment::range work;
     Experiment experiment;
     experiment.iterations = iterations;
