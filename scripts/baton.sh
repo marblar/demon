@@ -10,6 +10,6 @@ make
 PROCESSES=$1
 shift
 qrsh -b y -cwd -pe orte $PROCESSES mpirun jdemon-mpi $@ | tee result.csv
-python ../scripts/plot/3dscatter.py plot.pn < result.csv
+python ../scripts/plot/3dscatter.py plot.png < result.csv
 mv result.csv ../..
 mv plot.png ../..
