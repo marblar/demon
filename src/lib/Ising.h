@@ -7,6 +7,11 @@
 #include "Reservoir.h"
 #include "InstrumentFactories.h"
 
+struct Coordinate;
+// TODO: Encapsulate me!
+typedef std::map<char,SystemState *> TransitionTable;
+typedef std::map<SystemState *, TransitionTable> TransitionRule;
+
 struct Coordinate {
     int x,y;
     Coordinate(int x_, int y_) : x(x_), y(y_) {}
@@ -16,17 +21,12 @@ struct Coordinate {
     }
 };
 
-// TODO: Encapsulate me!
-typedef std::map<char,SystemState *> TransitionTable;
-typedef std::map<SystemState *, TransitionTable> TransitionRule;
-
+TransitionRule defaultTransitionRule();
 
 namespace ising {
     int s(char x,char y,char z);
     int boundsCheck(int x, const int max);
 }
-
-TransitionRule defaultTransitionRule();
 
 class IsingReservoir : public Reservoir {
 public:

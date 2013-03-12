@@ -6,7 +6,8 @@ demoncore_SOURCES = SystemTest.cpp \
 			MeasurementTest.cpp \
 			IsingTest.cpp \
 			StochTest.cpp \
-			core.cpp
+			core.cpp \
+			IsingGridTest.cpp
 
 demoncore_CXXFLAGS = -I${top_srcdir}/src/lib \
 			$(CPPUNIT_CFLAGS) \

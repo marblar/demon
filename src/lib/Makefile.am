@@ -11,7 +11,8 @@ noinst_HEADERS = Stochastic.h \
                         InstrumentFactories.h \
                         clangomp.h \
                         Measurement.h \
-			cli.h
+			cli.h \
+			IsingGrid.h
 
 __top_builddir__src_libdemon_la_SOURCES = Stochastic.cpp \
                         Ising.cpp \
@@ -20,7 +21,8 @@ __top_builddir__src_libdemon_la_SOURCES = Stochastic.cpp \
                         Utilities.cpp \
                         InstrumentFactories.cpp \
                         Measurement.cpp \
-			cli.cpp
+			cli.cpp \
+			IsingGrid.cpp
 
 __top_builddir__src_libdemon_la_CPPFLAGS = $(BOOST_CPPFLAGS)
 
