@@ -10,7 +10,8 @@
 #define __jdemon__IsingGrid__
 
 #include <iterator>
-#include <boost/
+#include <stdexcept>
+#include <string>
 
 class IsingIterator;
 class IsingCell;
@@ -43,7 +44,7 @@ public:
 
 class InvalidCellValue : public std::runtime_error {
 public:
-    InvalidCellValue() : std::runtime_error("Tried to set cell to invalid value.") {}
+    InvalidCellValue() : std::runtime_error(std::string("Tried to set cell to invalid value.")) {}
 };
 
 #endif /* defined(__jdemon__IsingGrid__) */
