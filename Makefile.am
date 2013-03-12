@@ -10,9 +10,6 @@ BUILT_SOURCES = $(top_srcdir)/.version
 $(top_srcdir)/.version:                                                                             
 	echo $(VERSION) > $@-t && mv $@-t $@
 
-clean-local:
-	-rm .version
-
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version  
 
