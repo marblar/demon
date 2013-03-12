@@ -16,8 +16,6 @@ struct Coordinate {
     }
 };
 
-Coordinate makeCoordinate(int x, int y);
-
 // TODO: Encapsulate me!
 typedef std::map<char,SystemState *> TransitionTable;
 typedef std::map<SystemState *, TransitionTable> TransitionRule;
