@@ -38,13 +38,12 @@ void IsingReservoir::isingStep(InteractionResult &result) {
     Grid::iterator it = currentStepType ? \
         grid.oddIterator() : grid.evenIterator();
     for (;it!=grid.endIterator(); ++it) {
-        Cell *cell = *it;
-        int energy = (int)cell->getEnergy();
-        size_t neighborSize = cell->getNeighbors().size();
+        int energy = (int)it->getEnergy();
+        size_t neighborSize = it->getNeighbors().size();
         if (neighborSize-energy == energy) {
-            cell->toggle();
+            it->toggle();
         }
-        parity += cell->getValue();
+        parity += it->getValue();
     }
     currentStepType = (currentStepType == odd) ? even : odd;
 }
@@ -239,7 +238,7 @@ void isingEnergyDistribution(int d, int clusters) {
 int IsingReservoir::totalEnergy() {
     int energy = 0;
     for (Grid::iterator it = grid.allIterator(); it!=grid.endIterator(); ++it) {
-        energy+=(int)((*it)->getEnergy());
+        energy+=(int)it->getEnergy();
     }
     // This method overcounts by two, considering both the forward and
     // backword bonds.

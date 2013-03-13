@@ -70,7 +70,7 @@ namespace Ising {
         // ************************************************
         
     public:
-        class iterator : public boost::iterator_facade<iterator,Cell *,boost::forward_traversal_tag> {
+        class iterator : public boost::iterator_facade<iterator,Cell,boost::forward_traversal_tag> {
         public:
             iterator(bool shouldSkip = false, bool isEnd = false) :
             skips(shouldSkip), end(isEnd) {}
@@ -83,7 +83,7 @@ namespace Ising {
             Cell *referent;
             friend class boost::iterator_core_access;
             virtual void increment() { skips ? referent+=2 : ++referent; }
-            Cell * const & dereference() const { return referent; }
+            Cell & dereference() const { return *referent; }
             bool equal(iterator const& other) const {
                 return other.end ? referent>=other.referent : referent==other.referent;
             }
