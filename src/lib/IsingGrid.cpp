@@ -68,7 +68,8 @@ Grid::subset::iterator Grid::subset::begin() const {
 }
 
 Grid::subset::iterator Grid::subset::end() const {
-    return Grid::subset::iterator(last);
+    EvenCellOffset offsetPredicate(last);
+    return Grid::subset::iterator(offsetPredicate,Grid::iterator(last),Grid::iterator(last));
 }
 
 

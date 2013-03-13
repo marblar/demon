@@ -17,7 +17,6 @@
 		4D8B4B3F16E3FFD0008ECF75 /* InstrumentFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */; };
 		4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6D16E081B4002ADE1E /* SystemTest.cpp */; };
 		4DA3762D16E53CF700599AA1 /* IsingTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3762B16E53B8300599AA1 /* IsingTest.cpp */; };
-		4DA3763316E54C2A00599AA1 /* stoch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3763016E54C2A00599AA1 /* stoch.cpp */; };
 		4DA6055916EA4399000DC72A /* cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA6055716EA4399000DC72A /* cli.cpp */; };
 		4DA6055A16EA4399000DC72A /* cli.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA6055816EA4399000DC72A /* cli.h */; };
 		4DA8B74716EECA180072B82A /* IsingGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8B74516EEC9C80072B82A /* IsingGrid.cpp */; };
@@ -28,7 +27,6 @@
 		4DB2EE1016E7CAEF00D24443 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB2EE0F16E7BDD800D24443 /* main.cpp */; };
 		4DB2EE1216E8273B00D24443 /* MockObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DB2EE1116E8273B00D24443 /* MockObjects.h */; };
 		4DB2EE1616E9086300D24443 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB2EE1516E9086200D24443 /* core.cpp */; };
-		4DBF803316E44A6F002EB147 /* ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF803216E44A6F002EB147 /* ising.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -330,9 +328,7 @@
 				4DA8D48616E30F8400D659CF /* Measurement.cpp in Sources */,
 				4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */,
 				4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */,
-				4DBF803316E44A6F002EB147 /* ising.cpp in Sources */,
 				4DA3762D16E53CF700599AA1 /* IsingTest.cpp in Sources */,
-				4DA3763316E54C2A00599AA1 /* stoch.cpp in Sources */,
 				4D4F4DD816E662CA00B7F5A4 /* StochTest.cpp in Sources */,
 				4DB2EE1016E7CAEF00D24443 /* main.cpp in Sources */,
 				4DB2EE1616E9086300D24443 /* core.cpp in Sources */,

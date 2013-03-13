@@ -31,7 +31,7 @@ namespace Ising {
         class EvenPtrOffset {
             T * const base;
         public:
-            EvenPtrOffset(T const * const b) : base(b) {}
+            EvenPtrOffset(T * const b) : base(b) {}
             bool operator()(T *n) const {
                 if (n<base) {
                     throw std::runtime_error("EvenPtrOffset only valid for "
@@ -90,7 +90,7 @@ namespace Ising {
         };
         // ************************************************
     public:
-        const int &getDimension() const;
+        const int &getDimension() const { return dimension; }
         Grid(int dimension);
         size_t size() const { return dimension*dimension; }
         Cell * const operator[](size_t gridIndex) {
