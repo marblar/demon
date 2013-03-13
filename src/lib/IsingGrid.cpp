@@ -62,13 +62,13 @@ evens(cells.get(),cells.get()+size()), odds(cells.get()+1,cells.get()+size()) {
     }
 }
 
-Grid::subset::iterator Grid::subset::begin() {
+Grid::subset::iterator Grid::subset::begin() const {
     EvenCellOffset offsetPredicate(base);
     return iterator(offsetPredicate,Grid::iterator(base),Grid::iterator(last));
 }
 
-Grid::iterator Grid::subset::end() {
-    return Grid::iterator(last);
+Grid::subset::iterator Grid::subset::end() const {
+    return Grid::subset::iterator(last);
 }
 
 

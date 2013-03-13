@@ -112,8 +112,8 @@ namespace Ising {
             Cell * const last;
         public:
             typedef boost::filter_iterator<detail::EvenCellOffset,Grid::iterator> iterator;
-            iterator begin();
-            Grid::iterator end();
+            iterator begin() const;
+            iterator end() const;
             size_t size() { throw std::runtime_error("Grid::subset::size() is unimplemented"); }
             subset(Cell *b, Cell *l) : base(b), last(l) {}
         };
