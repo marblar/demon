@@ -32,6 +32,7 @@ namespace Ising {
         typedef boost::array<Cell*, 4> Neighbors;
         unsigned char &getValue();
         unsigned char setValue(const char &c);
+        void toggle() { setValue(value ^ 1); }
         const Neighbors getNeighbors() { return neighbors; }
     };
     
