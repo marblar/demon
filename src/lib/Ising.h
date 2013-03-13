@@ -6,20 +6,12 @@
 #include <map>
 #include "Reservoir.h"
 #include "InstrumentFactories.h"
+#include "IsingGrid.h"
 
 struct Coordinate;
 // TODO: Encapsulate me!
 typedef std::map<char,SystemState *> TransitionTable;
 typedef std::map<SystemState *, TransitionTable> TransitionRule;
-
-struct Coordinate {
-    int x,y;
-    Coordinate(int x_, int y_) : x(x_), y(y_) {}
-    Coordinate() : x(0), y(0) {}
-    bool operator==(Coordinate &rhs) {
-        return (x==rhs.x) && (y==rhs.y);
-    }
-};
 
 TransitionRule defaultTransitionRule();
 

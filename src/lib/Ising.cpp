@@ -11,16 +11,6 @@ namespace ising {
     int s(char x,char y,char z) {
         return (x<<2) + (y<<1) + (z & 1);
     }
-    
-    int boundsCheck(int x, const int max) {
-        if (x < 0) {
-            return max + x;
-        }
-        if (x >= max) {
-            return x-max;
-        }
-        return x;
-    }
 }
 
 using namespace ising;
