@@ -38,6 +38,8 @@ namespace Ising {
     class Grid {
         int dimension;
         boost::scoped_array<Cell> cells;
+        
+        // ***********************************************
         class Coordinate {
         protected:
             friend Grid;
@@ -57,6 +59,8 @@ namespace Ising {
             void setX(int x_) { x = boundsCheck(x_); }
             void setY(int y_) { y = boundsCheck(y_); }
         };
+        // ************************************************
+        
     public:
         typedef Cell* iterator;
         const int &getDimension() const;
