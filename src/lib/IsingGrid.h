@@ -78,7 +78,7 @@ namespace Ising {
             virtual void increment() { skips ? referent+=2 : ++referent; }
             Cell * const & dereference()  { return referent; }
             bool equal(iterator const& other) {
-                return other.end ? referent<other.referent : referent==other.referent;
+                return other.end ? referent>=other.referent : referent==other.referent;
             }
         };
         const int &getDimension() const;

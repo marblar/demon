@@ -110,6 +110,14 @@ BOOST_AUTO_TEST_CASE( testNeighborsTransitive ) {
     }
 }
 
+BOOST_AUTO_TEST_CASE( testEndIterator ) {
+    Cell *cells = new Cell[2];
+    Grid::iterator outOfBounds(cells + 1);
+    Grid::iterator end(cells,false,true);
+    BOOST_REQUIRE(outOfBounds==end);
+    delete  [] cells;
+}
+
 BOOST_AUTO_TEST_CASE( testSetValue ) {
     Cell cell;
     cell.setValue(0);
