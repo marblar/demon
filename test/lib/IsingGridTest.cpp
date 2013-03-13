@@ -13,57 +13,13 @@
 #include "IsingGrid.h"
 
 using namespace boost::unit_test;
-typedef boost::container::set<IsingCell> CellSet;
+using namespace Ising;
+typedef boost::container::set<Ising::Cell*> CellSet;
 
 struct IsingGridFixture {
-    IsingGrid grid;
+    Ising::Grid grid;
     IsingGridFixture() : grid(6) {}
 };
-
-void neighborsInfiniteLoopTest() {
-    IsingGridFixture f;
-    int count = 0;
-    for (IsingIterator it = f.grid.allIterator(); it!=f.grid.endIterator(); ++it) {
-        for (IsingIterator neighbor = it->neighborIterator(); neighbor!=f.grid.endIterator(); ++neighbor) {
-            ++count;
-        }
-    }
-    BOOST_REQUIRE_GT(count, 0);
-}
-
-void evenInfiniteLoopTest() {
-    IsingGridFixture f;
-    int count = 0;
-    for (IsingIterator it = f.grid.evenIterator(); it!=f.grid.endIterator(); ++it) {
-        ++count;
-    }
-    BOOST_REQUIRE_GT(count, 0);
-}
-
-void oddInfiniteLoopTest() {
-    IsingGridFixture f;
-    int count = 0;
-    for (IsingIterator it = f.grid.oddIterator(); it!=f.grid.endIterator(); ++it) {
-        ++count;
-    }
-    BOOST_REQUIRE_GT(count, 1);
-}
-
-test_suite*
-init_unit_test_suite( int argc, char* argv[] )
-{
-    test_suite* tests = framework::master_test_suite().get("DetailedIsingGridTests");
-    
-    test_suite* loopTests = BOOST_TEST_SUITE( IsingGridInfiniteLoopTests );
-    
-    loopTests->add( BOOST_TEST_CASE(&neighborsInfiniteLoopTest),0,1);
-    loopTests->add( BOOST_TEST_CASE(&evenInfiniteLoopTest),0,1);
-    loopTests->add( BOOST_TEST_CASE(&oddInfiniteLoopTest),0,1);
-    
-    tests.depends_on(loopTests);
-    framework::master_test_suite().add(loopTests);
-    return 0;
-}
 
 BOOST_FIXTURE_TEST_SUITE(DetailedIsingGridTest, IsingGridFixture)
 
@@ -84,7 +40,7 @@ BOOST_AUTO_TEST_CASE( testEvenOddIteratorsDisjoint ) {
 
 BOOST_AUTO_TEST_CASE( testEvenCellsCount ) {
     int count = 0;
-    for (IsingIterator it = grid.evenIterator(); grid!=grid.endIterator(); ++it) {
+    for (Grid::iterator it = grid.evenIterator(); it!=grid.endIterator(); ++it) {
         ++count;
     }
     BOOST_REQUIRE_EQUAL(count,grid.getDimension()*grid.getDimension()/2);
@@ -92,7 +48,7 @@ BOOST_AUTO_TEST_CASE( testEvenCellsCount ) {
 
 BOOST_AUTO_TEST_CASE( testOddCellsCount ) {
     int count = 0;
-    for (IsingIterator it = grid.oddIterator(); grid!=grid.endIterator(); ++it) {
+    for (Grid::iterator it = grid.oddIterator(); it!=grid.endIterator(); ++it) {
         ++count;
     }
     BOOST_REQUIRE_EQUAL(count,grid.getDimension()*grid.getDimension()/2);
@@ -100,7 +56,7 @@ BOOST_AUTO_TEST_CASE( testOddCellsCount ) {
 
 BOOST_AUTO_TEST_CASE( testAllCellsCount ) {
     int count = 0;
-    for (IsingIterator it = grid.allIterator(); grid!=grid.endIterator(); ++it) {
+    for (Grid::iterator it = grid.allIterator(); it!=grid.endIterator(); ++it) {
         ++count;
     }
     BOOST_REQUIRE_EQUAL(count, grid.getDimension()*grid.getDimension());
@@ -111,7 +67,7 @@ BOOST_AUTO_TEST_CASE( testAllCellsInEvenOdd ) {
     evenOddSet.insert(grid.evenIterator(), grid.endIterator());
     evenOddSet.insert(grid.oddIterator(),grid.endIterator());
     
-    allset.insert(grid.allIterator(),grid.endIterator());
+    allSet.insert(grid.allIterator(),grid.endIterator());
     for (CellSet::iterator it = allSet.begin(); it!=allSet.end(); ++it) {
         BOOST_REQUIRE(!evenOddSet.count(*it));
     }
@@ -122,9 +78,12 @@ BOOST_AUTO_TEST_CASE( testAllCellsInEvenOdd ) {
 }
 
 BOOST_AUTO_TEST_CASE( testNeighborCount ) {
-    for(IsingIterator it = grid.allIterator(); it!=grid.endIterator(); ++it) {
+    for(Grid::iterator it = grid.allIterator(); it!=grid.endIterator(); ++it) {
         int count = 0;
-        for (IsingIterator neighbor = it->neighborIterator(); it!=grid.endIterator(); ++it) {
+        Cell::Neighbors neighbors = it->getNeighbors();
+        for (Cell::Neighbors::iterator neighbor = neighbors.begin();
+             neighbor!=neighbors.end();
+             ++neighbor) {
             ++count;
         }
         BOOST_REQUIRE_EQUAL(count, 4);
@@ -136,21 +95,23 @@ BOOST_AUTO_TEST_CASE( testNoNeighborsInOdd ) {
 }
 
 BOOST_AUTO_TEST_CASE( testGetDimension ) {
-    IsingGrid grid(10);
+    Grid grid(10);
     BOOST_REQUIRE_EQUAL(grid.getDimension(),10);
 }
 
 BOOST_AUTO_TEST_CASE( testNeighborsTransitive ) {
-    for(IsingIterator it = grid.allIterator(); it!=grid.endIterator(); ++it) {
-        for (IsingIterator neighbor = it->neighborIterator(); it!=grid.endIterator(); ++it) {
-            int count = std::count(neighbor->neighborIterator(), grid.endIterator(), it);
+    for(Grid::iterator it = grid.allIterator(); it!=grid.endIterator(); ++it) {
+        Cell::Neighbors neighbors = it->getNeighbors();
+        for (Cell::Neighbors::iterator neighbor = neighbors.begin(); neighbor!=neighbors.end(); ++neighbor) {
+            Cell::Neighbors reverseNeighbors = (*neighbor)->getNeighbors();
+            long count = std::count(reverseNeighbors.begin(), reverseNeighbors.end(), *it);
             BOOST_REQUIRE_EQUAL(count, 1);
         }
     }
 }
 
 BOOST_AUTO_TEST_CASE( testSetValue ) {
-    IsingCell cell;
+    Cell cell;
     cell.setValue(0);
     BOOST_REQUIRE_EQUAL(cell.getValue(), 0);
     cell.setValue(1);

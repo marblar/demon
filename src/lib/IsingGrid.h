@@ -14,7 +14,7 @@
 #include <string>
 #include <boost/scoped_array.hpp>
 #include <boost/array.hpp>
-#include <boost/iterator_adaptors.hpp>
+#include <boost/iterator.hpp>
 
 namespace Ising {
     class Cell;
@@ -25,11 +25,11 @@ namespace Ising {
     class Cell {
         unsigned char value;
     protected:
-        typedef boost::array<Cell*, 4> Neighbors;
         friend Grid;
         boost::array<Cell*, 4> neighbors;
-        Cell() : value(0) { std::fill(neighbors.begin(), neighbors.end(), nullptr); }
     public:
+        Cell() : value(0) { std::fill(neighbors.begin(), neighbors.end(), nullptr); }
+        typedef boost::array<Cell*, 4> Neighbors;
         unsigned char &getValue();
         unsigned char setValue(const char &c);
         const Neighbors getNeighbors() { return neighbors; }
@@ -58,8 +58,15 @@ namespace Ising {
             void setY(int y_) { y = boundsCheck(y_); }
         };
     public:
+        typedef Cell* iterator;
         const int &getDimension() const;
         Grid(int dimension);
+        
+        //Iterators
+        iterator allIterator();
+        iterator evenIterator();
+        iterator oddIterator();
+        iterator endIterator() { return cells.get()+dimension*dimension; }
     };
     
     class InvalidCellValue : public std::runtime_error {
