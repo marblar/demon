@@ -14,6 +14,7 @@
 #include <string>
 #include <boost/scoped_array.hpp>
 #include <boost/array.hpp>
+#include <boost/iterator_adaptors.hpp>
 
 namespace Ising {
     class Cell;
@@ -26,7 +27,7 @@ namespace Ising {
     protected:
         typedef boost::array<Cell*, 4> Neighbors;
         friend Grid;
-        Neighbors neighbors;
+        boost::array<Cell*, 4> neighbors;
         Cell() : value(0) { std::fill(neighbors.begin(), neighbors.end(), nullptr); }
     public:
         unsigned char &getValue();

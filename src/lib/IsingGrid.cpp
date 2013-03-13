@@ -31,29 +31,25 @@ Coordinate::CNeighbors Coordinate::getNeighbors(){
 
 Grid::Grid(int dim) : dimension(dim) {
     cells.reset(new Ising::Cell[dimension*dimension]);
+    
+    // CNeighbors give the neighbors to a coordinate in coordinate space
+    // The function getGridIndex translate coordinate space to memory space
+    // Cell::Neighbors should give the neighbors to a cell in memory space
+    // This procedure boostraps the memory space using coordinate space.
     for (int k = 0; k!=dimension*dimension; ++k) {
         int x = k % dimension;
         int y = k / dimension;
         Coordinate currentCoord(x,y,dimension);
         Cell *cell = cells.get() + currentCoord.getGridIndex();
+        
         Coordinate::CNeighbors neighbors = currentCoord.getNeighbors();
+        Cell::Neighbors::iterator neighborReference = cell->neighbors.begin();
         for (Coordinate::CNeighbors::iterator it = neighbors.begin();
              it!=neighbors.end();
              ++it) {
-            // Fixup the reverse link in the first empty slot on the other side.
             Cell *neighbor = cells.get() + currentCoord.getGridIndex();
-            Cell::Neighbors reverseNeighbors = neighbor->neighbors;
-            Cell::Neighbors::iterator reverseLink = reverseNeighbors.begin();
-            for (; reverseLink != reverseNeighbors.end(); ++reverseLink) {
-                if (*reverseLink == nullptr) {
-                    break;
-                }
-            }
-            if (reverseLink != nullptr) {
-                throw std::runtime_error("Something's wrong with the neighbor"
-                                         " count, this should be unreachable.");
-            }
-            *reverseLink = cell;
+            *neighborReference = neighbor;
+            ++neighborReference;
         }
     }
 }
