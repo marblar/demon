@@ -19,8 +19,15 @@ int Grid::Coordinate::boundsCheck(int x) {
     return x;
 }
 
+void Cell::setValue(const char &c) {
+    if (value < 0 || value > 1) {
+        throw InvalidCellValue();
+    }
+    value = c;
+}
+
 Grid::Coordinate::CNeighbors Grid::Coordinate::getNeighbors(){
-    Coordinate::CNeighbors neighbors { {
+    Coordinate::CNeighbors neighbors = { {
         Coordinate(x,y+1,dimension),
         Coordinate(x,y-1,dimension),
         Coordinate(x+1,y,dimension),

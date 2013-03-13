@@ -31,8 +31,8 @@ namespace Ising {
     public:
         Cell() : value(0) { }
         typedef boost::array<Cell*, 4> Neighbors;
-        unsigned char &getValue();
-        unsigned char setValue(const char &c);
+        unsigned const char &getValue() { return value; }
+        void setValue(const char &c);
         void toggle() { setValue(value ^ 1); }
         Neighbors getNeighbors() { return neighbors; }
         long getEnergy();
