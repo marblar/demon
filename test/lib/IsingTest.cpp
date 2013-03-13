@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(IsingUtilityTest)
 
 BOOST_AUTO_TEST_CASE( testNonbinaryParity ) {
-    int inputState = ising::s(0,0,157);
+    int inputState = Ising::s(0,0,157);
     BOOST_REQUIRE(inputState == 1);
 }
 
