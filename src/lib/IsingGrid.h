@@ -35,7 +35,7 @@ namespace Ising {
         unsigned char setValue(const char &c);
         void toggle() { setValue(value ^ 1); }
         const Neighbors getNeighbors() { return neighbors; }
-        const long getEnergy();
+        const long getEnergy() const;
     };
     
     class InvalidGridIndex : public std::runtime_error {
