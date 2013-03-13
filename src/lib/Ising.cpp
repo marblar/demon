@@ -206,38 +206,6 @@ int IsingReservoir::countHigh(Neighbors list) {
     }
     return highCount;
 }
-
-
-IsingReservoir::Neighbors getNeighbors(const Coordinate c,int dimension){
-    IsingReservoir::Neighbors neighbors;
-    Coordinate neighbor;
-    
-    neighbor.x = c.x;
-    neighbor.y = c.y - 1;
-    neighbor.x = boundsCheck(neighbor.x, dimension);
-    neighbor.y = boundsCheck(neighbor.y, dimension);
-    neighbors.coordinates[0]=neighbor;
-    
-    neighbor.x = c.x;
-    neighbor.y = c.y + 1;
-    neighbor.x = boundsCheck(neighbor.x, dimension);
-    neighbor.y = boundsCheck(neighbor.y, dimension);
-    neighbors.coordinates[1]=neighbor;
-    
-    neighbor.x = c.x - 1;
-    neighbor.y = c.y;
-    neighbor.x = boundsCheck(neighbor.x, dimension);
-    neighbor.y = boundsCheck(neighbor.y, dimension);
-    neighbors.coordinates[2]=neighbor;
- 
-    neighbor.x = c.x + 1;
-    neighbor.y = c.y;
-    neighbor.x = boundsCheck(neighbor.x, dimension);
-    neighbor.y = boundsCheck(neighbor.y, dimension);
-    neighbors.coordinates[3] = neighbor;
-
-    return neighbors;
-}
             
 IsingReservoir::~IsingReservoir() {
     for (int k=0; k<this->isingSide; k++) {
