@@ -53,3 +53,11 @@ Grid::Grid(int dim) : dimension(dim) {
         }
     }
 }
+
+const long Cell::getEnergy() {
+    long e = 0;
+    for (Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
+        e+= (*it)->getEnergy();
+    }
+    return e;
+}

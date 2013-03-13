@@ -26,16 +26,16 @@ namespace Ising {
     class Cell {
         unsigned char value;
     protected:
-        friend Grid;
+        friend class Grid;
         boost::array<Cell*, 4> neighbors;
     public:
-        Cell() : value(0) { std::fill(neighbors.begin(), neighbors.end(), nullptr); }
+        Cell() : value(0) { }
         typedef boost::array<Cell*, 4> Neighbors;
         unsigned char &getValue();
         unsigned char setValue(const char &c);
         void toggle() { setValue(value ^ 1); }
         const Neighbors getNeighbors() { return neighbors; }
-        const long getEnergy() { return std::count(neighbors.begin(), neighbors.end(), value ^ 1); };
+        const long getEnergy();
     };
     
     class InvalidGridIndex : public std::runtime_error {
@@ -50,7 +50,7 @@ namespace Ising {
         // ***********************************************
         class Coordinate {
         protected:
-            friend Grid;
+            friend class Grid;
             int boundsCheck(int x);
             size_t getGridIndex() { return dimension * x + y; }
         private:
@@ -83,8 +83,8 @@ namespace Ising {
             Cell *referent;
             friend class boost::iterator_core_access;
             virtual void increment() { skips ? referent+=2 : ++referent; }
-            Cell * const & dereference()  { return referent; }
-            bool equal(iterator const& other) {
+            Cell * const & dereference() const { return referent; }
+            bool equal(iterator const& other) const {
                 return other.end ? referent>=other.referent : referent==other.referent;
             }
         };
