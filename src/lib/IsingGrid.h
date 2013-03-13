@@ -65,15 +65,21 @@ namespace Ising {
     public:
         class iterator : public boost::iterator_facade<iterator,Cell *,boost::forward_traversal_tag> {
         public:
-            iterator(bool shouldSkip = false) : skips(shouldSkip) {}
-            explicit iterator(Cell *n,bool shouldSkip = false) : skips(shouldSkip) {}
+            iterator(bool shouldSkip = false, bool isEnd = false) :
+            skips(shouldSkip), end(isEnd) {}
+            
+            explicit iterator(Cell *n,bool shouldSkip = false, bool isEnd = false) :
+            skips(shouldSkip), end(isEnd) {}
         private:
             bool skips;
+            bool end;
             Cell *referent;
             friend class boost::iterator_core_access;
             virtual void increment() { skips ? referent+=2 : ++referent; }
             Cell * const & dereference()  { return referent; }
-            bool equal(iterator const& other) { return referent==other.referent; }
+            bool equal(iterator const& other) {
+                return other.end ? referent<other.referent : referent==other.referent;
+            }
         };
         const int &getDimension() const;
         Grid(int dimension);
@@ -82,7 +88,7 @@ namespace Ising {
         iterator allIterator() { return iterator(cells.get()); }
         iterator evenIterator() { return iterator(cells.get(),true); }
         iterator oddIterator() { return iterator(cells.get()+1,true); }
-        iterator endIterator() { return iterator(cells.get()+dimension*dimension); }
+        iterator endIterator() { return iterator(cells.get()+dimension*dimension,false,true); }
     };
     
     class InvalidCellValue : public std::runtime_error {
