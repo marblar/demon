@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE( testAllCellsInEvenOdd ) {
 BOOST_AUTO_TEST_CASE( testNeighborCount ) {
     for(Grid::iterator it = grid.allIterator(); it!=grid.endIterator(); ++it) {
         int count = 0;
-        Cell::Neighbors neighbors = it->getNeighbors();
+        Cell::Neighbors neighbors = (*it)->getNeighbors();
         for (Cell::Neighbors::iterator neighbor = neighbors.begin();
              neighbor!=neighbors.end();
              ++neighbor) {
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE( testGetDimension ) {
 
 BOOST_AUTO_TEST_CASE( testNeighborsTransitive ) {
     for(Grid::iterator it = grid.allIterator(); it!=grid.endIterator(); ++it) {
-        Cell::Neighbors neighbors = it->getNeighbors();
+        Cell::Neighbors neighbors = (*it)->getNeighbors();
         for (Cell::Neighbors::iterator neighbor = neighbors.begin(); neighbor!=neighbors.end(); ++neighbor) {
             Cell::Neighbors reverseNeighbors = (*neighbor)->getNeighbors();
             long count = std::count(reverseNeighbors.begin(), reverseNeighbors.end(), *it);
