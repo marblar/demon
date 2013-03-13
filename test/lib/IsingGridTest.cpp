@@ -88,26 +88,27 @@ BOOST_AUTO_TEST_CASE( testAllCellsInEvenOdd ) {
     }
 }
 
-BOOST_AUTO_TEST_CASE( testNeighborCount ) {
+BOOST_AUTO_TEST_CASE( testUniqueNeighbors ) {
     size_t loops = 0;
     for(Grid::iterator it = grid.allIterator(); it!=grid.endIterator(); ++it) {
-        int count = 0;
-        size_t innerLoops = 0;
         Cell::Neighbors neighbors = (*it)->getNeighbors();
-        for (Cell::Neighbors::iterator neighbor = neighbors.begin();
-             neighbor!=neighbors.end();
-             ++neighbor) {
-            ++count;
-            ++innerLoops;
-            BOOST_REQUIRE_LE(innerLoops,neighbors.size());
-        }
+        CellSet neighborSet(neighbors.begin(),neighbors.end());
+        
+        BOOST_REQUIRE_EQUAL(neighborSet.size(), neighbors.size());
+        
+        // I wouldn't consider this an important unit test
+        // But we might want to know if this changed:
+        BOOST_REQUIRE_EQUAL(neighbors.size(), 4);
         BOOST_REQUIRE_LE(loops, grid.size());
-        BOOST_REQUIRE_EQUAL(count, 4);
     }
 }
 
 BOOST_AUTO_TEST_CASE( testNoNeighborsInOdd ) {
     
+}
+
+BOOST_AUTO_TEST_CASE( gridSize ) {
+    BOOST_REQUIRE_EQUAL(grid.size(),grid.getDimension()*grid.getDimension());
 }
 
 BOOST_AUTO_TEST_CASE( testGetDimension ) {
