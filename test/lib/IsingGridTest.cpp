@@ -104,7 +104,34 @@ BOOST_AUTO_TEST_CASE( testUniqueNeighbors ) {
 }
 
 BOOST_AUTO_TEST_CASE( testNoNeighborsInOdd ) {
+    CellSet evenNeighbors, evenCells;
+    CellSet oddNeighbors, oddCells;
+    size_t loopGuard = 0;
+    for (Grid::iterator it = grid.evenIterator(); it!=grid.endIterator(); ++it) {
+        ++loopGuard;
+        evenCells.insert(*it);
+        Cell::Neighbors neighbors = (*it)->getNeighbors();
+        evenNeighbors.insert(neighbors.begin(),neighbors.end());
+        BOOST_REQUIRE_LE(loopGuard, grid.size());
+    }
+    CellSet intersection;
+    std::set_intersection(evenNeighbors.begin(), evenNeighbors.end(), evenCells.begin(), evenCells.end(), intersection.begin(), std::less<Cell *>());
+    BOOST_REQUIRE_EQUAL(intersection.size(),0);
     
+    loopGuard = 0;
+    for (Grid::iterator it = grid.oddIterator(); it!=grid.endIterator(); ++it) {
+        ++loopGuard;
+        oddCells.insert(*it);
+        Cell::Neighbors neighbors = (*it)->getNeighbors();
+        oddNeighbors.insert(neighbors.begin(),neighbors.end());
+        BOOST_REQUIRE_LE(loopGuard, grid.size());
+    }
+    intersection.clear();
+    std::set_intersection(evenNeighbors.begin(), evenNeighbors.end(), evenCells.begin(), evenCells.end(), intersection.begin(), std::less<Cell*>());
+    BOOST_REQUIRE_EQUAL(intersection.size(),0);
+    
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(evenNeighbors.begin(), evenNeighbors.end(), oddCells.begin(), oddCells.end());
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(oddNeighbors.begin(), oddNeighbors.end(), evenCells.begin(), evenCells.end());
 }
 
 BOOST_AUTO_TEST_CASE( gridSize ) {
