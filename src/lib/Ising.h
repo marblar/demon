@@ -8,7 +8,6 @@
 #include "InstrumentFactories.h"
 #include "IsingGrid.h"
 
-struct Coordinate;
 // TODO: Encapsulate me!
 typedef std::map<char,SystemState *> TransitionTable;
 typedef std::map<SystemState *, TransitionTable> TransitionRule;

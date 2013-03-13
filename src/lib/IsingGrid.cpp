@@ -9,7 +9,7 @@
 #include "IsingGrid.h"
 using namespace Ising;
 
-int Coordinate::boundsCheck(int x) {
+int Grid::Coordinate::boundsCheck(int x) {
     if (x < 0) {
         return dimension + x;
     }
@@ -19,7 +19,7 @@ int Coordinate::boundsCheck(int x) {
     return x;
 }
 
-Coordinate::CNeighbors Coordinate::getNeighbors(){
+Grid::Coordinate::CNeighbors Grid::Coordinate::getNeighbors(){
     Coordinate::CNeighbors neighbors { {
         Coordinate(x,y+1,dimension),
         Coordinate(x,y-1,dimension),

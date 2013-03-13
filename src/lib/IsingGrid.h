@@ -38,6 +38,25 @@ namespace Ising {
     class Grid {
         int dimension;
         boost::scoped_array<Cell> cells;
+        class Coordinate {
+        protected:
+            friend Grid;
+            int boundsCheck(int x);
+            size_t getGridIndex() { return dimension * x + y; }
+        private:
+            typedef boost::array<const Coordinate, 4> CNeighbors;
+            int x,y, dimension;
+        public:
+            CNeighbors getNeighbors();
+            Coordinate(int x_, int y_,int dim) :
+            x(boundsCheck(x_)), y(boundsCheck(y_)), dimension(dim) {}
+            Coordinate(int dim) : x(0), y(0), dimension(dim) {}
+            bool operator==(Coordinate &rhs) { return (x==rhs.x) && (y==rhs.y); }
+            const int& getX() { return x; }
+            const int& getY() { return y; }
+            void setX(int x_) { x = boundsCheck(x_); }
+            void setY(int y_) { y = boundsCheck(y_); }
+        };
     public:
         const int &getDimension() const;
         Grid(int dimension);
@@ -46,26 +65,6 @@ namespace Ising {
     class InvalidCellValue : public std::runtime_error {
     public:
         InvalidCellValue() : std::runtime_error(std::string("Tried to set cell to invalid value.")) {}
-    };
-    
-    class Coordinate {
-    protected:
-        friend Grid;
-        int boundsCheck(int x);
-        size_t getGridIndex() { return dimension * x + y; }
-    private:
-        typedef boost::array<const Coordinate, 4> CNeighbors;
-        int x,y, dimension;
-    public:
-        CNeighbors getNeighbors();
-        Coordinate(int x_, int y_,int dim) :
-        x(boundsCheck(x_)), y(boundsCheck(y_)), dimension(dim) {}
-        Coordinate(int dim) : x(0), y(0), dimension(dim) {}
-        bool operator==(Coordinate &rhs) { return (x==rhs.x) && (y==rhs.y); }
-        const int& getX() { return x; }
-        const int& getY() { return y; }
-        void setX(int x_) { x = boundsCheck(x_); }
-        void setY(int y_) { y = boundsCheck(y_); }
     };
 }
 
