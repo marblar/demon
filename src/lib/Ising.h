@@ -14,9 +14,8 @@ typedef std::map<SystemState *, TransitionTable> TransitionRule;
 
 TransitionRule defaultTransitionRule();
 
-namespace ising {
+namespace Ising {
     int s(char x,char y,char z);
-    int boundsCheck(int x, const int max);
 }
 
 class IsingReservoir : public Reservoir {
@@ -25,23 +24,11 @@ public:
         odd,
         even
     };
-    struct Neighbors {
-        Coordinate coordinates[4];
-    };
 private:
-    //Avoid messing with this as much as possible
-    char **cells;
-    const int isingSide;
+    Ising::Grid grid;
     stepType currentStepType;
     TransitionRule transitions;
     unsigned char parity;
-protected:
-    //Methods for accesing stuff:
-    char &getCell(Coordinate x);
-    int countHigh(Neighbors);
-    int countHighNeighbors(Coordinate);
-    int getEnergy(Coordinate);
-
 public:
     void isingStep(InteractionResult&);
     void wheelStep(InteractionResult&);
@@ -54,7 +41,7 @@ public:
     ~IsingReservoir();
     
     //The default is {IsingSide/2,IsingSide/2} and the cell to its right.
-    std::pair<Coordinate, Coordinate> interactionCells;
+    std::pair<Ising::Cell *, Ising::Cell*> interactionCells;
     
     virtual void initializeCellsWithRNG(gsl_rng *RNG, int N = 1<<10);
     virtual InteractionResult interactWithBit(int bit);
@@ -69,8 +56,6 @@ public:
     virtual void reset();
     gsl_rng *RNG;
 };
-
-IsingReservoir::Neighbors getNeighbors(Coordinate,int);
 
 #define CheckTransitionRuleError(expr,class) \
     if (!(expr)) { throw class(#expr); }
