@@ -38,7 +38,6 @@ public:
     IsingReservoir(gsl_rng *RNG, Constants constants,
                    int IsingSide = 20, int clusters = 20,
                    TransitionRule rule = defaultTransitionRule());
-    ~IsingReservoir();
     
     //The default is {IsingSide/2,IsingSide/2} and the cell to its right.
     std::pair<Ising::Cell *, Ising::Cell*> interactionCells;
