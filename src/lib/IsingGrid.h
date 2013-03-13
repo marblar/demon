@@ -92,10 +92,12 @@ namespace Ising {
         Grid(int dimension);
         
         // Iterators for ising algorithm access.
+        iterator begin() { return allIterator(); }
         iterator allIterator() { return iterator(cells.get()); }
         iterator evenIterator() { return iterator(cells.get(),true); }
         iterator oddIterator() { return iterator(cells.get()+1,true); }
         iterator endIterator() { return iterator(cells.get()+dimension*dimension,false,true); }
+        iterator end() { return endIterator(); }
         
         size_t size() const { return dimension*dimension; }
         
