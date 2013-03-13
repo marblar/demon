@@ -21,6 +21,7 @@ namespace Ising {
     class Grid;
     class Coordinate;
     class InvalidCellValue;
+    class InvalidGridIndex;
     
     class Cell {
         unsigned char value;
@@ -34,6 +35,11 @@ namespace Ising {
         unsigned char setValue(const char &c);
         void toggle() { setValue(value ^ 1); }
         const Neighbors getNeighbors() { return neighbors; }
+    };
+    
+    class InvalidGridIndex : public std::runtime_error {
+    public:
+        InvalidGridIndex() : std::runtime_error(std::string("Tried to access a cell at an index greater than dimension*dimension.")){};
     };
     
     class Grid {
@@ -89,6 +95,15 @@ namespace Ising {
         iterator evenIterator() { return iterator(cells.get(),true); }
         iterator oddIterator() { return iterator(cells.get()+1,true); }
         iterator endIterator() { return iterator(cells.get()+dimension*dimension,false,true); }
+        
+        size_t size() const { return dimension*dimension; }
+        
+        Cell * const operator[](size_t gridIndex) {
+            if (gridIndex > size()) {
+                throw InvalidGridIndex();
+            }
+            return cells.get()+gridIndex;
+        }
     };
     
     class InvalidCellValue : public std::runtime_error {

@@ -127,4 +127,16 @@ BOOST_AUTO_TEST_CASE( testSetValue ) {
     BOOST_REQUIRE_THROW(cell.setValue(2), InvalidCellValue);
 }
 
+BOOST_AUTO_TEST_CASE( testRandomAccess ) {
+    // The only interface contract here is that different grid indexes
+    // return different cell pointers, and that an invalid index throws.
+    CellSet cells;
+    size_t size = grid.size();
+    for (size_t k = 0; k!=grid.size(); ++k) {
+        cells.insert(grid[k]);
+    }
+    BOOST_REQUIRE(cells.size()==size);
+    BOOST_REQUIRE_THROW(grid[2*size], InvalidGridIndex);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
