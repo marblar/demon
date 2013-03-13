@@ -14,7 +14,8 @@
 #include <string>
 #include <boost/scoped_array.hpp>
 #include <boost/array.hpp>
-#include <boost/iterator/iterator_facade.hpp>
+#include <boost/iterator/filter_iterator.hpp>
+#include <boost/iterator/counting_iterator.hpp>
 
 namespace Ising {
     class Cell;
@@ -22,6 +23,25 @@ namespace Ising {
     class Coordinate;
     class InvalidCellValue;
     class InvalidGridIndex;
+    
+    namespace detail{
+        // This class is used by the boost::filter_iterator to ensure even
+        // contents.
+        template <class T>
+        class EvenPtrOffset {
+            T * const base;
+        public:
+            EvenPtrOffset(T const * const b) : base(b) {}
+            bool operator()(T *n) const {
+                if (n<base) {
+                    throw std::runtime_error("EvenPtrOffset only valid for "
+                                             "iterators greater than base.");
+                }
+                return ((n-base)%2)==0;
+            }
+        };
+        typedef EvenPtrOffset<Cell> EvenCellOffset;
+    }
     
     class Cell {
         unsigned char value;
@@ -46,7 +66,8 @@ namespace Ising {
     class Grid {
         int dimension;
         boost::scoped_array<Cell> cells;
-        
+        // ***********************************************
+        // ********     Coordinate class       ***********
         // ***********************************************
         class Coordinate {
         protected:
@@ -68,45 +89,38 @@ namespace Ising {
             void setY(int y_) { y = boundsCheck(y_); }
         };
         // ************************************************
-        
     public:
-        class iterator : public boost::iterator_facade<iterator,Cell,boost::forward_traversal_tag> {
-        public:
-            iterator(bool shouldSkip = false, bool isEnd = false) :
-            skips(shouldSkip), end(isEnd) {}
-            
-            explicit iterator(Cell *n,bool shouldSkip = false, bool isEnd = false) :
-            skips(shouldSkip), end(isEnd) {}
-        private:
-            bool skips;
-            bool end;
-            Cell *referent;
-            friend class boost::iterator_core_access;
-            virtual void increment() { skips ? referent+=2 : ++referent; }
-            Cell & dereference() const { return *referent; }
-            bool equal(iterator const& other) const {
-                return other.end ? referent>=other.referent : referent==other.referent;
-            }
-        };
         const int &getDimension() const;
         Grid(int dimension);
-        
-        // Iterators for ising algorithm access.
-        iterator begin() { return allIterator(); }
-        iterator allIterator() { return iterator(cells.get()); }
-        iterator evenIterator() { return iterator(cells.get(),true); }
-        iterator oddIterator() { return iterator(cells.get()+1,true); }
-        iterator endIterator() { return iterator(cells.get()+dimension*dimension,false,true); }
-        iterator end() { return endIterator(); }
-        
         size_t size() const { return dimension*dimension; }
-        
         Cell * const operator[](size_t gridIndex) {
             if (gridIndex > size()) {
                 throw InvalidGridIndex();
             }
             return cells.get()+gridIndex;
         }
+        
+        // ******************************
+        // ********* Iterators **********
+        // ******************************
+        typedef boost::counting_iterator<Cell *> iterator;
+        class subset {
+            // This class is a lazy container for iterating over the
+            // even or odd cells in the grid. It can be accessed with
+            //      Ising:Grid::subset::iterator it = grid.evens.begin();
+            Cell * const base;
+            Cell * const last;
+        public:
+            typedef boost::filter_iterator<detail::EvenCellOffset,Grid::iterator> iterator;
+            iterator begin();
+            Grid::iterator end();
+            size_t size() { throw std::runtime_error("Grid::subset::size() is unimplemented"); }
+            subset(Cell *b, Cell *l) : base(b), last(l) {}
+        };
+        const subset evens;
+        const subset odds;
+        iterator begin() { return iterator(cells.get()); }
+        iterator end() { return iterator(cells.get()+dimension*dimension); }
     };
     
     class InvalidCellValue : public std::runtime_error {

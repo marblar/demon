@@ -7,7 +7,9 @@
 //
 
 #include "IsingGrid.h"
+#include <boost/iterator/filter_iterator.hpp>
 using namespace Ising;
+using namespace detail;
 
 int Grid::Coordinate::boundsCheck(int x) {
     if (x < 0) {
@@ -36,9 +38,8 @@ Grid::Coordinate::CNeighbors Grid::Coordinate::getNeighbors(){
     return neighbors;
 }
 
-Grid::Grid(int dim) : dimension(dim) {
-    cells.reset(new Ising::Cell[dimension*dimension]);
-    
+Grid::Grid(int dim) : dimension(dim), cells(new Ising::Cell[size()]),\
+evens(cells.get(),cells.get()+size()), odds(cells.get()+1,cells.get()+size()) {
     // CNeighbors give the neighbors to a coordinate in coordinate space
     // The function getGridIndex translate coordinate space to memory space
     // Cell::Neighbors should give the neighbors to a cell in memory space
@@ -61,10 +62,20 @@ Grid::Grid(int dim) : dimension(dim) {
     }
 }
 
+Grid::subset::iterator Grid::subset::begin() {
+    EvenCellOffset offsetPredicate(base);
+    return iterator(offsetPredicate,Grid::iterator(base),Grid::iterator(last));
+}
+
+Grid::iterator Grid::subset::end() {
+    return Grid::iterator(last);
+}
+
+
 long Cell::getEnergy() {
     long e = 0;
     for (Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
-        e+= (*it)->getEnergy();
+        e += (*it)->getEnergy();
     }
     return e;
 }
