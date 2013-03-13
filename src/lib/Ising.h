@@ -6,29 +6,17 @@
 #include <map>
 #include "Reservoir.h"
 #include "InstrumentFactories.h"
-
-struct Coordinate {
-    int x,y;
-    Coordinate(int x_, int y_) : x(x_), y(y_) {}
-    Coordinate() : x(0), y(0) {}
-    bool operator==(Coordinate &rhs) {
-        return (x==rhs.x) && (y==rhs.y);
-    }
-};
-
-Coordinate makeCoordinate(int x, int y);
+#include "IsingGrid.h"
 
 // TODO: Encapsulate me!
 typedef std::map<char,SystemState *> TransitionTable;
 typedef std::map<SystemState *, TransitionTable> TransitionRule;
 
-
-namespace ising {
-    int s(char x,char y,char z);
-    int boundsCheck(int x, const int max);
-}
-
 TransitionRule defaultTransitionRule();
+
+namespace Ising {
+    int s(char x,char y,char z);
+}
 
 class IsingReservoir : public Reservoir {
 public:
@@ -36,23 +24,11 @@ public:
         odd,
         even
     };
-    struct Neighbors {
-        Coordinate coordinates[4];
-    };
 private:
-    //Avoid messing with this as much as possible
-    char **cells;
-    const int isingSide;
+    Ising::Grid grid;
     stepType currentStepType;
     TransitionRule transitions;
     unsigned char parity;
-protected:
-    //Methods for accesing stuff:
-    char &getCell(Coordinate x);
-    int countHigh(Neighbors);
-    int countHighNeighbors(Coordinate);
-    int getEnergy(Coordinate);
-
 public:
     void isingStep(InteractionResult&);
     void wheelStep(InteractionResult&);
@@ -62,10 +38,9 @@ public:
     IsingReservoir(gsl_rng *RNG, Constants constants,
                    int IsingSide = 20, int clusters = 20,
                    TransitionRule rule = defaultTransitionRule());
-    ~IsingReservoir();
     
     //The default is {IsingSide/2,IsingSide/2} and the cell to its right.
-    std::pair<Coordinate, Coordinate> interactionCells;
+    std::pair<Ising::Cell *, Ising::Cell*> interactionCells;
     
     virtual void initializeCellsWithRNG(gsl_rng *RNG, int N = 1<<10);
     virtual InteractionResult interactWithBit(int bit);
@@ -80,8 +55,6 @@ public:
     virtual void reset();
     gsl_rng *RNG;
 };
-
-IsingReservoir::Neighbors getNeighbors(Coordinate,int);
 
 #define CheckTransitionRuleError(expr,class) \
     if (!(expr)) { throw class(#expr); }

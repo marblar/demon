@@ -4,26 +4,14 @@
 #include <math.h>
 #include <assert.h>
 #include <stack>
+#include <boost/foreach.hpp>
 
 #define SQUARED(x) x*x
+using namespace Ising;
 
-namespace ising {
-    int s(char x,char y,char z) {
-        return (x<<2) + (y<<1) + (z & 1);
-    }
-    
-    int boundsCheck(int x, const int max) {
-        if (x < 0) {
-            return max + x;
-        }
-        if (x >= max) {
-            return x-max;
-        }
-        return x;
-    }
+int Ising::s(char x,char y,char z) {
+    return (x<<2) + (y<<1) + (z & 1);
 }
-
-using namespace ising;
 
 Reservoir::InteractionResult IsingReservoir::interactWithBit(int bit) {
     InteractionResult result;
@@ -47,22 +35,16 @@ Reservoir::InteractionResult IsingReservoir::interactWithBit(int bit) {
 }
 
 void IsingReservoir::isingStep(InteractionResult &result) {
-    int row = 0;
-    int column = (currentStepType == odd ? row + 1 : row) % 2;
-    while (row<isingSide) {
-        while (column<isingSide) {
-            Coordinate coord(row,column);
-            //Evolve each cell.
-            char &cell = getCell(coord);
-            if (countHighNeighbors(coord) == 2) {
-                cell = (cell + 1) % 2;
-            }
-            parity += cell;
-            
-            column+=2;
+    Grid::subset::iterator it = currentStepType ? \
+        grid.odds.begin() : grid.evens.begin();
+    for (;it!=grid.odds.end(); ++it) {
+        Cell *cell = *it;
+        int energy = (int)cell->getEnergy();
+        size_t neighborSize = cell->getNeighbors().size();
+        if (neighborSize-energy == energy) {
+            cell->toggle();
         }
-        row++;
-        column = (currentStepType == odd ? row + 1 : row) % 2;
+        parity += cell->getValue();
     }
     currentStepType = (currentStepType == odd) ? even : odd;
 }
@@ -83,64 +65,46 @@ void IsingReservoir::clusterMethod() {
 
 //  http://link.springer.com/chapter/10.1007%2F3-540-35273-2_1?LI=true#page-1
 
-    std::stack<Coordinate> workStack;
-    Coordinate currentCoord(rand()%isingSide,rand()%isingSide);
-    workStack.push(currentCoord);
-    char &currentCell = getCell(currentCoord);
-    unsigned char clusterBit = currentCell;
-    currentCell^=1;
-
+    std::stack<Cell *> workStack;
+    Cell *currentCell = grid[gsl_rng_uniform_int(RNG, grid.size())];
+    unsigned char clusterBit = currentCell->getValue();
+    currentCell->toggle();
+    workStack.push(currentCell);
     
     double inclusionProbability = 1 - exp(-2*constants.getBeta());
     assert(inclusionProbability<=1 && inclusionProbability>=0);
     
     //Basic BFT
     while (!workStack.empty()) {
-        currentCoord = workStack.top();
-        char &currentCell = getCell(currentCoord);
+        currentCell = workStack.top();
         workStack.pop();
-        Neighbors neighbors = getNeighbors(currentCoord,isingSide);
-        for (int k=0; k<4; k++) {
-            Coordinate neighborCoord = neighbors.coordinates[k];
-            char &neighborCell = getCell(neighborCoord);
-            
-            if (neighborCell == clusterBit &&
+        Cell::Neighbors neighbors = currentCell->getNeighbors();
+        for (Cell::Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
+            Cell *neighborCell = *it;
+            if (neighborCell->getValue() == clusterBit &&
                     gsl_rng_uniform(RNG)<inclusionProbability) {
-                workStack.push(neighborCoord);
-                neighborCell^=1;
+                workStack.push(neighborCell);
+                neighborCell->toggle();
             }
         }
-        assert(workStack.size()<SQUARED((unsigned)isingSide));
+        assert(workStack.size()<grid.size());
     };
     
 }
 
 void IsingReservoir::metropolisAlgorithm() {
-    Coordinate coord;
-    coord.x = (int)gsl_rng_uniform_int(RNG,isingSide);
-    coord.y = (int)gsl_rng_uniform_int(RNG,isingSide);
-    
-    char &cell = getCell(coord);
-    
-    int dE = 0;
-    if (cell == 0) {
-        dE = 4 - 2 * countHighNeighbors(coord);
-    } else {
-        //dE = 4 - 2 * (4 - countHigh(neighbors));
-        //dE = 4 - 8 + 2 * countHigh(neighbors);
-        dE = 2 * countHighNeighbors(coord) - 4;
-    }
-    
+    Cell *cell = grid[gsl_rng_uniform_int(RNG, grid.size())];
+    size_t neighborSize = cell->getNeighbors().size();
+    int dE = (int)(neighborSize - cell->getEnergy());
     if ( exp(constants.getBeta() * dE) < gsl_rng_uniform(RNG) ) {
-        char &cell = getCell(coord);
-        cell = (cell + 1) % 2;
+        cell->toggle();
     }
 }
 
 void IsingReservoir::wheelStep(InteractionResult &result) {
-    char &s1 = getCell(interactionCells.first);
-    char &s2 = getCell(interactionCells.second);
-    char s3 = parity;
+    const char& s1 = interactionCells.first->getValue();
+    const char& s2 = interactionCells.second->getValue();
+    const char& s3 = parity;
     int inputState = s(s1, s2, s3);
     
     CheckTransitionRuleError(inputState<8 && inputState>=0,
@@ -165,110 +129,34 @@ void IsingReservoir::wheelStep(InteractionResult &result) {
     
     //The abstraction is leaking, but this saves a very complicated table.
     if (oldBit != newBit) {
-        int initialEnergy = getEnergy(interactionCells.first) \
-                                + getEnergy(interactionCells.second) - (s1 ^ s2);
+        int initialEnergy = (int)(interactionCells.first->getEnergy() \
+                                + interactionCells.second->getEnergy() - (s1 ^ s2));
         
         if (newBit>oldBit) {
-            s1 = 0;
-            s2 = 0;
+            interactionCells.first->setValue(0);
+            interactionCells.second->setValue(0);
         } else if (newBit < oldBit) {
-            s1 = 0;
-            s2 = 1;
+            interactionCells.first->setValue(0);
+            interactionCells.second->setValue(1);
         }
         
-        int finalEnergy = getEnergy(interactionCells.first) \
-                                + getEnergy(interactionCells.second) - (s1 ^ s2);
+        int finalEnergy = (int)(interactionCells.first->getEnergy() \
+                                + interactionCells.second->getEnergy() - (s1 ^ s2));
         
         result.work += initialEnergy - finalEnergy;
     }
-    
     currentState = nextState;
-}
-
-int IsingReservoir::getEnergy(Coordinate c) {
-    int highNeighbors = countHighNeighbors(c);
-    
-    if (getCell(c) == 1) {
-        return 4 - highNeighbors;
-    } else {
-        return highNeighbors;
-    }
-}
-
-int IsingReservoir::countHighNeighbors(Coordinate c) {
-    Neighbors neighbors = getNeighbors(c,isingSide);
-    return countHigh(neighbors);
 }
 
 void IsingReservoir::initializeCellsWithRNG(gsl_rng *RNG, int N) {
     reset();
 }
 
-char &IsingReservoir::getCell(const Coordinate c) {
-    //FIXME: Bounds check?
-    return cells[c.y][c.x];
-}
-
-int IsingReservoir::countHigh(Neighbors list) {
-    int highCount = 0;
-    for (int k=0; k<4; k++) {
-        highCount+=getCell(list.coordinates[k]);
-    }
-    return highCount;
-}
-
-
-IsingReservoir::Neighbors getNeighbors(const Coordinate c,int dimension){
-    IsingReservoir::Neighbors neighbors;
-    Coordinate neighbor;
-    
-    neighbor.x = c.x;
-    neighbor.y = c.y - 1;
-    neighbor.x = boundsCheck(neighbor.x, dimension);
-    neighbor.y = boundsCheck(neighbor.y, dimension);
-    neighbors.coordinates[0]=neighbor;
-    
-    neighbor.x = c.x;
-    neighbor.y = c.y + 1;
-    neighbor.x = boundsCheck(neighbor.x, dimension);
-    neighbor.y = boundsCheck(neighbor.y, dimension);
-    neighbors.coordinates[1]=neighbor;
-    
-    neighbor.x = c.x - 1;
-    neighbor.y = c.y;
-    neighbor.x = boundsCheck(neighbor.x, dimension);
-    neighbor.y = boundsCheck(neighbor.y, dimension);
-    neighbors.coordinates[2]=neighbor;
- 
-    neighbor.x = c.x + 1;
-    neighbor.y = c.y;
-    neighbor.x = boundsCheck(neighbor.x, dimension);
-    neighbor.y = boundsCheck(neighbor.y, dimension);
-    neighbors.coordinates[3] = neighbor;
-
-    return neighbors;
-}
-            
-IsingReservoir::~IsingReservoir() {
-    for (int k=0; k<this->isingSide; k++) {
-        delete [] cells[k];
-    }
-    delete [] cells;
-}
-
-IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants,
-                               int IS, int cls, TransitionRule rule) :
-        Reservoir(constants), isingSide(IS), RNG(RNG_), clusters(cls) {
+IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS, int cls, TransitionRule rule) :
+        Reservoir(constants), clusters(cls), grid(IS), RNG(RNG_) {
     parity = 0;
     transitions = rule;
-    cells = new char *[IS];
-    for (int k=0; k<IS; k++) {
-        cells[k]=new char[IS];
-        
-        std::fill(cells[k], cells[k]+IS, 0);
-    }
     this->initializeCellsWithRNG(RNG);
-    currentState = randomState();
 }
 
 
@@ -349,12 +237,9 @@ void isingEnergyDistribution(int d, int clusters) {
 }
 
 int IsingReservoir::totalEnergy() {
-    int N = SQUARED(isingSide);
     int energy = 0;
-    for (int k = 0; k<N; k++) {
-        int row = (int)(k % this->isingSide);
-        int column = (int)(k / this->isingSide);
-        energy += getEnergy(Coordinate(row, column));
+    for (Grid::iterator it = grid.begin(); it!=grid.end(); ++it) {
+        energy+=(int)(*it)->getEnergy();
     }
     // This method overcounts by two, considering both the forward and
     // backword bonds.
