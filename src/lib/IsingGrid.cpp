@@ -11,6 +11,9 @@
 using namespace Ising;
 using namespace detail;
 
+const Kind Ising::detail::even = false;
+const Kind Ising::detail::odd = true;
+
 int Grid::Coordinate::boundsCheck(int x) {
     if (x < 0) {
         return dimension + x;
@@ -39,7 +42,7 @@ Grid::Coordinate::CNeighbors Grid::Coordinate::getNeighbors(){
 }
 
 Grid::Grid(int dim) : dimension(dim), cells(new Ising::Cell[size()]),\
-evens(cells.get(),cells.get()+size()), odds(cells.get()+1,cells.get()+size()) {
+evens(*this,even), odds(*this,odd) {
     // CNeighbors give the neighbors to a coordinate in coordinate space
     // The function getGridIndex translate coordinate space to memory space
     // Cell::Neighbors should give the neighbors to a cell in memory space
@@ -63,12 +66,12 @@ evens(cells.get(),cells.get()+size()), odds(cells.get()+1,cells.get()+size()) {
 }
 
 Grid::subset::iterator Grid::subset::begin() const {
-    EvenCellOffset offsetPredicate(base);
+    CheckerboardCellOffset offsetPredicate(base,kind,dimension);
     return iterator(offsetPredicate,Grid::iterator(base),Grid::iterator(last));
 }
 
 Grid::subset::iterator Grid::subset::end() const {
-    EvenCellOffset offsetPredicate(last);
+    CheckerboardCellOffset offsetPredicate(base,kind,dimension);
     return Grid::subset::iterator(offsetPredicate,Grid::iterator(last),Grid::iterator(last));
 }
 

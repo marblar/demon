@@ -27,20 +27,36 @@ namespace Ising {
     namespace detail{
         // This class is used by the boost::filter_iterator to ensure even
         // contents.
+        typedef bool Kind;
+        const extern Kind even;
+        const extern Kind odd;
+
         template <class T>
-        class EvenPtrOffset {
+        class CheckerboardPtrOffset {
             T * const base;
+            const int dimension;
+            const Kind kind;
         public:
-            EvenPtrOffset(T * const b) : base(b) {}
+            CheckerboardPtrOffset(T * const b, Kind k, int dim) : base(b),dimension(dim), kind(k) {}
             bool operator()(T *n) const {
                 if (n<base) {
-                    throw std::runtime_error("EvenPtrOffset only valid for "
+                    throw std::runtime_error("CheckerboardPtrOffset only valid for "
                                              "iterators greater than base.");
                 }
-                return ((n-base)%2)==0;
+                size_t offset = n-base;
+                Kind dimensionKind = dimension%2;
+                if (dimensionKind==even) {
+                    bool rowEven = (offset / dimension) % 2;
+                    bool columnEven = (offset % dimension) % 2;
+                    bool cellColor = (rowEven + columnEven) % 2;
+                    return kind ? cellColor : !cellColor;
+                } else {
+                    int mod = offset % 2;
+                    return kind ? mod : !mod;
+                }
             }
         };
-        typedef EvenPtrOffset<Cell> EvenCellOffset;
+        typedef CheckerboardPtrOffset<Cell> CheckerboardCellOffset;
     }
     
     class Cell {
@@ -112,17 +128,19 @@ namespace Ising {
             //      Ising:Grid::subset::iterator it = grid.evens.begin();
             Cell * const base;
             Cell * const last;
+            int dimension;
+            detail::Kind kind;
         public:
-            typedef boost::filter_iterator<detail::EvenCellOffset,Grid::iterator> iterator;
+            typedef boost::filter_iterator<detail::CheckerboardCellOffset,Grid::iterator> iterator;
             iterator begin() const;
             iterator end() const;
             size_t size() { throw std::runtime_error("Grid::subset::size() is unimplemented"); }
-            subset(Cell *b, Cell *l) : base(b), last(l) {}
+            subset(const Grid &grid, detail::Kind k) : base(*grid.begin()), last(*grid.end()), dimension(grid.getDimension()),kind(k) {}
         };
         const subset evens;
         const subset odds;
-        iterator begin() { return iterator(cells.get()); }
-        iterator end() { return iterator(cells.get()+dimension*dimension); }
+        iterator begin() const { return iterator(cells.get()); }
+        iterator end() const { return iterator(cells.get()+dimension*dimension); }
     };
     
     class InvalidCellValue : public std::runtime_error {
