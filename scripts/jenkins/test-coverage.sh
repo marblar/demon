@@ -3,4 +3,4 @@ autoreconf --install
 mkdir -p build
 cd build
 ../configure --enable-gcov --cache-file=$HOME/demon-cache
-make coverage
+make -i coverage
