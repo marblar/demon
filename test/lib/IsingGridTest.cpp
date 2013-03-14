@@ -58,7 +58,7 @@ BOOST_FIXTURE_TEST_CASE(testEvenOddIteratorsDisjoint__oddGrid, OddIsingGridFixtu
     CellSet evenSet;
     evenSet.insert(grid.evens.begin(),grid.evens.end());
     CellSet oddSet;
-    oddSet.insert(grid.evens.begin(),grid.evens.end());
+    oddSet.insert(grid.odds.begin(),grid.odds.end());
     size_t count = 0;
     
     for (CellSet::iterator it = evenSet.begin(); it!=evenSet.end(); ++it) {
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE( testEvenOddIteratorsDisjoint__evenGrid ) {
     CellSet evenSet;
     evenSet.insert(grid.evens.begin(),grid.evens.end());
     CellSet oddSet;
-    oddSet.insert(grid.evens.begin(),grid.evens.end());
+    oddSet.insert(grid.odds.begin(),grid.odds.end());
     size_t count = 0;
     
     for (CellSet::iterator it = evenSet.begin(); it!=evenSet.end(); ++it) {
