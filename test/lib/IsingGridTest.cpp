@@ -53,7 +53,29 @@ Cell* is_disjoint(const CellSet &set1, const CellSet &set2)
 
 BOOST_FIXTURE_TEST_SUITE(IsingGridTest, EvenIsingGridFixture)
 
-BOOST_AUTO_TEST_CASE( testEvenOddIteratorsDisjoint ) {
+BOOST_FIXTURE_TEST_CASE(testEvenOddIteratorsDisjoint__oddGrid, OddIsingGridFixture) {
+    BOOST_REQUIRE_EQUAL(grid.getDimension()%2,1);
+    CellSet evenSet;
+    evenSet.insert(grid.evens.begin(),grid.evens.end());
+    CellSet oddSet;
+    oddSet.insert(grid.evens.begin(),grid.evens.end());
+    size_t count = 0;
+    
+    for (CellSet::iterator it = evenSet.begin(); it!=evenSet.end(); ++it) {
+        BOOST_CHECK(!oddSet.count(*it));
+        ++count;
+        BOOST_REQUIRE_LE(count, grid.size());
+    }
+    count = 0;
+    for (CellSet::iterator it = oddSet.begin(); it!=oddSet.end(); ++it) {
+        BOOST_CHECK(!evenSet.count(*it));
+        ++count;
+        BOOST_REQUIRE_LE(count, grid.size());
+    }
+}
+
+BOOST_AUTO_TEST_CASE( testEvenOddIteratorsDisjoint__evenGrid ) {
+    BOOST_REQUIRE_EQUAL(grid.getDimension()%2, 0);
     CellSet evenSet;
     evenSet.insert(grid.evens.begin(),grid.evens.end());
     CellSet oddSet;
