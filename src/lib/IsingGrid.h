@@ -71,6 +71,7 @@ namespace Ising {
         void setValue(const char &c);
         void toggle() { setValue(value ^ 1); }
         Neighbors getNeighbors() { return neighbors; }
+        bool isNeighbor(Cell *neighbor){ return std::count(neighbors.begin(),neighbors.end(),neighbor);}
         long getEnergy();
     };
     
