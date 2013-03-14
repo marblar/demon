@@ -424,6 +424,7 @@
 					"$HOME/macports/lib/**",
 					/usr/local,
 				);
+				OMPI_CXX = "clang++";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PATH = "/Users/mark/macports/lib/openmpi/bin:/opt/local/bin:$PATH";
@@ -444,6 +445,7 @@
 					"$HOME/macports/lib/**",
 					/usr/local,
 				);
+				OMPI_CXX = "clang++";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PATH = "/Users/mark/macports/lib/openmpi/bin:/opt/local/bin:$PATH";
@@ -463,6 +465,7 @@
 				DEBUGGING_SYMBOLS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				OMPI_CXX = "clang++";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PATH = "/Users/mark/macports/lib/openmpi/bin:/opt/local/bin:$PATH";
@@ -480,6 +483,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				OMPI_CXX = "clang++";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PATH = "/Users/mark/macports/lib/openmpi/bin:/opt/local/bin:$PATH";
