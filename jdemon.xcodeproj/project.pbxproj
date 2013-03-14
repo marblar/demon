@@ -24,13 +24,19 @@
 		4DA8D48616E30F8400D659CF /* Measurement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48416E30F8400D659CF /* Measurement.cpp */; };
 		4DA8D48716E30F8400D659CF /* Measurement.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA8D48516E30F8400D659CF /* Measurement.h */; };
 		4DA8D48A16E3A9ED00D659CF /* MeasurementTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */; };
-		4DB2EE1016E7CAEF00D24443 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB2EE0F16E7BDD800D24443 /* main.cpp */; };
 		4DB2EE1216E8273B00D24443 /* MockObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DB2EE1116E8273B00D24443 /* MockObjects.h */; };
 		4DB2EE1616E9086300D24443 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB2EE1516E9086200D24443 /* core.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		4D917D7416E0DE99002ADE1E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4DD182E61605213000353837 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4D28A4A216D66DC40019141B;
+			remoteInfo = libjdemon;
+		};
+		4DA8B74C16F2221A0072B82A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4DD182E61605213000353837 /* Project object */;
 			proxyType = 1;
@@ -246,6 +252,7 @@
 			buildToolPath = /usr/bin/make;
 			buildWorkingDirectory = "$(SOURCE_ROOT)/build/";
 			dependencies = (
+				4DA8B74D16F2221A0072B82A /* PBXTargetDependency */,
 			);
 			name = jdemon;
 			passBuildSettingsInEnvironment = 1;
@@ -330,7 +337,6 @@
 				4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */,
 				4DA3762D16E53CF700599AA1 /* IsingTest.cpp in Sources */,
 				4D4F4DD816E662CA00B7F5A4 /* StochTest.cpp in Sources */,
-				4DB2EE1016E7CAEF00D24443 /* main.cpp in Sources */,
 				4DB2EE1616E9086300D24443 /* core.cpp in Sources */,
 				4DA6055916EA4399000DC72A /* cli.cpp in Sources */,
 				4DA8B74716EECA180072B82A /* IsingGrid.cpp in Sources */,
@@ -345,6 +351,11 @@
 			isa = PBXTargetDependency;
 			target = 4D28A4A216D66DC40019141B /* libjdemon */;
 			targetProxy = 4D917D7416E0DE99002ADE1E /* PBXContainerItemProxy */;
+		};
+		4DA8B74D16F2221A0072B82A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4D28A4A216D66DC40019141B /* libjdemon */;
+			targetProxy = 4DA8B74C16F2221A0072B82A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -415,6 +426,7 @@
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
+				PATH = "/Users/mark/macports/lib/openmpi/bin:/opt/local/bin:$PATH";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -434,6 +446,7 @@
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
+				PATH = "/Users/mark/macports/lib/openmpi/bin:/opt/local/bin:$PATH";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -452,6 +465,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
+				PATH = "/Users/mark/macports/lib/openmpi/bin:/opt/local/bin:$PATH";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = $HOME/macports/include;
 			};
@@ -468,6 +482,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
+				PATH = "/Users/mark/macports/lib/openmpi/bin:/opt/local/bin:$PATH";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
