@@ -136,6 +136,7 @@ namespace Ising {
             iterator begin() const;
             iterator end() const;
             size_t size() { throw std::runtime_error("Grid::subset::size() is unimplemented"); }
+            detail::Kind getKind() const { return kind; }
             subset(const Grid &grid, detail::Kind k) : base(*grid.begin()), last(*grid.end()), dimension(grid.getDimension()),kind(k) {}
         };
         const subset evens;

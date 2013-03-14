@@ -264,6 +264,14 @@ BOOST_AUTO_TEST_CASE( testRandomAccess ) {
     }
     BOOST_REQUIRE(cells.size()==size);
     BOOST_REQUIRE_THROW(grid[2*size], InvalidGridIndex);
-}	
+}
+
+BOOST_AUTO_TEST_CASE( testSubsetsAreDifferentKinds ) {
+    BOOST_REQUIRE(grid.odds.getKind()!=grid.evens.getKind());
+}
+
+BOOST_AUTO_TEST_CASE( testDifferentSubsetBeginning ) {
+    BOOST_REQUIRE(grid.odds.begin()!=grid.evens.begin());
+}
 
 BOOST_AUTO_TEST_SUITE_END() 
