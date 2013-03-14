@@ -157,6 +157,8 @@ IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS, int c
     parity = 0;
     transitions = rule;
     this->initializeCellsWithRNG(RNG);
+    interactionCells.first = grid[gsl_rng_uniform_int(RNG, grid.size())];
+    interactionCells.second = *interactionCells.first->getNeighbors().begin();
 }
 
 

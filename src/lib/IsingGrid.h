@@ -73,14 +73,16 @@ namespace Ising {
         protected:
             friend class Grid;
             int boundsCheck(int x);
-            size_t getGridIndex() { return dimension * x + y; }
+            size_t getGridIndex() const { return dimension * x + y; }
         private:
             typedef boost::array<const Coordinate, 4> CNeighbors;
-            int x,y, dimension;
+            int dimension,x,y;
         public:
             CNeighbors getNeighbors();
-            Coordinate(int x_, int y_,int dim) :
-            x(boundsCheck(x_)), y(boundsCheck(y_)), dimension(dim) {}
+            Coordinate(int x_, int y_,int dim) : dimension(dim) {
+                x = boundsCheck(x_);
+                y = boundsCheck(y_);
+            }
             Coordinate(int dim) : x(0), y(0), dimension(dim) {}
             bool operator==(Coordinate &rhs) { return (x==rhs.x) && (y==rhs.y); }
             const int& getX() { return x; }

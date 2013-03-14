@@ -44,7 +44,7 @@ evens(cells.get(),cells.get()+size()), odds(cells.get()+1,cells.get()+size()) {
     // The function getGridIndex translate coordinate space to memory space
     // Cell::Neighbors should give the neighbors to a cell in memory space
     // This procedure boostraps the memory space using coordinate space.
-    for (int k = 0; k!=dimension*dimension; ++k) {
+    for (int k = 0; k!=size(); ++k) {
         int x = k % dimension;
         int y = k / dimension;
         Coordinate currentCoord(x,y,dimension);
@@ -55,7 +55,7 @@ evens(cells.get(),cells.get()+size()), odds(cells.get()+1,cells.get()+size()) {
         for (Coordinate::CNeighbors::iterator it = neighbors.begin();
              it!=neighbors.end();
              ++it) {
-            Cell *neighbor = cells.get() + currentCoord.getGridIndex();
+            Cell *neighbor = cells.get() + it->getGridIndex();
             *neighborReference = neighbor;
             ++neighborReference;
         }

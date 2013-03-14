@@ -7,19 +7,44 @@
 //
 
 #include <boost/test/unit_test.hpp>
-#include <boost/container/set.hpp>
 #include <algorithm>
+#include <set>
+#include <vector>
 
 #include "IsingGrid.h"
 
 using namespace boost::unit_test;
 using namespace Ising;
-typedef boost::container::set<Ising::Cell*> CellSet;
+typedef std::set<Ising::Cell*> CellSet;
 
 struct IsingGridFixture {
     Ising::Grid grid;
     IsingGridFixture() : grid(6) {}
 };
+
+template<class Set1, class Set2>
+bool is_disjoint(const Set1 &set1, const Set2 &set2)
+{
+    if(set1.empty() || set2.empty()) return true;
+    
+    typename Set1::const_iterator
+    it1 = set1.begin(),
+    it1End = set1.end();
+    typename Set2::const_iterator
+    it2 = set2.begin(),
+    it2End = set2.end();
+    
+    if(*it1 > *set2.rbegin() || *it2 > *set1.rbegin()) return true;
+    
+    while(it1 != it1End && it2 != it2End)
+    {
+        if(*it1 == *it2) return false;
+        if(*it1 < *it2) { it1++; }
+        else { it2++; }
+    }
+    
+    return true;
+}
 
 BOOST_FIXTURE_TEST_SUITE(DetailedIsingGridTest, IsingGridFixture)
 
@@ -114,9 +139,7 @@ BOOST_AUTO_TEST_CASE( testNoNeighborsInOdd ) {
         evenNeighbors.insert(neighbors.begin(),neighbors.end());
         BOOST_REQUIRE_LE(loopGuard, grid.size());
     }
-    CellSet intersection;
-    std::set_intersection(evenNeighbors.begin(), evenNeighbors.end(), evenCells.begin(), evenCells.end(), intersection.begin(), std::less<Cell *>());
-    BOOST_REQUIRE_EQUAL(intersection.size(),0);
+    BOOST_REQUIRE(is_disjoint(evenNeighbors,evenCells));
     
     loopGuard = 0;
     for (Grid::subset::iterator it = grid.odds.begin(); it!=grid.odds.end(); ++it) {
@@ -126,9 +149,8 @@ BOOST_AUTO_TEST_CASE( testNoNeighborsInOdd ) {
         oddNeighbors.insert(neighbors.begin(),neighbors.end());
         BOOST_REQUIRE_LE(loopGuard, grid.size());
     }
-    intersection.clear();
-    std::set_intersection(evenNeighbors.begin(), evenNeighbors.end(), evenCells.begin(), evenCells.end(), intersection.begin(), std::less<Cell*>());
-    BOOST_REQUIRE_EQUAL(intersection.size(),0);
+
+    BOOST_REQUIRE(is_disjoint(oddNeighbors, oddCells));
     
     BOOST_REQUIRE_EQUAL_COLLECTIONS(evenNeighbors.begin(), evenNeighbors.end(), oddCells.begin(), oddCells.end());
     BOOST_REQUIRE_EQUAL_COLLECTIONS(oddNeighbors.begin(), oddNeighbors.end(), evenCells.begin(), evenCells.end());
