@@ -20,7 +20,6 @@
 namespace Ising {
     class Cell;
     class Grid;
-    class Coordinate;
     class InvalidCellValue;
     class InvalidGridIndex;
     
@@ -38,23 +37,7 @@ namespace Ising {
             const Kind kind;
         public:
             CheckerboardPtrOffset(T * const b, Kind k, int dim) : base(b),dimension(dim), kind(k) {}
-            bool operator()(T *n) const {
-                if (n<base) {
-                    throw std::runtime_error("CheckerboardPtrOffset only valid for "
-                                             "iterators greater than base.");
-                }
-                size_t offset = n-base;
-                Kind dimensionKind = dimension%2;
-                if (dimensionKind==even) {
-                    bool rowEven = (offset / dimension) % 2;
-                    bool columnEven = (offset % dimension) % 2;
-                    bool cellColor = (rowEven + columnEven) % 2;
-                    return kind ? cellColor : !cellColor;
-                } else {
-                    int mod = offset % 2;
-                    return kind ? mod : !mod;
-                }
-            }
+            bool operator()(T *n) const;
         };
         typedef CheckerboardPtrOffset<Cell> CheckerboardCellOffset;
     }

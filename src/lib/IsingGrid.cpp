@@ -75,6 +75,25 @@ Grid::subset::iterator Grid::subset::end() const {
     return Grid::subset::iterator(offsetPredicate,Grid::iterator(last),Grid::iterator(last));
 }
 
+template <class T>
+bool CheckerboardPtrOffset<T>::operator()(T *n) const {
+    if (n<base) {
+        throw std::runtime_error("CheckerboardPtrOffset only valid for "
+                                 "iterators greater than base.");
+    }
+    size_t offset = n-base;
+    Kind dimensionKind = dimension%2;
+    if (dimensionKind==even) {
+        bool rowEven = (offset / dimension) % 2;
+        bool columnEven = (offset % dimension) % 2;
+        bool cellColor = (rowEven + columnEven) % 2;
+        return kind ? cellColor : !cellColor;
+    } else {
+        int mod = offset % 2;
+        return kind ? mod : !mod;
+    }
+}
+
 
 long Cell::getEnergy() {
     long e = 0;
