@@ -18,9 +18,14 @@ using namespace boost::unit_test;
 using namespace Ising;
 typedef std::set<Ising::Cell*> CellSet;
 
-struct IsingGridFixture {
+struct EvenIsingGridFixture {
     Ising::Grid grid;
-    IsingGridFixture() : grid(6) {}
+    EvenIsingGridFixture() : grid(6) {}
+};
+
+struct OddIsingGridFixture {
+    Ising::Grid grid;
+    OddIsingGridFixture() : grid(5) {}
 };
 
 Cell* is_disjoint(const CellSet &set1, const CellSet &set2)
@@ -46,7 +51,7 @@ Cell* is_disjoint(const CellSet &set1, const CellSet &set2)
     return NULL;
 }
 
-BOOST_FIXTURE_TEST_SUITE(IsingGridTest, IsingGridFixture)
+BOOST_FIXTURE_TEST_SUITE(IsingGridTest, EvenIsingGridFixture)
 
 BOOST_AUTO_TEST_CASE( testEvenOddIteratorsDisjoint ) {
     CellSet evenSet;
@@ -128,7 +133,39 @@ BOOST_AUTO_TEST_CASE( testUniqueNeighbors ) {
     }
 }
 
-BOOST_AUTO_TEST_CASE( testNoNeighborsInOdd ) {
+BOOST_AUTO_TEST_CASE( testNeighborsRelation_evenGrid ) {
+    CellSet evenNeighbors, evenCells;
+    CellSet oddNeighbors, oddCells;
+    size_t loopGuard = 0;
+    for (Grid::subset::iterator it = grid.evens.begin(); it!=grid.evens.end(); ++it) {
+        ++loopGuard;
+        evenCells.insert(*it);
+        Cell::Neighbors neighbors = (*it)->getNeighbors();
+        evenNeighbors.insert(neighbors.begin(),neighbors.end());
+        BOOST_REQUIRE_LE(loopGuard, grid.size());
+    }
+    Cell *evenIntersection = is_disjoint(evenNeighbors,evenCells);
+    size_t offset = evenIntersection - *grid.begin();
+    BOOST_CHECK(evenIntersection==NULL);
+    
+    BOOST_CHECK(!oddNeighbors.count(*grid.begin()));
+    
+    loopGuard = 0;
+    for (Grid::subset::iterator it = grid.odds.begin(); it!=grid.odds.end(); ++it) {
+        ++loopGuard;
+        oddCells.insert(*it);
+        Cell::Neighbors neighbors = (*it)->getNeighbors();
+        oddNeighbors.insert(neighbors.begin(),neighbors.end());
+        BOOST_REQUIRE_LE(loopGuard, grid.size());
+    }
+    Cell * oddIntersection = is_disjoint(oddNeighbors, oddCells);
+    BOOST_CHECK(oddIntersection==NULL);
+    
+    BOOST_CHECK_EQUAL_COLLECTIONS(evenNeighbors.begin(), evenNeighbors.end(), oddCells.begin(), oddCells.end());
+    BOOST_CHECK_EQUAL_COLLECTIONS(oddNeighbors.begin(), oddNeighbors.end(), evenCells.begin(), evenCells.end());
+}
+
+BOOST_FIXTURE_TEST_CASE( testNeighborsRelation_oddGrid, OddIsingGridFixture ) {
     CellSet evenNeighbors, evenCells;
     CellSet oddNeighbors, oddCells;
     size_t loopGuard = 0;
@@ -205,15 +242,6 @@ BOOST_AUTO_TEST_CASE( testRandomAccess ) {
     }
     BOOST_REQUIRE(cells.size()==size);
     BOOST_REQUIRE_THROW(grid[2*size], InvalidGridIndex);
-}
-
-BOOST_AUTO_TEST_CASE( testCoordinateNeighbors ) {
-    Coordinate center(2,2,grid.getDimension());
-    Coordinate north(2,3,grid.getDimension());
-    Coordinate south(2,1,grid.getDimension());
-    Coordinate east(3,2,grid.getDimension());
-    Coordinate west(1,2,grid.getDimension());
-    
-}
+}	
 
 BOOST_AUTO_TEST_SUITE_END() 
