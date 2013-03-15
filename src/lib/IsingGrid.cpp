@@ -25,7 +25,7 @@ int Grid::Coordinate::boundsCheck(int x) {
 }
 
 void Cell::setValue(const char &c) {
-    if (value < 0 || value > 1) {
+    if (c < 0 || c > 1) {
         throw InvalidCellValue();
     }
     value = c;

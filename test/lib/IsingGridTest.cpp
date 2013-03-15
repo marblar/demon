@@ -183,6 +183,7 @@ BOOST_AUTO_TEST_CASE( testSetValue ) {
     cell.setValue(1);
     BOOST_CHECK_EQUAL(cell.getValue(), 1);
     BOOST_REQUIRE_THROW(cell.setValue(2), InvalidCellValue);
+    BOOST_REQUIRE_THROW(cell.setValue(-1), InvalidCellValue);
 }
 
 BOOST_AUTO_TEST_CASE( testRandomAccess ) {
