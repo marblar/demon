@@ -43,6 +43,9 @@ Grid::Coordinate::CNeighbors Grid::Coordinate::getNeighbors(){
 
 Grid::Grid(int dim) : dimension(dim), cells(new Ising::Cell[size()]),\
 evens(*this,even), odds(*this,odd) {
+    if (dim % 2 || dim < 4) {
+        throw InvalidGridSize();
+    }
     // CNeighbors give the neighbors to a coordinate in coordinate space
     // The function getGridIndex translate coordinate space to memory space
     // Cell::Neighbors should give the neighbors to a cell in memory space
@@ -82,16 +85,12 @@ bool CheckerboardPtrOffset<T>::operator()(T *n) const {
                                  "iterators greater than base.");
     }
     size_t offset = n-base;
-    Kind dimensionKind = dimension%2;
-    if (dimensionKind==even) {
-        bool rowEven = (offset / dimension) % 2;
-        bool columnEven = (offset % dimension) % 2;
-        bool cellColor = (rowEven + columnEven) % 2;
-        return kind ? cellColor : !cellColor;
-    } else {
-        int mod = offset % 2;
-        return kind ? mod : !mod;
-    }
+    
+    bool rowEven = (offset / dimension) % 2;
+    bool columnEven = (offset % dimension) % 2;
+    bool color = (rowEven + columnEven) % 2;
+    
+    return kind ? color : !color;
 }
 
 

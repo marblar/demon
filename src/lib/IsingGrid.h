@@ -132,6 +132,11 @@ namespace Ising {
     public:
         InvalidCellValue() : std::runtime_error(std::string("Tried to set cell to invalid value.")) {}
     };
+    
+    class InvalidGridSize : public std::runtime_error {
+    public:
+        InvalidGridSize() : std::runtime_error(std::string("Grid size must be an even integer greater than 3")) {}
+    };
 }
 
 

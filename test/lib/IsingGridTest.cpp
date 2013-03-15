@@ -23,55 +23,14 @@ struct EvenIsingGridFixture {
     EvenIsingGridFixture() : grid(6) {}
 };
 
-struct OddIsingGridFixture {
-    Ising::Grid grid;
-    OddIsingGridFixture() : grid(5) {}
-};
-
-Cell* is_disjoint(const CellSet &set1, const CellSet &set2)
-{
-    if(set1.empty() || set2.empty()) return NULL;
-    
-    CellSet::const_iterator it1 = set1.begin(),
-    it1End = set1.end();
-    CellSet::const_iterator it2 = set2.begin(),
-    it2End = set2.end();
-    
-    if(*it1 > *set2.rbegin() || *it2 > *set1.rbegin()) return NULL;
-    
-    while(it1 != it1End && it2 != it2End)
-    {
-        if(*it1 == *it2) {
-            return *it1;
-        }
-        if(*it1 < *it2) { it1++; }
-        else { it2++; }
-    }
-    
-    return NULL;
-}
-
 BOOST_FIXTURE_TEST_SUITE(IsingGridTest, EvenIsingGridFixture)
 
-BOOST_FIXTURE_TEST_CASE(testEvenOddIteratorsDisjoint__oddGrid, OddIsingGridFixture) {
-    BOOST_REQUIRE_EQUAL(grid.getDimension()%2,1);
-    CellSet evenSet;
-    evenSet.insert(grid.evens.begin(),grid.evens.end());
-    CellSet oddSet;
-    oddSet.insert(grid.odds.begin(),grid.odds.end());
-    size_t count = 0;
-    
-    for (CellSet::iterator it = evenSet.begin(); it!=evenSet.end(); ++it) {
-        BOOST_CHECK(!oddSet.count(*it));
-        ++count;
-        BOOST_REQUIRE_LE(count, grid.size());
-    }
-    count = 0;
-    for (CellSet::iterator it = oddSet.begin(); it!=oddSet.end(); ++it) {
-        BOOST_CHECK(!evenSet.count(*it));
-        ++count;
-        BOOST_REQUIRE_LE(count, grid.size());
-    }
+BOOST_AUTO_TEST_CASE( oddGridInvalid ) {
+    BOOST_REQUIRE_THROW(Grid k(3), InvalidGridSize);
+}
+
+BOOST_AUTO_TEST_CASE( tooSmallGrid ) {
+    BOOST_REQUIRE_THROW(Grid k(2), InvalidGridSize);
 }
 
 BOOST_AUTO_TEST_CASE( testEvenOddIteratorsDisjoint__evenGrid ) {
@@ -166,9 +125,11 @@ BOOST_AUTO_TEST_CASE( testNeighborsRelation_evenGrid ) {
         evenNeighbors.insert(neighbors.begin(),neighbors.end());
         BOOST_REQUIRE_LE(loopGuard, grid.size());
     }
-    Cell *evenIntersection = is_disjoint(evenNeighbors,evenCells);
-    size_t offset = evenIntersection - *grid.begin();
-    BOOST_CHECK(evenIntersection==NULL);
+    CellSet evenIntersection;
+    std::insert_iterator<CellSet> insertionIterator(evenIntersection,evenIntersection.end());
+    std::set_intersection(evenNeighbors.begin(), evenNeighbors.end(), evenCells.begin(), evenCells.end(), insertionIterator);
+    
+    BOOST_CHECK(evenIntersection.empty());
     
     BOOST_CHECK(!oddNeighbors.count(*grid.begin()));
     
@@ -180,40 +141,10 @@ BOOST_AUTO_TEST_CASE( testNeighborsRelation_evenGrid ) {
         oddNeighbors.insert(neighbors.begin(),neighbors.end());
         BOOST_REQUIRE_LE(loopGuard, grid.size());
     }
-    Cell * oddIntersection = is_disjoint(oddNeighbors, oddCells);
-    BOOST_CHECK(oddIntersection==NULL);
-    
-    BOOST_CHECK_EQUAL_COLLECTIONS(evenNeighbors.begin(), evenNeighbors.end(), oddCells.begin(), oddCells.end());
-    BOOST_CHECK_EQUAL_COLLECTIONS(oddNeighbors.begin(), oddNeighbors.end(), evenCells.begin(), evenCells.end());
-}
-
-BOOST_FIXTURE_TEST_CASE( testNeighborsRelation_oddGrid, OddIsingGridFixture ) {
-    CellSet evenNeighbors, evenCells;
-    CellSet oddNeighbors, oddCells;
-    size_t loopGuard = 0;
-    for (Grid::subset::iterator it = grid.evens.begin(); it!=grid.evens.end(); ++it) {
-        ++loopGuard;
-        evenCells.insert(*it);
-        Cell::Neighbors neighbors = (*it)->getNeighbors();
-        evenNeighbors.insert(neighbors.begin(),neighbors.end());
-        BOOST_REQUIRE_LE(loopGuard, grid.size());
-    }
-    Cell *evenIntersection = is_disjoint(evenNeighbors,evenCells);
-    size_t offset = evenIntersection - *grid.begin();
-    BOOST_CHECK(evenIntersection==NULL);
-    
-    BOOST_CHECK(!oddNeighbors.count(*grid.begin()));
-    
-    loopGuard = 0;
-    for (Grid::subset::iterator it = grid.odds.begin(); it!=grid.odds.end(); ++it) {
-        ++loopGuard;
-        oddCells.insert(*it);
-        Cell::Neighbors neighbors = (*it)->getNeighbors();
-        oddNeighbors.insert(neighbors.begin(),neighbors.end());
-        BOOST_REQUIRE_LE(loopGuard, grid.size());
-    }
-    Cell * oddIntersection = is_disjoint(oddNeighbors, oddCells);
-    BOOST_CHECK(oddIntersection==NULL);
+    CellSet oddIntersection;
+    std::insert_iterator<CellSet> oddInsertionIterator(evenIntersection,evenIntersection.end());
+    std::set_intersection(oddNeighbors.begin(), oddNeighbors.end(), oddCells.begin(), oddCells.end(), oddInsertionIterator);
+    BOOST_CHECK(oddIntersection.empty());
     
     BOOST_CHECK_EQUAL_COLLECTIONS(evenNeighbors.begin(), evenNeighbors.end(), oddCells.begin(), oddCells.end());
     BOOST_CHECK_EQUAL_COLLECTIONS(oddNeighbors.begin(), oddNeighbors.end(), evenCells.begin(), evenCells.end());

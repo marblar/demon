@@ -73,14 +73,14 @@ class IsingReservoirTestFixture : \
 BOOST_FIXTURE_TEST_SUITE(IsingReservoirTest, IsingReservoirTestFixture);
 
 BOOST_AUTO_TEST_CASE ( testWheelStep ) {
-    IsingReservoir reservoir(rng,c,5,5);
+    IsingReservoir reservoir(rng,c,6,6);
     Reservoir::InteractionResult result;
     BOOST_REQUIRE_NO_THROW(reservoir.wheelStep(result));
 }
 
 BOOST_AUTO_TEST_CASE ( testEmptyTransitionRule ) {
     TransitionRule emptyRule;
-    IsingReservoir reservoir(rng,c,5,5,emptyRule);
+    IsingReservoir reservoir(rng,c,6,6,emptyRule);
     Reservoir::InteractionResult result;
     BOOST_REQUIRE_THROW(reservoir.wheelStep(result), EmptyTransitionRuleError);
 }
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE ( testDeadEndTransitionRule ) {
     for (StateSet::iterator it = validStates.begin(); it!=validStates.end(); ++it) {
         deadEndRule[*it] = emptyTable;
     }
-    IsingReservoir reservoir(rng,c,5,5,deadEndRule);
+    IsingReservoir reservoir(rng,c,6,6,deadEndRule);
     BOOST_REQUIRE_THROW(reservoir.wheelStep(result),TransitionDeadEndError);
 }
 
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE ( testTooSmallTransitionTable ) {
         invalidRule[*it] = tooSmallTable;
     }
     
-    IsingReservoir reservoir(rng,c,5,5,invalidRule);
+    IsingReservoir reservoir(rng,c,6,6,invalidRule);
     Reservoir::InteractionResult result;
     BOOST_REQUIRE_THROW(reservoir.wheelStep(result),InvalidTableSizeError);
 }
