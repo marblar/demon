@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE( testNeighborsRelation_evenGrid ) {
     BOOST_CHECK(!oddNeighbors.count(*grid.begin()));
     
     loopGuard = 0;
-    for (Grid::subset::iterator it = grid.odds.begin(); it!=grid.odds.end(); ++it) {
+    for (Grid::subset::iterator it = grid.odds.begin(); it != grid.odds.end(); ++it) {
         ++loopGuard;
         oddCells.insert(*it);
         Cell::Neighbors neighbors = (*it)->getNeighbors();
@@ -191,13 +191,29 @@ BOOST_AUTO_TEST_CASE( testRandomAccess ) {
     // return different cell pointers, and that an invalid index throws.
     CellSet cells;
     size_t size = grid.size();
-    for (size_t k = 0; k!=grid.size(); ++k) {
+    for (size_t k = 0; k != grid.size(); ++k) {
         cells.insert(grid[k]);
     }
     BOOST_REQUIRE(cells.size()==size);
     BOOST_REQUIRE_THROW(grid[2*size], InvalidGridIndex);
 }
 
+BOOST_AUTO_TEST_CASE( testEnergy ) {
+    Cell *center = grid[5];
+    Cell::Neighbors neighbors = center->getNeighbors();
+    for (int k = 0; k != (1 << neighbors.size()); ++k) {
+        int highNeighbors = 0;
+        for(int neighbor = 0; neighbor < neighbors.size(); ++neighbor) {
+            int value = (k >> neighbor) & 1;
+            highNeighbors += value;
+            neighbors[neighbor]->setValue(value);
+        }
+        center->setValue(0);
+        BOOST_CHECK_EQUAL(center->getEnergy(),highNeighbors);
+        center->setValue(1);
+        BOOST_CHECK_EQUAL(center->getEnergy(),neighbors.size()-highNeighbors);
+    }
+}
 BOOST_AUTO_TEST_CASE( testSubsetsAreDifferentKinds ) {
     BOOST_REQUIRE(grid.odds.getKind()!=grid.evens.getKind());
 }
