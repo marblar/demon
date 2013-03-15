@@ -97,7 +97,7 @@ bool CheckerboardPtrOffset<T>::operator()(T *n) const {
 long Cell::getEnergy() {
     long e = 0;
     for (Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
-        e += (*it)->getValue();
+        e += (*it)->getValue()==getValue() ? 0 : 1;
     }
     return e;
 }
