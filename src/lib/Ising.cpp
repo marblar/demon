@@ -37,7 +37,8 @@ Reservoir::InteractionResult IsingReservoir::interactWithBit(int bit) {
 void IsingReservoir::isingStep(InteractionResult &result) {
     Grid::subset::iterator it = currentStepType ? \
         grid.odds.begin() : grid.evens.begin();
-    Grid::subset::iterator end = currentStepType ? grid.odds.end() : grid.evens.end();
+    Grid::subset::iterator end = currentStepType ? \
+        grid.odds.end() : grid.evens.end();
     for (;it!=end; ++it) {
         Cell *cell = *it;
         int energy = (int)cell->getEnergy();
