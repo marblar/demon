@@ -1,4 +1,5 @@
 #!/bin/sh
+cd $FOLDER
 mkdir -p build
 cd build
 ../configure $BOOST_FLAGS
