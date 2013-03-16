@@ -4,4 +4,5 @@ EXTRA_DIST = jenkins/short-run.sh \
 		plot/3dscatter.py \
 		jenkins/deploy-aws.sh \
 		jenkins/deploy-aws-cleanup.sh \
+		jenkins/deploy-kenyon.sh \
 		baton.sh
