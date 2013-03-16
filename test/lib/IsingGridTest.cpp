@@ -7,6 +7,7 @@
 //
 
 #include <boost/test/unit_test.hpp>
+#include <boost/foreach.hpp>
 #include <algorithm>
 #include <set>
 #include <sstream>
@@ -199,21 +200,23 @@ BOOST_AUTO_TEST_CASE( testRandomAccess ) {
 }
 
 BOOST_AUTO_TEST_CASE( testEnergy ) {
-    Cell *center = grid[5];
-    Cell::Neighbors neighbors = center->getNeighbors();
-    for (int k = 0; k != (1 << neighbors.size()); ++k) {
-        int highNeighbors = 0;
-        for(int neighbor = 0; neighbor < neighbors.size(); ++neighbor) {
-            int value = (k >> neighbor) & 1;
-            highNeighbors += value;
-            neighbors[neighbor]->setValue(value);
+    BOOST_FOREACH(Cell *center, std::make_pair(grid.begin(),grid.end())) {
+        Cell::Neighbors neighbors = center->getNeighbors();
+        for (int k = 0; k != (1 << neighbors.size()); ++k) {
+            int highNeighbors = 0;
+            for(int neighbor = 0; neighbor < neighbors.size(); ++neighbor) {
+                int value = (k >> neighbor) & 1;
+                highNeighbors += value;
+                neighbors[neighbor]->setValue(value);
+            }
+            center->setValue(0);
+            BOOST_CHECK_EQUAL(center->getEnergy(),highNeighbors);
+            center->setValue(1);
+            BOOST_CHECK_EQUAL(center->getEnergy(),neighbors.size()-highNeighbors);
         }
-        center->setValue(0);
-        BOOST_CHECK_EQUAL(center->getEnergy(),highNeighbors);
-        center->setValue(1);
-        BOOST_CHECK_EQUAL(center->getEnergy(),neighbors.size()-highNeighbors);
     }
 }
+
 BOOST_AUTO_TEST_CASE( testSubsetsAreDifferentKinds ) {
     BOOST_REQUIRE(grid.odds.getKind()!=grid.evens.getKind());
 }
