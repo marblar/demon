@@ -139,6 +139,9 @@ namespace Ising {
     };
 }
 
+template <class Container>
+std::pair<typename Container::iterator, typename Container::iterator> foreach_container(Container &c);
+
 
 
 #endif /* defined(__jdemon__IsingGrid__) */

@@ -101,3 +101,8 @@ long Cell::getEnergy() {
     }
     return e;
 }
+
+template <class Container>
+std::pair<typename Container::iterator, typename Container::iterator> foreach_container(Container &c) {
+    return std::make_pair(c.begin(), c.end());
+}
