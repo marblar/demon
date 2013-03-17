@@ -235,4 +235,11 @@ BOOST_AUTO_TEST_CASE( testDifferentSubsetBeginning ) {
     BOOST_REQUIRE(grid.odds.begin()!=grid.evens.begin());
 }
 
+BOOST_AUTO_TEST_CASE( testToggleEnergy ) {
+    Cell &cell = *grid[5];
+    long energy = cell.getEnergy();
+    cell.toggle();
+    BOOST_REQUIRE_EQUAL(cell.getEnergy(),cell.getNeighbors().size()-energy);
+}
+
 BOOST_AUTO_TEST_SUITE_END() 
