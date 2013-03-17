@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE( testNeighborsTransitive ) {
 }
 
 BOOST_AUTO_TEST_CASE( testSetValue ) {
-    Cell cell;
+    Cell &cell = *grid[5];
     cell.setValue(0);
     BOOST_CHECK_EQUAL(cell.getValue(), 0);
     cell.setValue(1);
@@ -215,6 +215,16 @@ BOOST_AUTO_TEST_CASE( testEnergy ) {
             BOOST_CHECK_EQUAL(center->getEnergy(),neighbors.size()-highNeighbors);
         }
     }
+}
+
+BOOST_AUTO_TEST_CASE( testSpecificEnergy ) {
+    Cell &center = *grid[5];
+    Cell::Neighbors neighbors = center.getNeighbors();
+    center.setValue(1);
+    neighbors[0]->setValue(0);
+    neighbors[1]->setValue(1);
+    neighbors[2]->setValue(1);
+    neighbors[3]->setValue(1);
 }
 
 BOOST_AUTO_TEST_CASE( testSubsetsAreDifferentKinds ) {
