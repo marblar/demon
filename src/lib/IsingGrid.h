@@ -45,20 +45,18 @@ namespace Ising {
     
     class Cell {
         unsigned char value;
-        int energy;
     protected:
         friend class Grid;
         boost::array<Cell*, 4> neighbors;
     public:
-        Cell() : value(0), energy(0) { }
+        Cell() : value(0) { }
         typedef boost::array<Cell*, 4> Neighbors;
         unsigned const char &getValue() { return value; }
         void setValue(const char &c);
         void toggle() { setValue(value ^ 1); }
         Neighbors getNeighbors() { return neighbors; }
-        bool isNeighbor(Cell *neighbor){ return std::count(neighbors.begin(),neighbors.end(),neighbor); }
-        void updateEnergy();
-        long getEnergy() { return energy; }
+        bool isNeighbor(Cell *neighbor){ return std::count(neighbors.begin(),neighbors.end(),neighbor);}
+        long getEnergy();
     };
     
     class InvalidGridIndex : public std::runtime_error {
