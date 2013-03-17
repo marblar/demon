@@ -8,7 +8,6 @@
 
 #include "IsingGrid.h"
 #include <boost/iterator/filter_iterator.hpp>
-#include <boost/foreach.hpp>
 using namespace Ising;
 using namespace detail;
 
@@ -28,12 +27,6 @@ int Grid::Coordinate::boundsCheck(int x) {
 void Cell::setValue(const char &c) {
     if (c < 0 || c > 1) {
         throw InvalidCellValue();
-    }
-    if (c != value) {
-        energy = (int)neighbors.size() - energy;
-        for(Cell::Neighbors::iterator neighbor = neighbors.begin(); neighbor!=neighbors.end();++neighbor) {
-            (*neighbor)->energy += (*neighbor)->value == c ? -1 : 1;
-        }
     }
     value = c;
 }
@@ -101,11 +94,12 @@ bool CheckerboardPtrOffset<T>::operator()(T *n) const {
 }
 
 
-void Cell::updateEnergy() {
-    energy = 0;
-    BOOST_FOREACH(Cell *neighbor, neighbors) {
-        energy += neighbor->getValue()==getValue() ? 0 : 1;
+long Cell::getEnergy() {
+    long e = 0;
+    for (Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
+        e += (*it)->getValue()==getValue() ? 0 : 1;
     }
+    return e;
 }
 
 template <class Container>
