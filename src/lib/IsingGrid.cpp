@@ -8,6 +8,8 @@
 
 #include "IsingGrid.h"
 #include <boost/iterator/filter_iterator.hpp>
+#include <iterator>
+#include <algorithm>
 using namespace Ising;
 using namespace detail;
 
@@ -68,16 +70,6 @@ evens(*this,even), odds(*this,odd) {
     }
 }
 
-Grid::subset::iterator Grid::subset::begin() const {
-    CheckerboardCellOffset offsetPredicate(base,kind,dimension);
-    return iterator(offsetPredicate,Grid::iterator(base),Grid::iterator(last));
-}
-
-Grid::subset::iterator Grid::subset::end() const {
-    CheckerboardCellOffset offsetPredicate(base,kind,dimension);
-    return Grid::subset::iterator(offsetPredicate,Grid::iterator(last),Grid::iterator(last));
-}
-
 template <class T>
 bool CheckerboardPtrOffset<T>::operator()(T *n) const {
     if (n<base) {
@@ -105,4 +97,11 @@ long Cell::getEnergy() {
 template <class Container>
 std::pair<typename Container::iterator, typename Container::iterator> foreach_container(Container &c) {
     return std::make_pair(c.begin(), c.end());
+}
+
+Grid::subset::subset(const Grid &grid, detail::Kind k) : kind(k) {
+    CheckerboardCellOffset filter(grid.cells.get(),k,grid.getDimension());
+    boost::filter_iterator<CheckerboardCellOffset, Grid::iterator> begin = boost::make_filter_iterator(filter, grid.begin());
+    boost::filter_iterator<CheckerboardCellOffset, Grid::iterator> end = boost::make_filter_iterator(filter, grid.end());
+    std::copy(begin,end,std::back_inserter(cells));
 }

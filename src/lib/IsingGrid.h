@@ -12,6 +12,7 @@
 #include <iterator>
 #include <stdexcept>
 #include <string>
+#include <vector>
 #include <boost/scoped_array.hpp>
 #include <boost/array.hpp>
 #include <boost/iterator/filter_iterator.hpp>
@@ -110,17 +111,15 @@ namespace Ising {
             // This class is a lazy container for iterating over the
             // even or odd cells in the grid. It can be accessed with
             //      Ising:Grid::subset::iterator it = grid.evens.begin();
-            Cell * const base;
-            Cell * const last;
-            int dimension;
+            std::vector<Cell *> cells;
             detail::Kind kind;
         public:
-            typedef boost::filter_iterator<detail::CheckerboardCellOffset,Grid::iterator> iterator;
-            iterator begin() const;
-            iterator end() const;
-            size_t size() { throw std::runtime_error("Grid::subset::size() is unimplemented"); }
+            typedef std::vector<Cell *>::const_iterator iterator;
+            iterator begin() const { return cells.begin(); }
+            iterator end() const { return cells.end(); }
+            size_t size() const { return cells.size(); }
             detail::Kind getKind() const { return kind; }
-            subset(const Grid &grid, detail::Kind k) : base(*grid.begin()), last(*grid.end()), dimension(grid.getDimension()),kind(k) {}
+            subset(const Grid &grid, detail::Kind k);
         };
         const subset evens;
         const subset odds;
