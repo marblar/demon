@@ -87,12 +87,7 @@ int main(int argc, char* argv[]) {
     world.barrier();
     
     gethostname(hostname,255);
-    std::clog << "Hello world from host "
-                << hostname
-                << " (rank "
-                << world.rank()
-                << ")"
-                << std::endl;
+    fprintf(stderr, "Hello world from host %s (rank %d)\n",hostname,world.rank());
     
     Experiment::range work;
     Experiment experiment;
