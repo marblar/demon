@@ -107,17 +107,12 @@ namespace Ising {
         // ********* Iterators **********
         // ******************************
         typedef boost::counting_iterator<Cell *> iterator;
-        class subset {
+        class subset : public std::vector<Cell *> {
             // This class is a lazy container for iterating over the
             // even or odd cells in the grid. It can be accessed with
             //      Ising:Grid::subset::iterator it = grid.evens.begin();
-            std::vector<Cell *> cells;
             detail::Kind kind;
         public:
-            typedef std::vector<Cell *>::const_iterator iterator;
-            iterator begin() const { return cells.begin(); }
-            iterator end() const { return cells.end(); }
-            size_t size() const { return cells.size(); }
             detail::Kind getKind() const { return kind; }
             subset(const Grid &grid, detail::Kind k);
         };

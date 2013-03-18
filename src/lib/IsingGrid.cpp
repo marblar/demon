@@ -103,5 +103,5 @@ Grid::subset::subset(const Grid &grid, detail::Kind k) : kind(k) {
     CheckerboardCellOffset filter(grid.cells.get(),k,grid.getDimension());
     boost::filter_iterator<CheckerboardCellOffset, Grid::iterator> begin = boost::make_filter_iterator(filter, grid.begin());
     boost::filter_iterator<CheckerboardCellOffset, Grid::iterator> end = boost::make_filter_iterator(filter, grid.end());
-    std::copy(begin,end,std::back_inserter(cells));
+    std::copy(begin,end,std::back_inserter(*this));
 }

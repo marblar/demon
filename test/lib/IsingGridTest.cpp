@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE( testEvenOddIteratorsDisjoint__evenGrid ) {
 
 BOOST_AUTO_TEST_CASE( testEvenCellsCount ) {
     int count = 0;
-    for (Grid::subset::iterator it = grid.evens.begin(); it!=grid.evens.end(); ++it) {
+    for (Grid::subset::const_iterator it = grid.evens.begin(); it!=grid.evens.end(); ++it) {
         ++count;
         // Infinite loop protection.
         BOOST_REQUIRE_LE(count, grid.size());
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE( testEvenCellsCount ) {
 
 BOOST_AUTO_TEST_CASE( testOddCellsCount ) {
     int count = 0;
-    for (Grid::subset::iterator it = grid.odds.begin(); it!=grid.odds.end(); ++it) {
+    for (Grid::subset::const_iterator it = grid.odds.begin(); it!=grid.odds.end(); ++it) {
         ++count;
         // Infinite loop protection:
         BOOST_REQUIRE_LE(count, grid.size());
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE( testNeighborsRelation_evenGrid ) {
     CellSet evenNeighbors, evenCells;
     CellSet oddNeighbors, oddCells;
     size_t loopGuard = 0;
-    for (Grid::subset::iterator it = grid.evens.begin(); it!=grid.evens.end(); ++it) {
+    for (Grid::subset::const_iterator it = grid.evens.begin(); it!=grid.evens.end(); ++it) {
         ++loopGuard;
         evenCells.insert(*it);
         Cell::Neighbors neighbors = (*it)->getNeighbors();
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE( testNeighborsRelation_evenGrid ) {
     BOOST_CHECK(!oddNeighbors.count(*grid.begin()));
     
     loopGuard = 0;
-    for (Grid::subset::iterator it = grid.odds.begin(); it != grid.odds.end(); ++it) {
+    for (Grid::subset::const_iterator it = grid.odds.begin(); it != grid.odds.end(); ++it) {
         ++loopGuard;
         oddCells.insert(*it);
         Cell::Neighbors neighbors = (*it)->getNeighbors();

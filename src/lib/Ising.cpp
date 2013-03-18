@@ -35,9 +35,9 @@ Reservoir::InteractionResult IsingReservoir::interactWithBit(int bit) {
 }
 
 void IsingReservoir::isingStep(InteractionResult &result) {
-    Grid::subset::iterator it = currentStepType ? \
+    Grid::subset::const_iterator it = currentStepType ? \
         grid.odds.begin() : grid.evens.begin();
-    Grid::subset::iterator end = currentStepType ? \
+    Grid::subset::const_iterator end = currentStepType ? \
         grid.odds.end() : grid.evens.end();
     for (;it!=end; ++it) {
         Cell *cell = *it;
