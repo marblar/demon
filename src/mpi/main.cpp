@@ -12,12 +12,9 @@
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
-
-
-#ifndef HAVE_CONFIG_H
-#define PACKAGE_STRING UNKNOWN
-#define PACKAGE_VERSION UNKNOWN
+#else
+#define PACKAGE_STRING "UNKNOWN"
+#define PACKAGE_VERSION "UNKNOWN"
 #endif
 
 namespace mpi = boost::mpi;

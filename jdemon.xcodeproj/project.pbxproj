@@ -17,6 +17,7 @@
 		4D8B4B3F16E3FFD0008ECF75 /* InstrumentFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */; };
 		4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6D16E081B4002ADE1E /* SystemTest.cpp */; };
 		4DA3762D16E53CF700599AA1 /* IsingTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3762B16E53B8300599AA1 /* IsingTest.cpp */; };
+		4DA4031616F69F0400C913EB /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DB2EE0F16E7BDD800D24443 /* main.cpp */; };
 		4DA6055916EA4399000DC72A /* cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA6055716EA4399000DC72A /* cli.cpp */; };
 		4DA6055A16EA4399000DC72A /* cli.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DA6055816EA4399000DC72A /* cli.h */; };
 		4DA8B74716EECA180072B82A /* IsingGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA8B74516EEC9C80072B82A /* IsingGrid.cpp */; };
@@ -341,6 +342,7 @@
 				4DA6055916EA4399000DC72A /* cli.cpp in Sources */,
 				4DA8B74716EECA180072B82A /* IsingGrid.cpp in Sources */,
 				4DA8B74A16EECFE90072B82A /* IsingGridTest.cpp in Sources */,
+				4DA4031616F69F0400C913EB /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +377,7 @@
 				HEADER_SEARCH_PATHS = (
 					$HOME/macports/include,
 					/usr/local/include,
+					$HOME/macports/include/openmpi,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -399,6 +402,7 @@
 				HEADER_SEARCH_PATHS = (
 					$HOME/macports/include,
 					/usr/local/include,
+					$HOME/macports/include/openmpi,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
