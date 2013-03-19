@@ -12,7 +12,8 @@ noinst_HEADERS = Stochastic.h \
                         clangomp.h \
                         Measurement.h \
 			cli.h \
-			IsingGrid.h
+			IsingGrid.h \
+			RandomnessDelegate.h
 
 __top_builddir__src_libdemon_la_SOURCES = Stochastic.cpp \
                         Ising.cpp \
