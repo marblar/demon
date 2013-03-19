@@ -57,15 +57,21 @@ public:
     gsl_rng *RNG;
 };
 
-class ClusterMethodAgent {
-public:
-    ClusterMethodAgent(Randomness::Delegate *delegate, double inclusionProbability) {}
-    void performMethodAtCell(Ising::Cell *startingCell) {}
-};
-
 class InvalidProbabilityError : public std::runtime_error {
 public:
     InvalidProbabilityError() : std::runtime_error("Probability must be 0<p<1") {}
+};
+
+class ClusterMethodAgent {
+    double p;
+    Randomness::Delegate *delegate;
+public:
+    ClusterMethodAgent(Randomness::Delegate *randomDelegate, double inclusionProbability) : p(inclusionProbability), delegate(randomDelegate){
+        if (p>1 || p<0) {
+            throw InvalidProbabilityError();
+        }
+    }
+    void performMethodAtCell(Ising::Cell *startingCell);
 };
 
 #define CheckTransitionRuleError(expr,class) \

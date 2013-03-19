@@ -64,34 +64,11 @@ void IsingReservoir::reset() {
 }
 
 void IsingReservoir::clusterMethod() {
-
-//  http://link.springer.com/chapter/10.1007%2F3-540-35273-2_1?LI=true#page-1
-
-    std::stack<Cell *> workStack;
-    Cell *currentCell = grid[gsl_rng_uniform_int(RNG, grid.size())];
-    unsigned char clusterBit = currentCell->getValue();
-    currentCell->toggle();
-    workStack.push(currentCell);
-    
     double inclusionProbability = 1 - exp(-2*constants.getBeta());
-    assert(inclusionProbability<=1 && inclusionProbability>=0);
-    
-    //Basic BFT
-    while (!workStack.empty()) {
-        currentCell = workStack.top();
-        workStack.pop();
-        Cell::Neighbors neighbors = currentCell->getNeighbors();
-        for (Cell::Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
-            Cell *neighborCell = *it;
-            if (neighborCell->getValue() == clusterBit &&
-                    gsl_rng_uniform(RNG)<inclusionProbability) {
-                workStack.push(neighborCell);
-                neighborCell->toggle();
-            }
-        }
-        assert(workStack.size()<grid.size());
-    };
-    
+    Randomness::GSLDelegate randomness(RNG);
+    ClusterMethodAgent cma(&randomness,inclusionProbability);
+    Cell *currentCell = grid[gsl_rng_uniform_int(RNG, grid.size())];
+    cma.performMethodAtCell(currentCell);
 }
 
 void IsingReservoir::metropolisAlgorithm() {
@@ -239,6 +216,28 @@ void isingEnergyDistribution(int d, int clusters) {
         delete reservoir;
         printf("\n");
     }
+}
+
+void ClusterMethodAgent::performMethodAtCell(Ising::Cell *currentCell) {
+    //  http://link.springer.com/chapter/10.1007%2F3-540-35273-2_1?LI=true#page-1
+    std::stack<Cell *> workStack;
+    unsigned char clusterBit = currentCell->getValue();
+    currentCell->toggle();
+    workStack.push(currentCell);
+    
+    //Basic BFT
+    while (!workStack.empty()) {
+        currentCell = workStack.top();
+        workStack.pop();
+        Cell::Neighbors neighbors = currentCell->getNeighbors();
+        for (Cell::Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
+            Cell *neighborCell = *it;
+            if (neighborCell->getValue()==clusterBit && delegate->binaryEventWithProbability(p)) {
+                workStack.push(neighborCell);
+                neighborCell->toggle();
+            }
+        }
+    };
 }
 
 int IsingReservoir::totalEnergy() {
