@@ -21,8 +21,7 @@ template <class Subclass>
 class AbstractRandomnessDelegate {
 public:
     bool binaryEventWithProbability(double probabilityOfHappening) {
-        double roll = static_cast<Subclass *>(this)->getRandomDoubleFromZeroToOne();
-        return (roll < probabilityOfHappening) ? 1 : 0;
+        return static_cast<Subclass *>(this)->binaryEvent( probabilityOfHappening );
     };
     
     int randomIntegerFromInclusiveRange(int begin, int end) {
@@ -32,15 +31,16 @@ public:
 
 class GSLRandomnessDelegate : public AbstractRandomnessDelegate<GSLRandomnessDelegate> {
     gsl_rng *RNG;
+    friend AbstractRandomnessDelegate;
 protected:
-    double roll() {
-        return gsl_rng_uniform(RNG);
-    }
-    double getInteger(int begin, int end) {
+    bool binaryEvent( double p ) {
+        return gsl_rng_get(RNG) < p ? 1 : 0;
+    };
+    int getInteger(int begin, int end) {
         if (end<begin) {
             throw std::runtime_error("Invalid RNG range. 'begin' must be less than 'end'");
         }
-        return gsl_rng_uniform_int(RNG, end-begin) + begin;
+        return (int)gsl_rng_uniform_int(RNG, end-begin) + begin;
     }
 public:
     GSLRandomnessDelegate(gsl_rng *RNG);
