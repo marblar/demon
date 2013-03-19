@@ -12,38 +12,32 @@
 #include <gsl/gsl_rng.h>
 #include <stdexcept>
 
-// N.B. I want to use polymorphism here for testing reasons, but since RNG
-//  is such an important performance constraint, I'm using static polymorphism
-//  via the curiously-recurring-template pattern to avoid the memory lookup
-//  associated with virtual functions.
-
-template <class Subclass>
-class AbstractRandomnessDelegate {
-public:
-    bool binaryEventWithProbability(double probabilityOfHappening) {
-        return static_cast<Subclass *>(this)->binaryEvent( probabilityOfHappening );
+namespace Randomness {
+    class Delegate {
+    protected:
+        Delegate() {}
+    public:
+        virtual bool binaryEventWithProbability(double probabilityOfHappening) = 0;
+        virtual int randomIntegerFromInclusiveRange(int begin, int end) = 0;
     };
     
-    int randomIntegerFromInclusiveRange(int begin, int end) {
-        return static_cast<Subclass *>(this)->getInteger(begin,end);
-    }
-};
-
-class GSLRandomnessDelegate : public AbstractRandomnessDelegate<GSLRandomnessDelegate> {
-    gsl_rng *RNG;
-    friend AbstractRandomnessDelegate;
-protected:
-    bool binaryEvent( double p ) {
-        return gsl_rng_get(RNG) < p ? 1 : 0;
-    };
-    int getInteger(int begin, int end) {
-        if (end<begin) {
-            throw std::runtime_error("Invalid RNG range. 'begin' must be less than 'end'");
+    class GSLDelegate : public Delegate {
+        gsl_rng *RNG;
+    protected:
+        bool binaryEventWithProbability( double probabilityOfHappening ) {
+            return gsl_rng_get(RNG) < probabilityOfHappening ? 1 : 0;
+        };
+        int randomIntegerFromInclusiveRange(int begin, int end) {
+            if (end<begin) {
+                throw std::runtime_error("Invalid RNG range. 'begin' must be less than 'end'");
+            }
+            return (int)gsl_rng_uniform_int(RNG, end-begin) + begin;
         }
-        return (int)gsl_rng_uniform_int(RNG, end-begin) + begin;
-    }
-public:
-    GSLRandomnessDelegate(gsl_rng *RNG);
-};
+    public:
+        GSLDelegate(gsl_rng *r) : RNG(r) {}
+    };
+}
+
+
 
 #endif /* defined(__jdemon__RandomnessDelegate__) */

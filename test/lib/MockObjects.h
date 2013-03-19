@@ -55,14 +55,14 @@ public:
     Reservoir(constants), end(end_), bitPos(0) {}
 };
 
-class MockRandomnessDelegate : public AbstractRandomnessDelegate<MockRandomnessDelegate> {
+class MockRandomnessDelegate : public Randomness::Delegate {
     bool event;
     int integer;
 protected:
-    bool binaryEvent (double p) {
+    bool binaryEventWithProbability(double p) {
         return event;
     }
-    int getInteger(int begin, int end) {
+    int randomIntegerFromInclusiveRange(int begin, int end) {
         return integer;
     }
 public:
