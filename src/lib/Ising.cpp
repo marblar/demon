@@ -64,9 +64,8 @@ void IsingReservoir::reset() {
 }
 
 void IsingReservoir::clusterMethod() {
-    double inclusionProbability = 1 - exp(-2*constants.getBeta());
     Randomness::GSLDelegate randomness(RNG);
-    ClusterMethodAgent cma(&randomness,inclusionProbability);
+    ClusterMethodAgent cma(&randomness,clusterInclusionProbability());
     Cell *currentCell = grid[gsl_rng_uniform_int(RNG, grid.size())];
     cma.performMethodAtCell(currentCell);
 }

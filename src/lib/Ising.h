@@ -36,6 +36,7 @@ public:
     void clusterMethod();
     void metropolisAlgorithm();
     int totalEnergy();
+    double clusterInclusionProbability() {return 1 - exp(-2*constants.getBeta());}
     IsingReservoir(gsl_rng *RNG, Constants constants,
                    int IsingSide = 20, int clusters = 20,
                    TransitionRule rule = defaultTransitionRule());

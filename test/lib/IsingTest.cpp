@@ -119,6 +119,15 @@ BOOST_AUTO_TEST_CASE ( testTooSmallTransitionTable ) {
     BOOST_REQUIRE_THROW(reservoir.wheelStep(result),InvalidTableSizeError);
 }
 
+BOOST_AUTO_TEST_CASE( testClusterInclusionProbability ) {
+    c.setEpsilon(1);
+    IsingReservoir reservoir1(rng,c,6,6);
+    BOOST_CHECK_EQUAL(reservoir1.clusterInclusionProbability(), 1);
+    c.setEpsilon(0);
+    IsingReservoir reservoir2(rng,c,6,6);
+    BOOST_CHECK_EQUAL(reservoir2.clusterInclusionProbability(), 0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(IsingUtilityTest)
