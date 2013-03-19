@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE( includeAllCells ) {
     
     Ising::Cell *startingPoint = grid[5];
     MockRandomnessDelegate delegate(true,0);
-    ClusterMethodAgent agent(&delegate,2);
+    ClusterMethodAgent agent(&delegate,1);
     agent.performMethodAtCell(startingPoint);
     
     std::set<Ising::Cell *> expectedCells;
