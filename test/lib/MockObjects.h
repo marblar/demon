@@ -9,6 +9,10 @@
 #ifndef jdemon_MockObjects_h
 #define jdemon_MockObjects_h
 
+#include <boost/array.hpp>
+#include "RandomnessDelegate.h"
+
+
 class TrivialReservoir : public Reservoir {
 public:
     InteractionResult interactWithBit(int bit) {
@@ -49,6 +53,20 @@ public:
     int bitPos;
     SpecificEndStringReservoir(Constants constants, int end_) :
     Reservoir(constants), end(end_), bitPos(0) {}
+};
+
+class MockRandomnessDelegate : public AbstractRandomnessDelegate<MockRandomnessDelegate> {
+    bool event;
+    int integer;
+protected:
+    bool binaryEvent (double p) {
+        return event;
+    }
+    int getInteger(int begin, int end) {
+        return integer;
+    }
+public:
+    MockRandomnessDelegate(bool eventValue, bool integerValue) : event(eventValue), integer(integerValue) {}
 };
 
 #endif
