@@ -9,6 +9,7 @@
 #include <boost/test/unit_test.hpp>
 #include <set>
 #include <algorithm>
+#include <stack>
 
 #include "Ising.h"
 #include "Utilities.h"
@@ -127,8 +128,86 @@ BOOST_AUTO_TEST_CASE( testNonbinaryParity ) {
     BOOST_REQUIRE(inputState == 1);
 }
 
-BOOST_AUTO_TEST_CASE( testCreateIsingGrid ) {
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_FIXTURE_TEST_SUITE(ClusterMethodTest, GridOperationTestFixture)
+
+BOOST_AUTO_TEST_CASE( includeNoCells ) {
+    Ising::Cell *startingPoint = grid[5];
+    MockRandomnessDelegate delegate(false,0);
+    ClusterMethodAgent agent(&delegate,1);
+    agent.performMethodAtCell(startingPoint);
     
+    std::set<Ising::Cell *> expectedCells;
+    expectedCells.insert(startingPoint);
+    
+    std::set<Ising::Cell *> actualCells = changedCells();
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expectedCells.begin(), expectedCells.end(), actualCells.begin(), actualCells.end());
+}
+
+BOOST_AUTO_TEST_CASE( includeAllCells ) {
+    // This breaks if the default cell value is non-zero.
+    
+    Ising::Cell *startingPoint = grid[5];
+    MockRandomnessDelegate delegate(true,0);
+    ClusterMethodAgent agent(&delegate,2);
+    agent.performMethodAtCell(startingPoint);
+    
+    std::set<Ising::Cell *> expectedCells;
+    expectedCells.insert(grid.begin(),grid.end());
+    
+    std::set<Ising::Cell *> actualCells = changedCells();
+    
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expectedCells.begin(), expectedCells.end(), actualCells.begin(), actualCells.end());
+}
+
+BOOST_AUTO_TEST_CASE( includeSomeCells ) {
+    Ising::Cell *startingPoint = grid[5];
+    std::set<Ising::Cell *> expectedCells;
+    std::stack<Ising::Cell *> stack;
+    stack.push(startingPoint);
+    
+    size_t size = 12;
+    
+    while (expectedCells.size()!=size) {
+        if (stack.empty()) {
+            BOOST_FAIL("Stack should not be empty.");
+        }
+        Ising::Cell *currentCell = stack.top();
+        stack.pop();
+        Ising::Cell::Neighbors neighbors = currentCell->getNeighbors();
+        for (Ising::Cell::Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
+            if (!expectedCells.count(*it)) {
+                stack.push(*it);
+            }
+        }
+        expectedCells.insert(currentCell);
+    }
+    
+    BOOST_REQUIRE_EQUAL(expectedCells.size(),size);
+    
+    for (Ising::Grid::iterator it = grid.begin(); it!=grid.end(); ++it) {
+        if (expectedCells.count(*it)) {
+            (*it)->setValue(1);
+        } else {
+            (*it)->setValue(0);
+        }
+    }
+    
+    resetInitialValues();
+    
+    MockRandomnessDelegate delegate(true,0);
+    ClusterMethodAgent agent(&delegate,1);
+    agent.performMethodAtCell(startingPoint);
+    
+    std::set<Ising::Cell *> actualCells = changedCells();
+    
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expectedCells.begin(), expectedCells.end(), actualCells.begin(), actualCells.end());
+}
+
+BOOST_AUTO_TEST_CASE( testInclusionProbability ) {
+    BOOST_CHECK_THROW(ClusterMethodAgent(NULL,-0.01), InvalidProbabilityError);
+    BOOST_CHECK_THROW(ClusterMethodAgent(NULL,1.01), InvalidProbabilityError);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

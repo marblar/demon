@@ -4,6 +4,7 @@
 #include <utility>
 #include <vector>
 #include <map>
+#include "RandomnessDelegate.h"
 #include "Reservoir.h"
 #include "InstrumentFactories.h"
 #include "IsingGrid.h"
@@ -54,6 +55,17 @@ public:
     int clusters;
     virtual void reset();
     gsl_rng *RNG;
+};
+
+class ClusterMethodAgent {
+public:
+    ClusterMethodAgent(Randomness::Delegate *delegate, double inclusionProbability) {}
+    void performMethodAtCell(Ising::Cell *startingCell) {}
+};
+
+class InvalidProbabilityError : public std::runtime_error {
+public:
+    InvalidProbabilityError() : std::runtime_error("Probability must be 0<p<1") {}
 };
 
 #define CheckTransitionRuleError(expr,class) \
