@@ -12,7 +12,7 @@ void performMeasurement() {
 }
 
 bool init_function() {
-    for (int k=0; k<5; ++k) {
+    for (int k=0; k<15; ++k) {
         framework::master_test_suite().add(BOOST_TEST_CASE(&performMeasurement),0,60);
     }
     framework::master_test_suite().p_name.value = "IsingBenchmark";
