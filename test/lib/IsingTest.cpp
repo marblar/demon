@@ -146,7 +146,9 @@ BOOST_AUTO_TEST_CASE( includeNoCells ) {
 }
 
 BOOST_AUTO_TEST_CASE( includeAllCells ) {
-    // This breaks if the default cell value is non-zero.
+    for (Ising::Grid::iterator it = grid.begin(); it!=grid.end(); ++it) {
+        (*it)->setValue(0);
+    }
     
     Ising::Cell *startingPoint = grid[5];
     MockRandomnessDelegate delegate(true,0);
