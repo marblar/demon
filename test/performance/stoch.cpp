@@ -1,3 +1,4 @@
+#define BOOST_TEST_ALTERNATIVE_INIT_API
 #include <boost/test/unit_test.hpp>
 #include "ReservoirBenchmark.h"
 #include "Stochastic.h"

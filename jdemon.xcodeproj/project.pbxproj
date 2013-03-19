@@ -12,6 +12,8 @@
 		4D28A4B016D66E2B0019141B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
 		4D28A4B116D66E2B0019141B /* Reservoir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438516D1443E00F8B816 /* Reservoir.cpp */; };
 		4D28A4B216D66E2B0019141B /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611D0316406ADE008FB029 /* Utilities.cpp */; };
+		4D46949316F8B7200038FEA3 /* ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF803216E44A6F002EB147 /* ising.cpp */; };
+		4D46949416F8B7B40038FEA3 /* stoch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3763016E54C2A00599AA1 /* stoch.cpp */; };
 		4D4F4DD816E662CA00B7F5A4 /* StochTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4F4DD616E662CA00B7F5A4 /* StochTest.cpp */; };
 		4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */; };
 		4D8B4B3F16E3FFD0008ECF75 /* InstrumentFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */; };
@@ -343,6 +345,8 @@
 				4DA8B74716EECA180072B82A /* IsingGrid.cpp in Sources */,
 				4DA8B74A16EECFE90072B82A /* IsingGridTest.cpp in Sources */,
 				4DA4031616F69F0400C913EB /* main.cpp in Sources */,
+				4D46949316F8B7200038FEA3 /* ising.cpp in Sources */,
+				4D46949416F8B7B40038FEA3 /* stoch.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
