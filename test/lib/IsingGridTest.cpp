@@ -221,6 +221,7 @@ BOOST_AUTO_TEST_CASE( testSpecificEnergy ) {
     neighbors[1]->setValue(1);
     neighbors[2]->setValue(1);
     neighbors[3]->setValue(1);
+    BOOST_CHECK_EQUAL(1,center.getEnergy());
 }
 
 BOOST_AUTO_TEST_CASE( testSubsetsAreDifferentKinds ) {
