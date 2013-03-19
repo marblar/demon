@@ -14,15 +14,11 @@
 #include <map>
 
 #include "IsingGrid.h"
+#include "TestFixtures.h"
 
 using namespace boost::unit_test;
 using namespace Ising;
 typedef std::set<Ising::Cell*> CellSet;
-
-struct EvenIsingGridFixture {
-    Ising::Grid grid;
-    EvenIsingGridFixture() : grid(6) {}
-};
 
 BOOST_FIXTURE_TEST_SUITE(IsingGridTest, EvenIsingGridFixture)
 

@@ -34,6 +34,11 @@ struct ConstantsTestFixture {
     }
 };
 
+struct EvenIsingGridFixture {
+    Ising::Grid grid;
+    EvenIsingGridFixture() : grid(6) {}
+};
+
 struct ValidStatesTestFixture {
     StateSet validStates;
     ValidStatesTestFixture () {
