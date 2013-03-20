@@ -33,7 +33,7 @@ gsl_rng *GSLRandomNumberGenerator() {
     gsl_rng *gen;
     #pragma omp critical
     {
-        gen = gsl_rng_alloc(gsl_rng_mt19937);
+        gen = gsl_rng_alloc(gsl_rng_rand);
         long seed = clock()*rand();
         gsl_rng_set(gen, seed);
     }
