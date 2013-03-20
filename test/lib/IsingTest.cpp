@@ -180,6 +180,8 @@ BOOST_AUTO_TEST_CASE( includeSomeCells ) {
     
     size_t size = 12;
     
+    BOOST_REQUIRE_LT(size,grid.size());
+    
     while (expectedCells.size()!=size) {
         if (stack.empty()) {
             BOOST_FAIL("Stack should not be empty.");
