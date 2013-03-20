@@ -29,7 +29,7 @@ namespace Randomness {
     
     class GSLDelegate : public Delegate <GSLDelegate> {
         gsl_rng *RNG;
-        friend class Delegate;
+        friend class Delegate<GSLDelegate>;
     protected:
         bool binaryEventWithProbability_imp( double probabilityOfHappening ) {
             return gsl_rng_uniform(RNG) < probabilityOfHappening ? 1 : 0;
