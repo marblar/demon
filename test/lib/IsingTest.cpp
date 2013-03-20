@@ -144,7 +144,7 @@ BOOST_FIXTURE_TEST_SUITE(ClusterMethodTest, GridOperationTestFixture)
 BOOST_AUTO_TEST_CASE( includeNoCells ) {
     Ising::Cell *startingPoint = grid[5];
     MockRandomnessDelegate delegate(false,0);
-    ClusterMethodAgent agent(&delegate,1);
+    ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
     agent.performMethodAtCell(startingPoint);
     
     std::set<Ising::Cell *> expectedCells;
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE( includeAllCells ) {
     
     Ising::Cell *startingPoint = grid[5];
     MockRandomnessDelegate delegate(true,0);
-    ClusterMethodAgent agent(&delegate,1);
+    ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
     agent.performMethodAtCell(startingPoint);
     
     std::set<Ising::Cell *> expectedCells;
@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_CASE( includeSomeCells ) {
     resetInitialValues();
     
     MockRandomnessDelegate delegate(true,0);
-    ClusterMethodAgent agent(&delegate,1);
+    ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
     agent.performMethodAtCell(startingPoint);
     
     std::set<Ising::Cell *> actualCells = changedCells();
@@ -219,8 +219,9 @@ BOOST_AUTO_TEST_CASE( includeSomeCells ) {
 }
 
 BOOST_AUTO_TEST_CASE( testInclusionProbability ) {
-    BOOST_CHECK_THROW(ClusterMethodAgent(NULL,-0.01), InvalidProbabilityError);
-    BOOST_CHECK_THROW(ClusterMethodAgent(NULL,1.01), InvalidProbabilityError);
+    MockRandomnessDelegate m(1,1);
+    BOOST_CHECK_THROW(ClusterMethodAgent<MockRandomnessDelegate>(m,-0.01), InvalidProbabilityError);
+    BOOST_CHECK_THROW(ClusterMethodAgent<MockRandomnessDelegate>(m,1.01), InvalidProbabilityError);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

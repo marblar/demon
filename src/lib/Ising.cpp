@@ -3,7 +3,6 @@
 
 #include <math.h>
 #include <assert.h>
-#include <stack>
 #include <boost/foreach.hpp>
 
 #define SQUARED(x) x*x
@@ -65,7 +64,7 @@ void IsingReservoir::reset() {
 
 void IsingReservoir::clusterMethod() {
     Randomness::GSLDelegate randomness(RNG);
-    ClusterMethodAgent cma(&randomness,clusterInclusionProbability());
+    ClusterMethodAgent<Randomness::GSLDelegate> cma(randomness,clusterInclusionProbability());
     Cell *currentCell = grid[gsl_rng_uniform_int(RNG, grid.size())];
     cma.performMethodAtCell(currentCell);
 }
@@ -215,28 +214,6 @@ void isingEnergyDistribution(int d, int clusters) {
         delete reservoir;
         printf("\n");
     }
-}
-
-void ClusterMethodAgent::performMethodAtCell(Ising::Cell *currentCell) {
-    //  http://link.springer.com/chapter/10.1007%2F3-540-35273-2_1?LI=true#page-1
-    std::stack<Cell *> workStack;
-    unsigned char clusterBit = currentCell->getValue();
-    currentCell->toggle();
-    workStack.push(currentCell);
-    
-    //Basic BFT
-    while (!workStack.empty()) {
-        currentCell = workStack.top();
-        workStack.pop();
-        Cell::Neighbors neighbors = currentCell->getNeighbors();
-        for (Cell::Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
-            Cell *neighborCell = *it;
-            if (neighborCell->getValue()==clusterBit && delegate->binaryEventWithProbability(p)) {
-                workStack.push(neighborCell);
-                neighborCell->toggle();
-            }
-        }
-    };
 }
 
 int IsingReservoir::totalEnergy() {

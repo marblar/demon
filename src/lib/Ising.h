@@ -8,6 +8,7 @@
 #include "Reservoir.h"
 #include "InstrumentFactories.h"
 #include "IsingGrid.h"
+#include <stack>
 
 // TODO: Encapsulate me!
 typedef std::map<char,SystemState *> TransitionTable;
@@ -63,16 +64,37 @@ public:
     InvalidProbabilityError() : std::runtime_error("Probability must be 0<p<1") {}
 };
 
+template <class RandomnessDelegate>
 class ClusterMethodAgent {
     double p;
-    Randomness::Delegate *delegate;
+    RandomnessDelegate &delegate;
 public:
-    ClusterMethodAgent(Randomness::Delegate *randomDelegate, double inclusionProbability) : p(inclusionProbability), delegate(randomDelegate){
+    ClusterMethodAgent(RandomnessDelegate &randomDelegate, double inclusionProbability) : p(inclusionProbability), delegate(randomDelegate){
         if (p>1 || p<0) {
             throw InvalidProbabilityError();
         }
     }
-    void performMethodAtCell(Ising::Cell *startingCell);
+    void performMethodAtCell(Ising::Cell *currentCell) {
+        //  http://link.springer.com/chapter/10.1007%2F3-540-35273-2_1?LI=true#page-1
+        std::stack<Ising::Cell *> workStack;
+        unsigned char clusterBit = currentCell->getValue();
+        currentCell->toggle();
+        workStack.push(currentCell);
+        
+        //Basic BFT
+        while (!workStack.empty()) {
+            currentCell = workStack.top();
+            workStack.pop();
+            Ising::Cell::Neighbors neighbors = currentCell->getNeighbors();
+            for (Ising::Cell::Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {
+                Ising::Cell *neighborCell = *it;
+                if (neighborCell->getValue()==clusterBit && delegate.binaryEventWithProbability(p)) {
+                    workStack.push(neighborCell);
+                    neighborCell->toggle();
+                }
+            }
+        };
+    }
 };
 
 #define CheckTransitionRuleError(expr,class) \

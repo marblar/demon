@@ -55,14 +55,15 @@ public:
     Reservoir(constants), end(end_), bitPos(0) {}
 };
 
-class MockRandomnessDelegate : public Randomness::Delegate {
+class MockRandomnessDelegate : public Randomness::Delegate<MockRandomnessDelegate> {
     bool event;
     int integer;
+    friend class Randomness::Delegate<MockRandomnessDelegate>;
 protected:
-    bool binaryEventWithProbability(double p) {
+    bool binaryEventWithProbability_imp(double p) {
         return event;
     }
-    int randomIntegerFromInclusiveRange(int begin, int end) {
+    int randomIntegerFromInclusiveRange_imp(int begin, int end) {
         return integer;
     }
 public:

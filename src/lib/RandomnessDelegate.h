@@ -13,26 +13,34 @@
 #include <stdexcept>
 
 namespace Randomness {
+    template <class subclass>
     class Delegate {
     protected:
         Delegate() {}
+        
     public:
-        virtual bool binaryEventWithProbability(double probabilityOfHappening) = 0;
-        virtual int randomIntegerFromInclusiveRange(int begin, int end) = 0;
+        bool binaryEventWithProbability(double probabilityOfHappening) {
+            return static_cast<subclass *>(this)->binaryEventWithProbability_imp(probabilityOfHappening);
+        };
+        virtual int randomIntegerFromInclusiveRange(int begin, int end) {
+            return static_cast<subclass *>(this)->randomIntegerFromInclusiveRange_imp(begin,end);
+        }
     };
     
-    class GSLDelegate : public Delegate {
+    class GSLDelegate : public Delegate <GSLDelegate> {
         gsl_rng *RNG;
-    public:
-        bool binaryEventWithProbability( double probabilityOfHappening ) {
+        friend class Delegate;
+    protected:
+        bool binaryEventWithProbability_imp( double probabilityOfHappening ) {
             return gsl_rng_uniform(RNG) < probabilityOfHappening ? 1 : 0;
         };
-        int randomIntegerFromInclusiveRange(int begin, int end) {
+        int randomIntegerFromInclusiveRange_imp(int begin, int end) {
             if (end<begin) {
                 throw std::runtime_error("Invalid RNG range. 'begin' must be less than 'end'");
             }
             return (int)gsl_rng_uniform_int(RNG, end-begin) + begin;
         }
+    public:
         GSLDelegate(gsl_rng *r) : RNG(r) {}
     };
 }
