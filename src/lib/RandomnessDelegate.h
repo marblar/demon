@@ -25,7 +25,7 @@ namespace Randomness {
         gsl_rng *RNG;
     public:
         bool binaryEventWithProbability( double probabilityOfHappening ) {
-            return gsl_rng_get(RNG) < probabilityOfHappening ? 1 : 0;
+            return gsl_rng_uniform(RNG) < probabilityOfHappening ? 1 : 0;
         };
         int randomIntegerFromInclusiveRange(int begin, int end) {
             if (end<begin) {
