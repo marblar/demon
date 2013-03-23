@@ -15,6 +15,7 @@
 #include "InstrumentFactories.h"
 #include "Utilities.h"
 #include "MockObjects.h"
+using namespace DemonBase;
 
 struct MeasurementTestFixture : \
     public ConstantsTestFixture, \

@@ -6,13 +6,14 @@
 #include <boost/foreach.hpp>
 
 #define SQUARED(x) x*x
+using namespace DemonBase;
 using namespace Ising;
 
 int Ising::s(char x,char y,char z) {
     return (x<<2) + (y<<1) + (z & 1);
 }
 
-Reservoir::InteractionResult IsingReservoir::interactWithBit(int bit) {
+DemonBase::Reservoir::InteractionResult Ising::Reservoir::interactWithBit(int bit) {
     InteractionResult result;
     if (currentState->bit != bit) {
         currentState=currentState->bitFlipState;
@@ -33,7 +34,7 @@ Reservoir::InteractionResult IsingReservoir::interactWithBit(int bit) {
     return result;
 }
 
-void IsingReservoir::isingStep(InteractionResult &result) {
+void Ising::Reservoir::isingStep(InteractionResult &result) {
     Grid::subset::const_iterator it = currentStepType ? \
         grid.odds.begin() : grid.evens.begin();
     Grid::subset::const_iterator end = currentStepType ? \
@@ -50,7 +51,7 @@ void IsingReservoir::isingStep(InteractionResult &result) {
     currentStepType = (currentStepType == odd) ? even : odd;
 }
 
-void IsingReservoir::reset() {
+void Ising::Reservoir::reset() {
     if (constants.getEpsilon()<.7) {
         for (int k = 0; k<clusters; k++) {
             clusterMethod();
@@ -62,14 +63,14 @@ void IsingReservoir::reset() {
     }
 }
 
-void IsingReservoir::clusterMethod() {
+void Ising::Reservoir::clusterMethod() {
     Randomness::GSLDelegate randomness(RNG);
     ClusterMethodAgent<Randomness::GSLDelegate> cma(randomness,clusterInclusionProbability());
     Cell *currentCell = grid[gsl_rng_uniform_int(RNG, grid.size())];
     cma.performMethodAtCell(currentCell);
 }
 
-void IsingReservoir::metropolisAlgorithm() {
+void Ising::Reservoir::metropolisAlgorithm() {
     Cell *cell = grid[gsl_rng_uniform_int(RNG, grid.size())];
     size_t neighborSize = cell->getNeighbors().size();
     int dE = (int)(neighborSize - cell->getEnergy());
@@ -78,7 +79,7 @@ void IsingReservoir::metropolisAlgorithm() {
     }
 }
 
-void IsingReservoir::wheelStep(InteractionResult &result) {
+void Ising::Reservoir::wheelStep(InteractionResult &result) {
     const char& s1 = interactionCells.first->getValue();
     const char& s2 = interactionCells.second->getValue();
     const char& s3 = parity;
@@ -125,12 +126,12 @@ void IsingReservoir::wheelStep(InteractionResult &result) {
     currentState = nextState;
 }
 
-void IsingReservoir::initializeCellsWithRNG(gsl_rng *RNG, int N) {
+void Ising::Reservoir::initializeCellsWithRNG(gsl_rng *RNG, int N) {
     reset();
 }
 
-IsingReservoir::IsingReservoir(gsl_rng *RNG_, Constants constants, int IS, int cls, TransitionRule rule) :
-        Reservoir(constants), clusters(cls), grid(IS), RNG(RNG_) {
+Ising::Reservoir::Reservoir(gsl_rng *RNG_, Constants constants, int IS, int cls, TransitionRule rule) :
+DemonBase::Reservoir(constants), clusters(cls), grid(IS), RNG(RNG_) {
     parity = 0;
     transitions = rule;
     this->initializeCellsWithRNG(RNG);
@@ -191,8 +192,8 @@ TransitionRule defaultTransitionRule() {
     return transitions;
 }
 
-Reservoir *IsingReservoir::IsingFactory::create(gsl_rng *RNG, Constants constants) {
-    return new IsingReservoir(RNG,constants,dimension,clusters);
+Ising::Reservoir *Ising::Reservoir::Factory::create(gsl_rng *RNG, Constants constants) {
+    return new Ising::Reservoir(RNG,constants,dimension,clusters);
 }
 
 void isingEnergyDistribution(int d, int clusters) {
@@ -205,7 +206,7 @@ void isingEnergyDistribution(int d, int clusters) {
     for (int energy = 0; energy!=4; energy++) {
         constants.setEpsilon(.15*energy+.25);
         printf("Beta: %lf\n",constants.getBeta());
-        IsingReservoir *reservoir = new IsingReservoir(RNG,constants,d,clusters);
+        Ising::Reservoir *reservoir = new Ising::Reservoir(RNG,constants,d,clusters);
         reservoir->reset();
         for (int k=0; k<100; k++) {
             printf("%d\n",reservoir->totalEnergy());
@@ -216,7 +217,7 @@ void isingEnergyDistribution(int d, int clusters) {
     }
 }
 
-int IsingReservoir::totalEnergy() {
+int Ising::Reservoir::totalEnergy() {
     int energy = 0;
     for (Grid::iterator it = grid.begin(); it!=grid.end(); ++it) {
         energy+=(int)(*it)->getEnergy();

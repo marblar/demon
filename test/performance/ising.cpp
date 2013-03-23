@@ -7,7 +7,7 @@ using namespace boost::unit_test;
 
 void performMeasurement() {
     int iterations = 100;
-    ReservoirFactory *rFactory = new IsingReservoir::IsingFactory(20,20);
+    ReservoirFactory *rFactory = new Ising::Reservoir::Factory(20,20);
     reservoirBenchmark(rFactory,iterations);
 }
 

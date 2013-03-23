@@ -6,7 +6,7 @@ using namespace boost::unit_test;
 
 void performMeasurement() {
     int iterations = 10000;
-    ReservoirFactory *rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
+    ReservoirFactory *rFactory = new DefaultArgsReservoirFactory<Stochastic::Reservoir>;
     reservoirBenchmark(rFactory,iterations);
 }
 

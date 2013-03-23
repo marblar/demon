@@ -13,31 +13,32 @@
 #include "Reservoir.h"
 #include "System.h"
 
-class ReservoirFactory {
-public:
-    virtual Reservoir *create(gsl_rng *RNG, Constants constants) = 0;
-    virtual ~ReservoirFactory() {}
-};
-
-class SystemFactory {
-public:
-    virtual System *create(gsl_rng *RNG, Constants constants) = 0;
-    virtual ~SystemFactory() {}
-};
-
-template <class ReservoirKind>
-class DefaultArgsReservoirFactory : public ReservoirFactory  {
-public:
-    virtual Reservoir *create(gsl_rng *RNG, Constants constants) {
-        return new ReservoirKind(RNG,constants);
-    }
-    DefaultArgsReservoirFactory() {}
-};
-
-class BinomialSystemFactory : public SystemFactory {
-public:
-    virtual System *create(gsl_rng *RNG, Constants constants);
-    BinomialSystemFactory() {}
-};
-
+namespace DemonBase {
+    class ReservoirFactory {
+    public:
+        virtual Reservoir *create(gsl_rng *RNG, Constants constants) = 0;
+        virtual ~ReservoirFactory() {}
+    };
+    
+    class SystemFactory {
+    public:
+        virtual System *create(gsl_rng *RNG, Constants constants) = 0;
+        virtual ~SystemFactory() {}
+    };
+    
+    template <class ReservoirKind>
+    class DefaultArgsReservoirFactory : public ReservoirFactory  {
+    public:
+        virtual Reservoir *create(gsl_rng *RNG, Constants constants) {
+            return new ReservoirKind(RNG,constants);
+        }
+        DefaultArgsReservoirFactory() {}
+    };
+    
+    class BinomialSystemFactory : public SystemFactory {
+    public:
+        virtual System *create(gsl_rng *RNG, Constants constants);
+        BinomialSystemFactory() {}
+    };
+}
 #endif /* defined(__thermaleraser__ReservoirFactory__) */

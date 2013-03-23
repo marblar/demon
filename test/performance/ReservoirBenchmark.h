@@ -3,7 +3,7 @@
 #include "InstrumentFactories.h"
 #include "Measurement.h"
 #include "Utilities.h"
-
+using namespace DemonBase;
 
 void reservoirBenchmark(ReservoirFactory *rFactory,int iterations) {
     gsl_rng *rng = GSLRandomNumberGenerator();

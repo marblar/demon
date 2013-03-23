@@ -30,7 +30,7 @@ struct RandomNumberTestFixture {
 };
 
 struct ConstantsTestFixture {
-    Constants c;
+    DemonBase::Constants c;
     ConstantsTestFixture() {
         c.setDelta(.5);
         c.setEpsilon(0);

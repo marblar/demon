@@ -14,7 +14,7 @@
 #include "Reservoir.h"
 
 
-class TrivialReservoir : public Reservoir {
+class TrivialReservoir : public DemonBase::Reservoir {
 public:
     InteractionResult interactWithBit(int bit) {
         InteractionResult result;
@@ -23,10 +23,10 @@ public:
         return result;
     };
     void reset() { /* Do nothing */ }
-    TrivialReservoir(gsl_rng *rng, Constants) : Reservoir(constants) {}
+    TrivialReservoir(gsl_rng *rng, DemonBase::Constants) : Reservoir(constants) {}
 };
 
-class MockReservoirFlipDown : public Reservoir {
+class MockReservoirFlipDown : public DemonBase::Reservoir {
 public:
     InteractionResult interactWithBit(int bit) {
         InteractionResult result;
@@ -37,10 +37,10 @@ public:
     };
     void reset() { /* Do nothing */ }
     int bitsProvided;
-    MockReservoirFlipDown(Constants constants) : bitsProvided(0), Reservoir(constants) {}
+    MockReservoirFlipDown(DemonBase::Constants constants) : bitsProvided(0), Reservoir(constants) {}
 };
 
-class SpecificEndStringReservoir : public Reservoir {
+class SpecificEndStringReservoir : public DemonBase::Reservoir {
 public:
     InteractionResult interactWithBit(int bit) {
         InteractionResult result;
@@ -52,7 +52,7 @@ public:
     void reset() { /* Do nothing */ }
     int end;
     int bitPos;
-    SpecificEndStringReservoir(Constants constants, int end_) :
+    SpecificEndStringReservoir(DemonBase::Constants constants, int end_) :
     Reservoir(constants), end(end_), bitPos(0) {}
 };
 

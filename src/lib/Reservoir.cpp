@@ -1,6 +1,7 @@
 #include "Reservoir.h"
+using namespace DemonBase;
 
-SystemState StateA1, StateB1, StateC1, StateA0, StateB0, StateC0;
+SystemState DemonBase::StateA1, DemonBase::StateB1, DemonBase::StateC1, DemonBase::StateA0, DemonBase::StateB0, DemonBase::StateC0;
 
 std::string print_state(SystemState *state) {
     std::string theString = "";
@@ -10,7 +11,7 @@ std::string print_state(SystemState *state) {
 }
 
 
-void setupStates() {
+void DemonBase::setupStates() {
     static bool alreadyInitialized = false;
     
     if(!alreadyInitialized) {
@@ -52,13 +53,13 @@ void setupStates() {
     }
 }
 
-SystemState *randomState() {
+SystemState *DemonBase::randomState() {
     int index = rand()%6;
     SystemState *randomState[] = {&StateA0,&StateA1,&StateB0,&StateB1,&StateB0,&StateC0,&StateC1};
     return randomState[index];
 }
 
-Reservoir::Reservoir(Constants c) : constants(c) {
+DemonBase::Reservoir::Reservoir(Constants c) : constants(c) {
     setupStates();
     this->currentState = randomState();
 }

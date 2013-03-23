@@ -12,7 +12,7 @@
 #include <assert.h>
 #include <math.h>
 
-System::System(Constants constants, int startingBitString) {
+DemonBase::System::System(Constants constants, int startingBitString) {
     this->bitPosition = 0;
     this->startingBitString = startingBitString;
     this->constants = constants;
@@ -20,7 +20,7 @@ System::System(Constants constants, int startingBitString) {
     this->mass = 0;
 }
 
-void System::evolveWithReservoir(Reservoir *reservoir) {
+void DemonBase::System::evolveWithReservoir(DemonBase::Reservoir *reservoir) {
     if (this->bitPosition!=0) {
         throw InconsistentSystemState();
     }
@@ -36,7 +36,7 @@ void System::evolveWithReservoir(Reservoir *reservoir) {
     
     while (this->bitPosition < nbits) {
         int oldBit = (startingBitString >> bitPosition) & 1;
-        Reservoir::InteractionResult result = reservoir->interactWithBit(oldBit);
+        DemonBase::Reservoir::InteractionResult result = reservoir->interactWithBit(oldBit);
         
         int newBit = result.bit;
         this->mass += result.work;
@@ -47,20 +47,20 @@ void System::evolveWithReservoir(Reservoir *reservoir) {
     }//End while
 }
 
-void Constants::setDelta(const double& newDelta) {
+void DemonBase::Constants::setDelta(const double& newDelta) {
     delta = newDelta;
 }
 
-void Constants::setEpsilon(const double& newEpsi) {
+void DemonBase::Constants::setEpsilon(const double& newEpsi) {
     epsilon = newEpsi;
     beta = -log((1-epsilon)/(1+epsilon));
 }
 
-void Constants::setTau(const double& newT) {
+void DemonBase::Constants::setTau(const double& newT) {
     tau = newT;
 }
 
-void Constants::setNbits(const int& newBits) {
+void DemonBase::Constants::setNbits(const int& newBits) {
     nBits = newBits;
 }
 

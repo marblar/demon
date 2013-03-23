@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     
     size_t iterations = vmap["iterations"].as<size_t>();
     
-    ReservoirFactory *rFactory = NULL;
+    DemonBase::ReservoirFactory *rFactory = NULL;
     if ( vmap.count("ising") )  {
         if (!vmap.count("dimension")) {
             std::clog << "Option --ising requires -d\n";
@@ -51,13 +51,13 @@ int main(int argc, char* argv[]) {
         
         int dim = vmap["dimension"].as<int>();
         int clst = vmap["clusters"].as<int>();
-        rFactory = new IsingReservoir::IsingFactory(dim,clst);
+        rFactory = new Ising::Reservoir::Factory(dim,clst);
     } else {
         //Assume stochastic
-        rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
+        rFactory = new DemonBase::DefaultArgsReservoirFactory<Stochastic::Reservoir>;
     }
     
-    SystemFactory *sFactory = new BinomialSystemFactory;
+    DemonBase::SystemFactory *sFactory = new DemonBase::BinomialSystemFactory;
     
     assert(rFactory);
     assert(sFactory);
@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
                     << " nodes." << std::endl;
         std::clog << (double)(dimension*dimension*iterations)/world.size()
                     << " simulations per node." << std::endl;
-        printf("%s\n",outputHeader().c_str());
+        printf("%s\n",DemonBase::outputHeader().c_str());
     }
     
     world.barrier();
@@ -89,15 +89,15 @@ int main(int argc, char* argv[]) {
     gethostname(hostname,255);
     fprintf(stderr, "Hello world from host %s (rank %d)\n",hostname,world.rank());
     
-    Experiment::range work;
-    Experiment experiment;
+    DemonBase::Experiment::range work;
+    DemonBase::Experiment experiment;
     experiment.iterations = iterations;
     experiment.dimension = dimension;
     experiment.sfactory = sFactory;
     experiment.rfactory = rFactory;
     
     for (int k=world.rank(); k<dimension*dimension; k+=world.size()) {
-        MeasurementResult result = experiment.performIteration(k);
+        DemonBase::MeasurementResult result = experiment.performIteration(k);
         printf("%s\n",outputString(result).c_str());
     }
     

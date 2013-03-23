@@ -116,10 +116,10 @@ int main(int argc, char * argv[]) {
         
         int dim = vmap["dimension"].as<int>();
         int clst = vmap["clusters"].as<int>();
-        rFactory = new IsingReservoir::IsingFactory(dim,clst);
+        rFactory = new IsingReservoir::Factory(dim,clst);
     } else {
         //Assume stochastic
-        rFactory = new DefaultArgsReservoirFactory<StochasticReservoir>;
+        rFactory = new DefaultArgsReservoirFactory<Stochastic::Reservoir>;
     }
     
     SystemFactory *sFactory = new BinomialSystemFactory;

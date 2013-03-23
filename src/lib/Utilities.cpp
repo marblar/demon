@@ -42,6 +42,7 @@ gsl_rng *GSLRandomNumberGenerator() {
 }
 
 StateSet getValidStates() {
+    using namespace DemonBase;
     StateSet states;
     #define StateInsert(XX) states.insert(&State##XX)
     StateInsert(A1);

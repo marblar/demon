@@ -16,6 +16,7 @@
 #include "Reservoir.h"
 #include "Utilities.h"
 #include "InstrumentFactories.h"
+using namespace DemonBase;
 
 static int defaultStartingString() {
     return 2;
@@ -29,7 +30,7 @@ struct SystemTestFixture : \
 BOOST_FIXTURE_TEST_SUITE(SystemTest,SystemTestFixture);
 
 BOOST_AUTO_TEST_CASE( testSystemFactory ) {
-    BinomialSystemFactory sfactory;
+    DemonBase::BinomialSystemFactory sfactory;
     c.setNbits(5);
     int resultSize = c.getNbits()+1;
     int results[resultSize];
@@ -38,7 +39,7 @@ BOOST_AUTO_TEST_CASE( testSystemFactory ) {
     std::fill(results, results + resultSize, 0);
     
     for (int k = 0; k<iterations; k++) {
-        System *system = sfactory.create(rng, c);
+        DemonBase::System *system = sfactory.create(rng, c);
         ++results[bitCount(system->startingBitString, c.getNbits())];
         delete system;
     }

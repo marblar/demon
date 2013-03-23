@@ -9,21 +9,23 @@
 #include <string>
 #include <gsl/gsl_randist.h>
 #include "Stochastic.h"
+using namespace DemonBase;
+using namespace Stochastic;
 
-Reservoir::InteractionResult StochasticReservoir::interactWithBit(int oldBit) {
+Stochastic::Reservoir::InteractionResult Stochastic::Reservoir::interactWithBit(int oldBit) {
     InteractionResult result;
     if (constants.getTau()<=0) {
-        throw InvalidTauError("Tau must be a positive floating point number.");
+        throw DemonBase::InvalidTauError("Tau must be a positive floating point number.");
     }
     if (constants.getEpsilon()< 0 || constants.getEpsilon()>1) {
-        throw InvalidEpsilonError("Epsilon \\not\\in [0,1]");
+        throw DemonBase::InvalidEpsilonError("Epsilon \\not\\in [0,1]");
     }
     if (constants.getDelta()<.50 || constants.getDelta()>1.0) {
-        throw InvalidDeltaError("Delta must be \\in [.5,1]");
+        throw DemonBase::InvalidDeltaError("Delta must be \\in [.5,1]");
     }
     
-    if (currentState->bit != oldBit) {
-        currentState=currentState->bitFlipState;
+    if (Stochastic::Reservoir::currentState->bit != oldBit) {
+        Stochastic::Reservoir::currentState = DemonBase::Reservoir::currentState->bitFlipState;
     }
     
     double time_elapsed = 0;
@@ -34,8 +36,8 @@ Reservoir::InteractionResult StochasticReservoir::interactWithBit(int oldBit) {
          transition where the bit increases is 1 + epsilon. Implementing this with ^blocks was too slow,
          and subclassing using virtual functions wasn't much better. So I'm doing it inline.*/
         
-        double rate1 = 1 + (currentState->nextState1->bit-currentState->bit)*constants.getEpsilon();
-        double rate2 = 1 + (currentState->nextState2->bit-currentState->bit)*constants.getEpsilon();
+        double rate1 = 1 + (DemonBase::Reservoir::currentState->nextState1->bit-DemonBase::Reservoir::currentState->bit)*constants.getEpsilon();
+        double rate2 = 1 + (DemonBase::Reservoir::currentState->nextState2->bit-currentState->bit)*constants.getEpsilon();
         
         /*! The minimum of two exponentials is an exponential with their combined rates. Since there's a
          call to log() in this function, we want to use it as few times as possible. So we simply figure out
@@ -48,7 +50,7 @@ Reservoir::InteractionResult StochasticReservoir::interactWithBit(int oldBit) {
             break;
         }
         double probabilityThatState1CameFirst = rate1/(rate1+rate2);
-        SystemState *nextState = probabilityThatState1CameFirst < gsl_rng_uniform(RNG) ? currentState->nextState1 : currentState->nextState2;
+        DemonBase::SystemState *nextState = probabilityThatState1CameFirst < gsl_rng_uniform(RNG) ? currentState->nextState1 : currentState->nextState2;
         currentState = nextState;
         time_elapsed+=fastestTime;
     }
@@ -59,13 +61,13 @@ Reservoir::InteractionResult StochasticReservoir::interactWithBit(int oldBit) {
     return result;
 }
 
-StochasticReservoir::StochasticReservoir(gsl_rng *RNG, Constants constants) :
-Reservoir(constants) {
+Stochastic::Reservoir::Reservoir(gsl_rng *RNG, DemonBase::Constants constants) :
+DemonBase::Reservoir(constants) {
     this->RNG = RNG;
 }
 
-void StochasticReservoir::reset() {
-    currentState = randomState();
+void Stochastic::Reservoir::reset() {
+    currentState = DemonBase::randomState();
 }
 
 

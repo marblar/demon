@@ -17,6 +17,8 @@
 #include "TestFixtures.h"
 #include "MockObjects.h"
 
+using namespace DemonBase;
+
 class TransitionRuleTestFixture : \
     public DefaultTransitionRuleTestFixture, \
     public ValidStatesTestFixture \
@@ -74,14 +76,14 @@ class IsingReservoirTestFixture : \
 BOOST_FIXTURE_TEST_SUITE(IsingReservoirTest, IsingReservoirTestFixture);
 
 BOOST_AUTO_TEST_CASE ( testWheelStep ) {
-    IsingReservoir reservoir(rng,c,6,6);
+    Ising::Reservoir reservoir(rng,c,6,6);
     Reservoir::InteractionResult result;
     BOOST_REQUIRE_NO_THROW(reservoir.wheelStep(result));
 }
 
 BOOST_AUTO_TEST_CASE ( testEmptyTransitionRule ) {
     TransitionRule emptyRule;
-    IsingReservoir reservoir(rng,c,6,6,emptyRule);
+    Ising::Reservoir reservoir(rng,c,6,6,emptyRule);
     Reservoir::InteractionResult result;
     BOOST_REQUIRE_THROW(reservoir.wheelStep(result), EmptyTransitionRuleError);
 }
@@ -98,7 +100,7 @@ BOOST_AUTO_TEST_CASE ( testDeadEndTransitionRule ) {
     for (StateSet::iterator it = validStates.begin(); it!=validStates.end(); ++it) {
         deadEndRule[*it] = emptyTable;
     }
-    IsingReservoir reservoir(rng,c,6,6,deadEndRule);
+    Ising::Reservoir reservoir(rng,c,6,6,deadEndRule);
     BOOST_REQUIRE_THROW(reservoir.wheelStep(result),TransitionDeadEndError);
 }
 
@@ -114,17 +116,17 @@ BOOST_AUTO_TEST_CASE ( testTooSmallTransitionTable ) {
         invalidRule[*it] = tooSmallTable;
     }
     
-    IsingReservoir reservoir(rng,c,6,6,invalidRule);
+    Ising::Reservoir reservoir(rng,c,6,6,invalidRule);
     Reservoir::InteractionResult result;
     BOOST_REQUIRE_THROW(reservoir.wheelStep(result),InvalidTableSizeError);
 }
 
 BOOST_AUTO_TEST_CASE( testClusterInclusionProbability ) {
     c.setEpsilon(1);
-    IsingReservoir reservoir1(rng,c,6,6);
+    Ising::Reservoir reservoir1(rng,c,6,6);
     BOOST_CHECK_EQUAL(reservoir1.clusterInclusionProbability(), 1);
     c.setEpsilon(0);
-    IsingReservoir reservoir2(rng,c,6,6);
+    Ising::Reservoir reservoir2(rng,c,6,6);
     BOOST_CHECK_EQUAL(reservoir2.clusterInclusionProbability(), 0);
 }
 
@@ -149,7 +151,7 @@ BOOST_FIXTURE_TEST_SUITE(ClusterMethodTest, GridOperationTestFixture<IsingGridTe
 BOOST_AUTO_TEST_CASE( includeNoCells ) {
     Ising::Cell *startingPoint = grid[5];
     MockRandomnessDelegate delegate(false,0);
-    ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
+    Ising::ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
     agent.performMethodAtCell(startingPoint);
     
     std::set<Ising::Cell *> expectedCells;
@@ -166,7 +168,7 @@ BOOST_AUTO_TEST_CASE( includeAllCells ) {
     
     Ising::Cell *startingPoint = grid[5];
     MockRandomnessDelegate delegate(true,0);
-    ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
+    Ising::ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
     agent.performMethodAtCell(startingPoint);
     
     std::set<Ising::Cell *> expectedCells;
@@ -215,7 +217,7 @@ BOOST_AUTO_TEST_CASE( includeSomeCells ) {
     resetInitialValues();
     
     MockRandomnessDelegate delegate(true,0);
-    ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
+    Ising::ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
     agent.performMethodAtCell(startingPoint);
     
     std::set<Ising::Cell *> actualCells = changedCells();
@@ -225,8 +227,8 @@ BOOST_AUTO_TEST_CASE( includeSomeCells ) {
 
 BOOST_AUTO_TEST_CASE( testInclusionProbability ) {
     MockRandomnessDelegate m(1,1);
-    BOOST_CHECK_THROW(ClusterMethodAgent<MockRandomnessDelegate>(m,-0.01), InvalidProbabilityError);
-    BOOST_CHECK_THROW(ClusterMethodAgent<MockRandomnessDelegate>(m,1.01), InvalidProbabilityError);
+    BOOST_CHECK_THROW(Ising::ClusterMethodAgent<MockRandomnessDelegate>(m,-0.01), Ising::InvalidProbabilityError);
+    BOOST_CHECK_THROW(Ising::ClusterMethodAgent<MockRandomnessDelegate>(m,1.01), Ising::InvalidProbabilityError);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -19,14 +19,15 @@
 #include "Reservoir.h"
 #include "InstrumentFactories.h"
 #include "Utilities.h"
+using namespace DemonBase;
 
 static InvalidNbitsError NbitsError("Too few bits.");
 
-std::string outputHeader() {
+std::string DemonBase::outputHeader() {
     return std::string("delta,epsilon,averageJ,maxJ");
 }
 
-std::string outputString(MeasurementResult &result) {
+std::string DemonBase::outputString(MeasurementResult &result) {
     std::stringstream out;
     double delta = result.constants.getDelta();
     double epsilon = result.constants.getEpsilon();
@@ -47,7 +48,7 @@ MeasurementResult &Measurement::getResult() {
     return result;
 }
 
-long double calculateJ(System &currentSystem, long double *p, long double *p_prime) {
+long double DemonBase::calculateJ(System &currentSystem, long double *p, long double *p_prime) {
     long double workPart = exp(currentSystem.constants.getBeta()*currentSystem.mass);
     long double informationPart = p_prime[currentSystem.endingBitString]/p[currentSystem.startingBitString];
     long double J  = workPart * informationPart;

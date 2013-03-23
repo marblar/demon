@@ -14,7 +14,7 @@
 #include <set>
 #include "Reservoir.h"
 
-typedef std::set<SystemState *> StateSet;
+typedef std::set<DemonBase::SystemState *> StateSet;
 
 StateSet getValidStates();
 

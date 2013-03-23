@@ -10,12 +10,14 @@
 #define __FSM__StateMachine__
 #include "Reservoir.h"
 
-class StochasticReservoir : public Reservoir {
-public:
-    gsl_rng *RNG;
-    StochasticReservoir(gsl_rng *RNG, Constants constants);
-    InteractionResult interactWithBit(int bit);
-    virtual void reset();
-};
+namespace Stochastic {
+    class Reservoir : public DemonBase::Reservoir {
+    public:
+        gsl_rng *RNG;
+        Reservoir(gsl_rng *RNG, DemonBase::Constants constants);
+        InteractionResult interactWithBit(int bit);
+        virtual void reset();
+    };
+}
 
 #endif /* defined(__FSM__StateMachine__) */
