@@ -20,15 +20,12 @@ using namespace boost::unit_test;
 using namespace Ising;
 typedef std::set<Ising::Cell*> CellSet;
 
+struct EvenIsingGridFixture {
+    Ising::Grid grid;
+    EvenIsingGridFixture() : grid(GRID_DIMENSION) {}
+};
+
 BOOST_FIXTURE_TEST_SUITE(IsingGridTest, EvenIsingGridFixture)
-
-BOOST_AUTO_TEST_CASE( oddGridInvalid ) {
-    BOOST_REQUIRE_THROW(Grid k(3), InvalidGridSize);
-}
-
-BOOST_AUTO_TEST_CASE( tooSmallGrid ) {
-    BOOST_REQUIRE_THROW(Grid k(2), InvalidGridSize);
-}
 
 BOOST_AUTO_TEST_CASE( testEvenOddIteratorsDisjoint__evenGrid ) {
     BOOST_REQUIRE_EQUAL(grid.getDimension()%2, 0);

@@ -8,7 +8,8 @@ demoncore_SOURCES = SystemTest.cpp \
 			StochTest.cpp \
 			core.cpp \
 			IsingGridTest.cpp \
-			RandomnessDelegateTest.cpp
+			RandomnessDelegateTest.cpp \
+			CAToolsTest.cpp
 
 demoncore_CXXFLAGS = -I${top_srcdir}/src/lib \
 			$(CPPUNIT_CFLAGS) \

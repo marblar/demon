@@ -13,7 +13,8 @@ noinst_HEADERS = Stochastic.h \
                         Measurement.h \
 			cli.h \
 			IsingGrid.h \
-			RandomnessDelegate.h
+			RandomnessDelegate.h \
+			CATools.h
 
 __top_builddir__src_libdemon_la_SOURCES = Stochastic.cpp \
                         Ising.cpp \
@@ -23,7 +24,8 @@ __top_builddir__src_libdemon_la_SOURCES = Stochastic.cpp \
                         InstrumentFactories.cpp \
                         Measurement.cpp \
 			cli.cpp \
-			IsingGrid.cpp
+			IsingGrid.cpp \
+			CATools.cpp
 
 __top_builddir__src_libdemon_la_CPPFLAGS = $(BOOST_CPPFLAGS)
 

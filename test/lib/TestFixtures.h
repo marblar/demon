@@ -39,11 +39,6 @@ struct ConstantsTestFixture {
     }
 };
 
-struct EvenIsingGridFixture {
-    Ising::Grid grid;
-    EvenIsingGridFixture() : grid(GRID_DIMENSION) {}
-};
-
 struct ValidStatesTestFixture {
     StateSet validStates;
     ValidStatesTestFixture () {
@@ -58,9 +53,9 @@ struct DefaultTransitionRuleTestFixture {
     }
 };
 
-
 // This test fixture is for testing classes that perform operations on Grids. Store the initial values of the cells using resetInitialValues, perform some operation on the grid, and then call changedCells() to get a set of pointers to the cell sites that have changed.
-class GridOperationTestFixture : public EvenIsingGridFixture {
+template <class GridFixtureBase>
+class GridOperationTestFixture : public GridFixtureBase {
     typedef boost::array<unsigned char, GRID_DIMENSION*GRID_DIMENSION> CellValues;
     CellValues initialValues;
     typedef boost::tuple<Ising::Grid::iterator,CellValues::const_iterator> iterator_tuple;
@@ -68,13 +63,13 @@ class GridOperationTestFixture : public EvenIsingGridFixture {
 public:
     void resetInitialValues() {
         for (int k = 0; k<initialValues.size(); ++k) {
-            initialValues[k]=grid[k]->getValue();
+            initialValues[k]=GridFixtureBase::grid[k]->getValue();
         }
     }
     std::set<Ising::Cell *> changedCells() {
         std::set<Ising::Cell *> changes;
-        ZipIterator begin = boost::make_zip_iterator(boost::make_tuple(grid.begin(), initialValues.begin()));
-        ZipIterator end = boost::make_zip_iterator(boost::make_tuple(grid.end(),initialValues.end()));
+        ZipIterator begin = boost::make_zip_iterator(boost::make_tuple(GridFixtureBase::grid.begin(), initialValues.begin()));
+        ZipIterator end = boost::make_zip_iterator(boost::make_tuple(GridFixtureBase::grid.end(),initialValues.end()));
         for (ZipIterator it = begin; it!=end; ++it) {
             Ising::Cell *cell = it->get<0>();
             unsigned char initialValue = it->get<1>();

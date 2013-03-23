@@ -18,13 +18,13 @@
 #include <boost/iterator/filter_iterator.hpp>
 #include <boost/iterator/counting_iterator.hpp>
 
+#include "CATools.h"
+
 namespace Ising {
     class Cell;
     class Grid;
-    class InvalidCellValue;
-    class InvalidGridIndex;
     
-    namespace detail{
+    namespace detail {
         // This class is used by the boost::filter_iterator to ensure even
         // contents.
         typedef bool Kind;
@@ -59,53 +59,8 @@ namespace Ising {
         long getEnergy();
     };
     
-    class InvalidGridIndex : public std::runtime_error {
+    class Grid : public CATools::Grid<Cell> {
     public:
-        InvalidGridIndex() : std::runtime_error(std::string("Tried to access a cell at an index greater than dimension*dimension.")){};
-    };
-    
-    class Grid {
-        int dimension;
-        boost::scoped_array<Cell> cells;
-        // ***********************************************
-        // ********     Coordinate class       ***********
-        // ***********************************************
-        class Coordinate {
-        protected:
-            friend class Grid;
-            int boundsCheck(int x);
-            size_t getGridIndex() const { return dimension * x + y; }
-        private:
-            typedef boost::array<const Coordinate, 4> CNeighbors;
-            int dimension,x,y;
-        public:
-            CNeighbors getNeighbors();
-            Coordinate(int x_, int y_,int dim) : dimension(dim) {
-                x = boundsCheck(x_);
-                y = boundsCheck(y_);
-            }
-            Coordinate(int dim) : x(0), y(0), dimension(dim) {}
-            bool operator==(Coordinate &rhs) { return (x==rhs.x) && (y==rhs.y); }
-            const int& getX() { return x; }
-            const int& getY() { return y; }
-            void setX(int x_) { x = boundsCheck(x_); }
-            void setY(int y_) { y = boundsCheck(y_); }
-        };
-        // ************************************************
-    public:
-        const int &getDimension() const { return dimension; }
-        Grid(int dimension);
-        size_t size() const { return dimension*dimension; }
-        Cell * const operator[](size_t gridIndex) {
-            if (gridIndex > size()) {
-                throw InvalidGridIndex();
-            }
-            return cells.get()+gridIndex;
-        }
-        
-        // ******************************
-        // ********* Iterators **********
-        // ******************************
         typedef boost::counting_iterator<Cell *> iterator;
         class subset : public std::vector<Cell *> {
             // This class is a lazy container for iterating over the
@@ -118,18 +73,12 @@ namespace Ising {
         };
         const subset evens;
         const subset odds;
-        iterator begin() const { return iterator(cells.get()); }
-        iterator end() const { return iterator(cells.get()+dimension*dimension); }
+        Grid(int dimension);
     };
     
     class InvalidCellValue : public std::runtime_error {
     public:
         InvalidCellValue() : std::runtime_error(std::string("Tried to set cell to invalid value.")) {}
-    };
-    
-    class InvalidGridSize : public std::runtime_error {
-    public:
-        InvalidGridSize() : std::runtime_error(std::string("Grid size must be an even integer greater than 3")) {}
     };
 }
 

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D17BCC816FD190400B26B53 /* CATools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D17BCC616FD190400B26B53 /* CATools.cpp */; };
+		4D17BCC916FD190400B26B53 /* CATools.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D17BCC716FD190400B26B53 /* CATools.h */; };
+		4D17BCCC16FD1DBB00B26B53 /* CAToolsTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D17BCCA16FD1DBB00B26B53 /* CAToolsTest.cpp */; };
 		4D28A4AC16D66E2B0019141B /* Stochastic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D46888916B5C549009143D0 /* Stochastic.cpp */; };
 		4D28A4AD16D66E2B0019141B /* Ising.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DE1438216D143C400F8B816 /* Ising.cpp */; };
 		4D28A4B016D66E2B0019141B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D611CFF16406A2F008FB029 /* System.cpp */; };
@@ -56,6 +59,9 @@
 		4D02E3AB16D662B20047BE84 /* libboost_program_options-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_program_options-mt.dylib"; path = "../../macports/lib/libboost_program_options-mt.dylib"; sourceTree = "<group>"; };
 		4D02E3AC16D662B20047BE84 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../macports/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
 		4D02E3AD16D662B20047BE84 /* libboost_timer-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_timer-mt.dylib"; path = "../../macports/lib/libboost_timer-mt.dylib"; sourceTree = "<group>"; };
+		4D17BCC616FD190400B26B53 /* CATools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CATools.cpp; sourceTree = "<group>"; };
+		4D17BCC716FD190400B26B53 /* CATools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATools.h; sourceTree = "<group>"; };
+		4D17BCCA16FD1DBB00B26B53 /* CAToolsTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CAToolsTest.cpp; path = test/lib/CAToolsTest.cpp; sourceTree = SOURCE_ROOT; };
 		4D28A4A316D66DC40019141B /* liblibjdemon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibjdemon.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D46888916B5C549009143D0 /* Stochastic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stochastic.cpp; sourceTree = "<group>"; };
 		4D46888A16B5C549009143D0 /* Stochastic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Stochastic.h; sourceTree = "<group>"; };
@@ -109,12 +115,13 @@
 			children = (
 				4D917D6E16E081B4002ADE1E /* TestFixtures.h */,
 				4DB2EE1116E8273B00D24443 /* MockObjects.h */,
+				4D17BCCA16FD1DBB00B26B53 /* CAToolsTest.cpp */,
 				4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */,
 				4D917D6D16E081B4002ADE1E /* SystemTest.cpp */,
 				4D4F4DD616E662CA00B7F5A4 /* StochTest.cpp */,
 				4DA3762B16E53B8300599AA1 /* IsingTest.cpp */,
-				4DA12FE116FA08B800D49834 /* RandomnessDelegateTest.cpp */,
 				4DA8B74816EECFE90072B82A /* IsingGridTest.cpp */,
+				4DA12FE116FA08B800D49834 /* RandomnessDelegateTest.cpp */,
 				4DB2EE1516E9086200D24443 /* core.cpp */,
 			);
 			name = lib;
@@ -203,6 +210,7 @@
 			children = (
 				4DB2EE0C16E6F60F00D24443 /* Frontends */,
 				4DE1438716D147BB00F8B816 /* Reservoirs */,
+				4D17BCC716FD190400B26B53 /* CATools.h */,
 				4DAFD7C216B2EC54004D9346 /* clangomp.h */,
 				4DA6055816EA4399000DC72A /* cli.h */,
 				4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */,
@@ -211,6 +219,7 @@
 				4D46949816F8BFAA0038FEA3 /* RandomnessDelegate.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
 				4D611D0416406ADE008FB029 /* Utilities.h */,
+				4D17BCC616FD190400B26B53 /* CATools.cpp */,
 				4DA6055716EA4399000DC72A /* cli.cpp */,
 				4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */,
 				4DA8D48416E30F8400D659CF /* Measurement.cpp */,
@@ -247,6 +256,7 @@
 				4DB2EE1216E8273B00D24443 /* MockObjects.h in Headers */,
 				4DA6055A16EA4399000DC72A /* cli.h in Headers */,
 				4D46949916F8BFCD0038FEA3 /* RandomnessDelegate.h in Headers */,
+				4D17BCC916FD190400B26B53 /* CATools.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +365,8 @@
 				4D46949316F8B7200038FEA3 /* ising.cpp in Sources */,
 				4D46949416F8B7B40038FEA3 /* stoch.cpp in Sources */,
 				4DA12FE216FA08FF00D49834 /* RandomnessDelegateTest.cpp in Sources */,
+				4D17BCC816FD190400B26B53 /* CATools.cpp in Sources */,
+				4D17BCCC16FD1DBB00B26B53 /* CAToolsTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

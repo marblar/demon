@@ -11,6 +11,7 @@
 
 #include <boost/array.hpp>
 #include "RandomnessDelegate.h"
+#include "Reservoir.h"
 
 
 class TrivialReservoir : public Reservoir {
@@ -68,6 +69,10 @@ protected:
     }
 public:
     MockRandomnessDelegate(bool eventValue, bool integerValue) : event(eventValue), integer(integerValue) {}
+};
+
+class TestCell {
+    
 };
 
 #endif
