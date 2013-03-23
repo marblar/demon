@@ -49,6 +49,13 @@ namespace CATools {
             }
             return cells.get()+gridIndex;
         }
+        CellType * const operator[](int gridIndex) { return (*this)[(size_t)gridIndex]; }
+        
+        template <class RandomnessDelegate>
+        CellType * const operator[](RandomnessDelegate &delegate) {
+            size_t index = delegate.randomIntegerFromInclusiveRange(0,(int)size());
+            return (*this)[index];
+        }
         
         
         template <class Container, int N>

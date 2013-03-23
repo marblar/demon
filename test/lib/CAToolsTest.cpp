@@ -12,6 +12,7 @@
 #include "CATools.h"
 
 #include <algorithm>
+#include <map>
 
 BOOST_AUTO_TEST_SUITE(CoordinateTest)
 
@@ -86,6 +87,31 @@ BOOST_AUTO_TEST_CASE( testRandomAccess ) {
         }
     }
     BOOST_REQUIRE_NE(grid[0],grid[1]);
+}
+
+class RandomCellTestFixture : public RandomNumberTestFixture, public TestGridFixture {
+};
+
+BOOST_FIXTURE_TEST_CASE(testGetRandomCell, RandomCellTestFixture) {
+    const size_t iterations = grid.size()*1000;
+    std::map<TestCell *, int> counter;
+    Randomness::GSLDelegate delegate(rng);
+    for (size_t k = 0; k<iterations; ++k) {
+        ++counter[grid[delegate]];
+    }
+    double expectedRatio = 1.0f/grid.size();
+    double variance = expectedRatio*(1-expectedRatio)/iterations;
+    double standard_deviation = sqrt(variance);
+    
+    // At the typical two-sigma error margin, the probability of any
+    // one measurement failing is 5%. The probability of 36 samples within those
+    // bounds is about 15%.
+    
+    double acceptable_error = 3*standard_deviation/expectedRatio;
+    for (TestGrid::iterator it = grid.begin(); it!=grid.end(); ++it) {
+        double actualRatio = (double)(counter[*it])/iterations;
+        BOOST_CHECK_CLOSE_FRACTION(expectedRatio, actualRatio,acceptable_error);
+    }
 }
 
 BOOST_AUTO_TEST_CASE( testCount ) {
