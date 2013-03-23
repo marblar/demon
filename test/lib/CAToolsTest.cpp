@@ -73,6 +73,10 @@ BOOST_AUTO_TEST_CASE( testAllCellsCount ) {
     BOOST_REQUIRE_EQUAL(count, grid.size());
 }
 
+BOOST_AUTO_TEST_CASE( testTwoByTwo ) {
+    
+}
+
 BOOST_AUTO_TEST_CASE( testRandomAccess ) {
     for (int lhs = 0; lhs < grid.size(); ++lhs) {
         for (int rhs = 0; rhs < grid.size(); ++rhs) {

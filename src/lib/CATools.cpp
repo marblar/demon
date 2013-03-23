@@ -28,3 +28,13 @@ Coordinate::CNeighbors Coordinate::getNeighbors() {
     }};
     return neighbors;
 }
+
+Coordinate::CNeighbors Coordinate::twoByTwoFromTopLeftCoordinate() {
+    Coordinate::CNeighbors neighbors = { {
+        Coordinate(x,y,dimension),
+        Coordinate(x,y+1,dimension),
+        Coordinate(x+1,y,dimension),
+        Coordinate(x+1,y+1,dimension)
+    }};
+    return neighbors;
+}

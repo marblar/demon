@@ -50,6 +50,16 @@ namespace CATools {
             return cells.get()+gridIndex;
         }
         
+        
+        template <class Container, int N>
+        boost::array<CellType *, N> cellsFromCoordinates(const Container & coords) {
+            boost::array<CellType *, N> result;
+            for(int k = 0; k<N; ++k) {
+                result[k] = cells.get() + coords[k].getGridIndex();
+            }
+            return result;
+        }
+        
         typedef boost::counting_iterator<CellType *> iterator;
         iterator begin() const { return iterator(cells.get()); }
         iterator end() const { return iterator(cells.get()+dimension*dimension); }
@@ -78,7 +88,9 @@ namespace CATools {
                 throw InvalidGridSize();
             }
         }
+        CNeighbors twoByTwoFromTopLeftCoordinate();
         bool operator==(Coordinate const &rhs) const  { return (x==rhs.x) && (y==rhs.y); }
+        
         const int& getX() { return x; }
         const int& getY() { return y; }
         void setX(int x_) { x = boundsCheck(x_); }

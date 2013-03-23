@@ -16,8 +16,9 @@
 
 namespace OtherAutomaton {
     class Cell {
+        bool occupied;
     public:
-        bool isOccupied() const;
+        const bool &isOccupied() const { return occupied; }
         bool setOccupied(bool value);
         Cell();
     };
