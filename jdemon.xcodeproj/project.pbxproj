@@ -222,7 +222,6 @@
 				4DA6055816EA4399000DC72A /* cli.h */,
 				4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */,
 				4DA8D48516E30F8400D659CF /* Measurement.h */,
-				4D6C8F9216FD3624005C411E /* OtherAutomaton.h */,
 				4D46888C16B5C58C009143D0 /* Reservoir.h */,
 				4D46949816F8BFAA0038FEA3 /* RandomnessDelegate.h */,
 				4D611D0016406A2F008FB029 /* System.h */,
@@ -231,7 +230,6 @@
 				4DA6055716EA4399000DC72A /* cli.cpp */,
 				4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */,
 				4DA8D48416E30F8400D659CF /* Measurement.cpp */,
-				4D6C8F9116FD3624005C411E /* OtherAutomaton.cpp */,
 				4D611CFF16406A2F008FB029 /* System.cpp */,
 				4DE1438516D1443E00F8B816 /* Reservoir.cpp */,
 				4D611D0316406ADE008FB029 /* Utilities.cpp */,
@@ -249,6 +247,8 @@
 				4DA8B74516EEC9C80072B82A /* IsingGrid.cpp */,
 				4DE1438316D143C400F8B816 /* Ising.h */,
 				4DE1438216D143C400F8B816 /* Ising.cpp */,
+				4D6C8F9216FD3624005C411E /* OtherAutomaton.h */,
+				4D6C8F9116FD3624005C411E /* OtherAutomaton.cpp */,
 			);
 			name = Reservoirs;
 			sourceTree = "<group>";
