@@ -42,6 +42,8 @@ BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
     // Each even block should be disjoint from each other even block. Same is true for odds.
     
     typedef OtherAutomaton::BlockList::const_iterator iterator;
+    typedef std::pair<const OtherAutomaton::Block *, CellSet> pair;
+    
     for (iterator odd=grid.oddBlocks.begin(); odd!=grid.oddBlocks.end(); ++odd) {
         std::map<const OtherAutomaton::Block *,CellSet> overlap;
         for (iterator even=grid.evenBlocks.begin(); even!=grid.evenBlocks.end(); ++even) {
@@ -52,7 +54,7 @@ BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
         }
         if (overlap.size()) {
             BOOST_CHECK_EQUAL(overlap.size(), 2);
-            BOOST_FOREACH(auto leftItem, overlap) {
+            BOOST_FOREACH(pair leftItem, overlap) {
                 BOOST_CHECK_EQUAL(leftItem.second.size(),2);
             }
         }
@@ -69,7 +71,7 @@ BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
         }
         if (overlap.size()) {
             BOOST_CHECK_EQUAL(overlap.size(), 2);
-            BOOST_FOREACH(auto leftItem, overlap) {
+            BOOST_FOREACH(pair leftItem, overlap) {
                 BOOST_CHECK_EQUAL(leftItem.second.size(),2);
             }
         }
