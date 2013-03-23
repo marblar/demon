@@ -82,9 +82,8 @@ BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
 BOOST_AUTO_TEST_CASE( testDisjoint ) {
     int leftCount = 0;
     int rightCount = 0;
-    BOOST_FOREACH(auto left, grid.oddBlocks) {
-        
-        BOOST_FOREACH(auto right, grid.oddBlocks) {
+    BOOST_FOREACH(const OtherAutomaton::Block &left, grid.oddBlocks) {
+        BOOST_FOREACH(const OtherAutomaton::Block &right, grid.oddBlocks) {
             if (left != right) {
                 CellSet shouldBeEmpty = testOverlap(left,right);
                 BOOST_CHECK(shouldBeEmpty.empty());
