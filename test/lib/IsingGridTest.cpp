@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE( testRandomAccess ) {
         cells.insert(grid[k]);
     }
     BOOST_REQUIRE(cells.size()==size);
-    BOOST_REQUIRE_THROW(grid[2*size], InvalidGridIndex);
+    BOOST_REQUIRE_THROW(grid[2*size], CATools::InvalidGridIndex);
 }
 
 BOOST_AUTO_TEST_CASE( testEnergy ) {

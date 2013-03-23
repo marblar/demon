@@ -14,9 +14,6 @@
 #include <boost/array.hpp>
 
 namespace CATools {
-    class InvalidCellValue;
-    class InvalidGridIndex;
-    
     class InvalidGridSize : public std::runtime_error {
     public:
         InvalidGridSize() : std::runtime_error(std::string("Grid size must be an even integer greater than 3")) {}
@@ -39,7 +36,11 @@ namespace CATools {
         boost::scoped_array<CellType> cells;
     public:
         const int &getDimension() const { return dimension; }
-        Grid(int dim) : dimension(dim), cells(new CellType[dim*dim]) {}
+        Grid(int dim) : dimension(dim), cells(new CellType[dim*dim]) {
+            if (dimension % 2 || dimension < 4) {
+                throw InvalidGridSize();
+            }
+        }
         size_t size() const { return dimension*dimension; }
         
         CellType * const operator[](size_t gridIndex) {
@@ -66,9 +67,17 @@ namespace CATools {
         Coordinate(int x_, int y_,int dim) : dimension(dim) {
             x = boundsCheck(x_);
             y = boundsCheck(y_);
+            validateCoordinateParams();
         }
         size_t getGridIndex() const { return dimension * x + y; }
-        Coordinate(int dim) : x(0), y(0), dimension(dim) { if(dim<1) throw InvalidGridSize(); }
+        Coordinate(int dim) : x(0), y(0), dimension(dim) {
+            validateCoordinateParams();
+        }
+        inline int validateCoordinateParams() {
+            if(dimension<1) {
+                throw InvalidGridSize();
+            }
+        }
         bool operator==(Coordinate const &rhs) const  { return (x==rhs.x) && (y==rhs.y); }
         const int& getX() { return x; }
         const int& getY() { return y; }

@@ -25,8 +25,22 @@ BOOST_AUTO_TEST_CASE( testCoordinateNeighbors ) {
     BOOST_REQUIRE(std::find(neighbors.begin(),neighbors.end(),CATools::Coordinate(4,5,7)));
 }
 
-BOOST_AUTO_TEST_CASE( TestCoordinateInitialization ) {
-    BOOST_REQUIRE_THROW(CATools::Coordinate c(0,0,-1),CATools::InvalidGridSize);
+BOOST_AUTO_TEST_CASE( testCoordinateInitialization ) {
+    BOOST_REQUIRE_THROW(CATools::Coordinate bad(0,0,-1),CATools::InvalidGridSize);
+    int x = 1;
+    int y = 2;
+    int dimension = 3;
+    CATools::Coordinate good(x,y,dimension);
+    BOOST_REQUIRE_EQUAL(good.getX(), x);
+    BOOST_REQUIRE_EQUAL(good.getY(), y);
+    BOOST_REQUIRE_EQUAL(good.getDimension(), dimension);
+}
+
+BOOST_AUTO_TEST_CASE( testCoordinateEdges ) {
+    int dimension = 5;
+    CATools::Coordinate center(-1,-1,dimension);
+    BOOST_CHECK_EQUAL(center.getX(), dimension-1);
+    BOOST_CHECK_EQUAL(center.getY(), dimension-1);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -57,6 +71,22 @@ BOOST_AUTO_TEST_CASE( testAllCellsCount ) {
         BOOST_REQUIRE_LE(count, grid.size());
     }
     BOOST_REQUIRE_EQUAL(count, grid.size());
+}
+
+BOOST_AUTO_TEST_CASE( testRandomAccess ) {
+    for (int lhs = 0; lhs < grid.size(); ++lhs) {
+        for (int rhs = 0; rhs < grid.size(); ++rhs) {
+            if (lhs!=rhs) {
+                BOOST_REQUIRE_NE(rhs, lhs);
+            }
+        }
+    }
+    BOOST_REQUIRE_NE(grid[0],grid[1]);
+}
+
+BOOST_AUTO_TEST_CASE( testCount ) {
+    std::set<TestCell *> cells(grid.begin(),grid.end());
+    BOOST_REQUIRE_EQUAL(cells.size(), grid.size());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
