@@ -18,7 +18,26 @@
 namespace OtherAutomaton {
     class Cell : public CATools::Cell<Cell, bool> {};
 
-    typedef boost::array<Cell *, 4> Block;
+    class Block : public boost::array<Cell *, 4> {
+    public:
+        class OverlapBlocks : public boost::array<Block *, 2> {
+        public:
+            inline Block &above() { return *at(0); }
+            inline Block &below() { return *at(1); }
+        };
+    private:
+        friend class Grid;
+        OverlapBlocks overlap;
+    public:
+        explicit Block(const boost::array<Cell *, 4>& array);
+        const OverlapBlocks& overlappingBlocks() const { return overlap; }
+        
+        inline Cell *topLeft() const { return (*this)[0]; }
+        inline Cell *bottomLeft() const { return (*this)[1]; }
+        inline Cell *bottomRight() const { return (*this)[2]; }
+        inline Cell *topRight() const { return (*this)[3]; }
+    };
+    
     typedef std::vector<Block> BlockList;
     
     class Grid : public CATools::Grid<Cell> {
@@ -29,6 +48,7 @@ namespace OtherAutomaton {
         const BlockList &evenBlocks;
         const BlockList &oddBlocks;
     };
+    
     template <class RandomnessDelegate>
     void initializeGridWithOccupationProbability(Grid &grid, double probability, RandomnessDelegate &delegate) {
         // Delete all cells.

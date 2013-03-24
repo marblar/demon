@@ -33,7 +33,7 @@ static inline OATestFixture::CellSet testOverlap(OtherAutomaton::Block left, Oth
 
 BOOST_FIXTURE_TEST_SUITE(OtherAutomatonGridTests, OATestFixture)
 
-BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
+BOOST_AUTO_TEST_CASE( testBlockOverlapSize ) {
     // Each even block should be disjoint from each other even block. Same is true for odds.
     
     typedef OtherAutomaton::BlockList::const_iterator iterator;
@@ -51,6 +51,10 @@ BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
             BOOST_CHECK_EQUAL(overlap.size(), 2);
             BOOST_FOREACH(pair leftItem, overlap) {
                 BOOST_CHECK_EQUAL(leftItem.second.size(),2);
+                OtherAutomaton::Block::OverlapBlocks expectedOverlap = odd->overlappingBlocks();
+                OtherAutomaton::Block::OverlapBlocks otherExpectedOverlap = leftItem.first->overlappingBlocks();
+                BOOST_CHECK(std::count(expectedOverlap.begin(), expectedOverlap.end(), leftItem.first));
+                BOOST_CHECK(std::count(otherExpectedOverlap.begin(), otherExpectedOverlap.end(), &*odd));
             }
         }
     }
@@ -70,6 +74,18 @@ BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
                 BOOST_CHECK_EQUAL(leftItem.second.size(),2);
             }
         }
+    }
+}
+
+BOOST_AUTO_TEST_CASE( testEvenBlockOverlap ) {
+    for (OtherAutomaton::BlockList::const_iterator it = grid.evenBlocks.begin(); it != grid.evenBlocks.end(); ++it) {
+        OtherAutomaton::Block::OverlapBlocks overlap = it->overlappingBlocks();
+        OtherAutomaton::Block &above = overlap.above();
+        OtherAutomaton::Block &below = overlap.below();
+        BOOST_CHECK(above.bottomLeft()==it->topLeft());
+        BOOST_CHECK(above.bottomRight()==it->topRight());
+        BOOST_CHECK(below.topLeft()==it->bottomLeft());
+        BOOST_CHECK(below.topRight()==it->bottomRight());
     }
 }
 
@@ -96,6 +112,16 @@ BOOST_AUTO_TEST_CASE( testNotEmpty ) {
     BOOST_CHECK_GT(grid.size(),0);
     BOOST_CHECK_GT(grid.evenBlocks.size(), 0);
     BOOST_CHECK_GT(grid.oddBlocks.size(), 0);
+}
+
+BOOST_AUTO_TEST_CASE( testNumberOfBlocks ) {
+    BOOST_REQUIRE_EQUAL(grid.evenBlocks.size(),grid.size()/4);
+    BOOST_REQUIRE_EQUAL(grid.evenBlocks.size(), grid.size()/4);
+}
+
+BOOST_AUTO_TEST_CASE( testBadDimensions ) {
+    BOOST_REQUIRE_THROW(OtherAutomaton::Grid tooSmall(2), CATools::InvalidGridSize);
+    BOOST_REQUIRE_THROW(OtherAutomaton::Grid odd(15),CATools::InvalidGridSize);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
