@@ -82,6 +82,9 @@ BOOST_AUTO_TEST_CASE( testDisjoint ) {
             if (left != right) {
                 CellSet shouldBeEmpty = testOverlap(left,right);
                 BOOST_CHECK(shouldBeEmpty.empty());
+            } else {
+                CellSet shouldBeFull = testOverlap(left, right);
+                BOOST_CHECK_EQUAL(shouldBeFull.size(), 4);
             }
             ++rightCount;
         }
