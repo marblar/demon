@@ -32,10 +32,10 @@ namespace OtherAutomaton {
         explicit Block(const boost::array<Cell *, 4>& array);
         const OverlapBlocks& overlappingBlocks() const { return overlap; }
         
-        inline Cell *topLeft() const { return (*this)[0]; }
-        inline Cell *bottomLeft() const { return (*this)[1]; }
-        inline Cell *bottomRight() const { return (*this)[2]; }
-        inline Cell *topRight() const { return (*this)[3]; }
+        inline Cell *topLeft() const { return at(0); }
+        inline Cell *bottomLeft() const { return at(1); }
+        inline Cell *bottomRight() const { return at(3); }
+        inline Cell *topRight() const { return at(2); }
     };
     
     typedef std::vector<Block> BlockList;

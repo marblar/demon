@@ -29,7 +29,7 @@ Coordinate::CNeighbors Coordinate::getNeighbors() {
     return neighbors;
 }
 
-Coordinate::CNeighbors Coordinate::twoByTwoFromTopLeftCoordinate() {
+Coordinate::CNeighbors Coordinate::twoByTwoFromTopLeftCoordinate() const {
     Coordinate::CNeighbors neighbors = { {
         Coordinate(x,y,dimension),
         Coordinate(x,y+1,dimension),

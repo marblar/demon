@@ -117,7 +117,7 @@ namespace CATools {
                 throw InvalidGridSize();
             }
         }
-        CNeighbors twoByTwoFromTopLeftCoordinate();
+        CNeighbors twoByTwoFromTopLeftCoordinate() const;
         bool operator==(Coordinate const &rhs) const  { return (x==rhs.x) && (y==rhs.y); }
         
         const int& getX() { return x; }
