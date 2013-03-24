@@ -17,10 +17,11 @@ BOOST_FIXTURE_TEST_SUITE(RandomnessDelegate, RandomNumberTestFixture)
 BOOST_AUTO_TEST_CASE(testGSLBinaryEvent_distribution) {
     for (double expectedRatio = 0; expectedRatio<=1; expectedRatio+=.1) {
         Randomness::GSLDelegate delegate(rng);
-        int iterations = 1000;
+        int iterations = 20000;
         
         double standard_dev = sqrt(expectedRatio*(1-expectedRatio)/iterations);
         double acceptable_error = expectedRatio ? 2*standard_dev/expectedRatio : 0;
+        BOOST_REQUIRE_LE(acceptable_error,0.05);
         
         int sum = 0;
         for (int k=0; k<iterations; ++k) {

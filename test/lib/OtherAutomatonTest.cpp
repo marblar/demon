@@ -12,6 +12,7 @@
 #include <iterator>
 #include <boost/test/unit_test.hpp>
 #include <boost/foreach.hpp>
+#include <boost/math/tools/fraction.hpp>
 #include "OtherAutomaton.h"
 #include "TestFixtures.h"
 
@@ -116,24 +117,28 @@ BOOST_FIXTURE_TEST_CASE(testNonEmptyGridInitialization, RandomGridOperationTestF
 
 BOOST_FIXTURE_TEST_CASE(testDifferentGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
     using namespace OtherAutomaton;
-    const int iterations = 1000;
+    const int iterations = 1000*grid.size();
     
     boost::array<int, 36> array;
     std::fill(array.begin(), array.end(), 0);
     BOOST_REQUIRE_EQUAL(array.size(),grid.size());
+    int cellCount = 15;
     
-    double p = (double)(floor(.2*grid.size()))/grid.size();
+    double p = double(cellCount)/grid.size();
     double expectedRatio = p;
     double variance = expectedRatio*(1-expectedRatio)/iterations;
     double standard_deviation = sqrt(variance);
     double acceptable_error = 3*standard_deviation/expectedRatio;
+    BOOST_REQUIRE_LE(acceptable_error,0.05);
 
     const Cell *base = *grid.begin();
     
     for (int k = 0; k<iterations; ++k) {
+        OtherAutomaton::initializeGridWithOccupationProbability(grid, 0, delegate);
         resetInitialValues();
         OtherAutomaton::initializeGridWithOccupationProbability(grid, p, delegate);
         CellSet changes = changedCells();
+        BOOST_REQUIRE_EQUAL(changes.size(), cellCount);
         for (CellSet::iterator it = changes.begin(); it!=changes.end(); ++it) {
             Cell *cell = *it;
             if (cell->getValue()) {

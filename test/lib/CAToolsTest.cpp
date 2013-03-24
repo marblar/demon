@@ -93,7 +93,7 @@ class RandomCellTestFixture : public RandomNumberTestFixture, public TestGridFix
 };
 
 BOOST_FIXTURE_TEST_CASE(testGetRandomCell, RandomCellTestFixture) {
-    const size_t iterations = grid.size()*1000;
+    const size_t iterations = grid.size()*10000;
     std::map<TestCell *, int> counter;
     Randomness::GSLDelegate delegate(rng);
     for (size_t k = 0; k<iterations; ++k) {
@@ -108,6 +108,7 @@ BOOST_FIXTURE_TEST_CASE(testGetRandomCell, RandomCellTestFixture) {
     // bounds is about 15%.
     
     double acceptable_error = 3*standard_deviation/expectedRatio;
+    BOOST_REQUIRE_LE(acceptable_error,0.05);
     
     for (TestGrid::iterator it = grid.begin(); it!=grid.end(); ++it) {
         double actualRatio = (double)(counter[*it])/iterations;
