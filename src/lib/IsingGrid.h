@@ -43,16 +43,16 @@ namespace Ising {
         typedef CheckerboardPtrOffset<Cell> CheckerboardCellOffset;
     }
     
-    class Cell {
-        unsigned char value;
+    class Cell : public CATools::Cell<Cell, unsigned char> {
+    public:
+        typedef boost::array<Cell*, 4> Neighbors;
     protected:
         friend class Grid;
-        boost::array<Cell*, 4> neighbors;
+        Neighbors neighbors;
+        
+        friend class CATools::Cell<Cell, unsigned char>;
+        void _setValue(const char &c);
     public:
-        Cell() : value(0) { }
-        typedef boost::array<Cell*, 4> Neighbors;
-        unsigned const char &getValue() { return value; }
-        void setValue(const char &c);
         void toggle() { setValue(value ^ 1); }
         Neighbors getNeighbors() { return neighbors; }
         bool isNeighbor(Cell *neighbor){ return std::count(neighbors.begin(),neighbors.end(),neighbor);}

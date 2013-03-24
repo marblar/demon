@@ -15,14 +15,13 @@
 #include "CATools.h"
 
 namespace OtherAutomaton {
-    class Cell {
-        bool occupied;
+    class Cell : public CATools::Cell<Cell, bool> {
     public:
-        const bool &isOccupied() const { return occupied; }
-        bool setOccupied(bool value);
-        Cell();
+        inline void _setValue(const bool &val) {
+            value = val;
+        }
     };
-    
+
     typedef boost::array<Cell *, 4> Block;
     typedef std::vector<Block> BlockList;
     

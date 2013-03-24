@@ -16,7 +16,7 @@ using namespace detail;
 const Kind Ising::detail::even = false;
 const Kind Ising::detail::odd = true;
 
-void Cell::setValue(const char &c) {
+void Cell::_setValue(const char &c) {
     if (c < 0 || c > 1) {
         throw InvalidCellValue();
     }

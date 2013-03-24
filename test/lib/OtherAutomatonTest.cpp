@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_SUITE(OtherAutomatonCell)
 
 BOOST_AUTO_TEST_CASE( defaultValue ) {
     OtherAutomaton::Cell cell;
-    BOOST_REQUIRE(!cell.isOccupied());
+    BOOST_REQUIRE(!cell.getValue());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

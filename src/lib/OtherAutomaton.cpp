@@ -26,7 +26,3 @@ Grid::Grid(int dim) : CATools::Grid<Cell>(dim),oddBlocks(_oddBlocks), evenBlocks
         }
     }
 }
-
-Cell::Cell() : occupied(false) {
-    
-}

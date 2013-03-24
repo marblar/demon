@@ -29,6 +29,24 @@ namespace CATools {
         InvalidCoordinateComparison() : std::runtime_error(std::string("Cannot compare cells of different dimension.")) {}
     };
     
+    
+    // This class uses the curiously recurring template pattern.
+    template <class Subclass, class ValueType, ValueType defaultValue = 0>
+    class Cell {
+    protected:
+        ValueType value;
+    public:
+        Cell() : value(defaultValue) {}
+        const ValueType &getValue() const { return value; }
+        
+        // Subclasses must implement _setValue.
+        void setValue(const ValueType& value) {
+            static_cast<Subclass *>(this)->_setValue(value);
+        }
+        
+        typedef ValueType valueType;
+    };
+    
     template <class CellType>
     class Grid {
         int dimension;
@@ -57,6 +75,7 @@ namespace CATools {
             return (*this)[index];
         }
         
+        typedef CellType cellType;
         
         template <class Container, int N>
         boost::array<CellType *, N> cellsFromCoordinates(const Container & coords) {
