@@ -35,6 +35,9 @@ namespace CATools {
     class Cell {
     protected:
         ValueType value;
+        void _setValue(const ValueType& val) {
+            value = val;
+        }
     public:
         Cell() : value(defaultValue) {}
         const ValueType &getValue() const { return value; }

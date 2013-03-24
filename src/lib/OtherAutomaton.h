@@ -16,12 +16,7 @@
 #include "RandomnessDelegate.h"
 
 namespace OtherAutomaton {
-    class Cell : public CATools::Cell<Cell, bool> {
-    public:
-        inline void _setValue(const bool &val) {
-            value = val;
-        }
-    };
+    class Cell : public CATools::Cell<Cell, bool> {};
 
     typedef boost::array<Cell *, 4> Block;
     typedef std::vector<Block> BlockList;
