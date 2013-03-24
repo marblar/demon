@@ -90,7 +90,7 @@ namespace CATools {
         Coordinate(int dim) : x(0), y(0), dimension(dim) {
             validateCoordinateParams();
         }
-        inline int validateCoordinateParams() {
+        inline void validateCoordinateParams() {
             if(dimension<1) {
                 throw InvalidGridSize();
             }
