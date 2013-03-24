@@ -13,6 +13,10 @@ $(top_srcdir)/.version:
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version  
 
+check-targets:
+	make -C src check-targets
+	make -C test check-targets
+
 if DEMON_GCOV_ENABLED
 include test/coverage/Makemodule.am
 endif

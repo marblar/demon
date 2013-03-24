@@ -290,7 +290,7 @@
 		};
 		4D917D7016E0DE92002ADE1E /* demoncore */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = check;
+			buildArgumentsString = "check-targets";
 			buildConfigurationList = 4D917D7116E0DE92002ADE1E /* Build configuration list for PBXLegacyTarget "demoncore" */;
 			buildPhases = (
 			);

@@ -8,6 +8,9 @@ TESTS = demoncore-wrapper.sh
 
 EXTRA_DIST = demoncore-wrapper.sh
 
+check-targets:
+	make -C lib check-targets
+
 if DEMON_GCOV_ENABLED
 include coverage/Makemodule.am
 endif

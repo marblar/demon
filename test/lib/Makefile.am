@@ -24,3 +24,5 @@ demoncore_LDFLAGS = $(BOOST_LDFLAGS)
 demoncore_LDADD = $(BOOST_UNIT_TEST_FRAMEWORK_LIB) \
 			${top_builddir}/src/libdemon.la \
 			$(GSL_LIBS)
+
+check-targets: demoncore

@@ -37,3 +37,5 @@ __top_builddir__src_libdemon_la_CXXFLAGS = $(GCOV_CFLAGS) \
 __top_builddir__src_libdemon_la_LIBADD = $(GSL_LIBS) \
 						$(GCOV_LIBS) \
 						$(BOOST_PROGRAM_OPTIONS_LIB)
+
+check-targets: $(noinst_LTLIBRARIES)
