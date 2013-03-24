@@ -98,10 +98,17 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(OtherAutomatonGridReservoirTests)
 
-BOOST_FIXTURE_TEST_CASE(testEmptyGridInitialization, GridOperationTestFixture<OATestFixture>) {
+BOOST_FIXTURE_TEST_CASE(testEmptyGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
     double p = .35;
     int expectedCount = floor(p*grid.size());
-    OtherAutomaton::initializeGridWithOccupationProbability(grid,p);
+    OtherAutomaton::initializeGridWithOccupationProbability(grid,p,delegate);
+    BOOST_CHECK_EQUAL(expectedCount, changedCells().size());
+}
+
+BOOST_FIXTURE_TEST_CASE(testNonEmptyGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
+    double p = .57;
+    int expectedCount = floor(p*grid.size());
+    OtherAutomaton::initializeGridWithOccupationProbability(grid, p,delegate);
     BOOST_CHECK_EQUAL(expectedCount, changedCells().size());
 }
 

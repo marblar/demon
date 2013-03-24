@@ -90,5 +90,10 @@ public:
     }
 };
 
+template <class GridFixtureBase>
+struct RandomGridOperationTestFixture : public GridOperationTestFixture<GridFixtureBase>, public RandomNumberTestFixture {
+    Randomness::GSLDelegate delegate;
+    RandomGridOperationTestFixture() : delegate(rng) {}
+};
 
 #endif /* defined(__jdemon__MeasurementTest__) */
