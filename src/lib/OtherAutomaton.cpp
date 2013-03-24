@@ -8,6 +8,7 @@
 
 #include "OtherAutomaton.h"
 #include <boost/typeof/typeof.hpp>
+#include <boost/foreach.hpp>
 using namespace OtherAutomaton;
 
 Grid::Grid(int dim) : CATools::Grid<Cell>(dim),oddBlocks(_oddBlocks), evenBlocks(_evenBlocks) {
@@ -25,9 +26,4 @@ Grid::Grid(int dim) : CATools::Grid<Cell>(dim),oddBlocks(_oddBlocks), evenBlocks
             *evenOutputIterator = cellsFromCoordinates<CATools::Coordinate::CNeighbors, 4>(currentCoord.twoByTwoFromTopLeftCoordinate());
         }
     }
-}
-
-template <class RandomnessDelegate>
-void OtherAutomaton::initializeGridWithOccupationProbability(Grid &grid, double probability, RandomnessDelegate &delegate) {
-    
 }
