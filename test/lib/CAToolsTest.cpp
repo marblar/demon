@@ -108,6 +108,7 @@ BOOST_FIXTURE_TEST_CASE(testGetRandomCell, RandomCellTestFixture) {
     // bounds is about 15%.
     
     double acceptable_error = 3*standard_deviation/expectedRatio;
+    
     for (TestGrid::iterator it = grid.begin(); it!=grid.end(); ++it) {
         double actualRatio = (double)(counter[*it])/iterations;
         BOOST_CHECK_CLOSE_FRACTION(expectedRatio, actualRatio,acceptable_error);

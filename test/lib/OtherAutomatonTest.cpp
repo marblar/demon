@@ -108,10 +108,45 @@ BOOST_FIXTURE_TEST_CASE(testEmptyGridInitialization, RandomGridOperationTestFixt
 BOOST_FIXTURE_TEST_CASE(testNonEmptyGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
     double p = .57;
     int expectedCount = floor(p*grid.size());
+    grid[5]->setValue(true);
+    grid[20]->setValue(true);
     OtherAutomaton::initializeGridWithOccupationProbability(grid, p,delegate);
     BOOST_CHECK_EQUAL(expectedCount, changedCells().size());
 }
 
+BOOST_FIXTURE_TEST_CASE(testDifferentGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
+    using namespace OtherAutomaton;
+    const int iterations = 1000;
+    
+    boost::array<int, 36> array;
+    std::fill(array.begin(), array.end(), 0);
+    BOOST_REQUIRE_EQUAL(array.size(),grid.size());
+    
+    double p = (double)(floor(.2*grid.size()))/grid.size();
+    double expectedRatio = p;
+    double variance = expectedRatio*(1-expectedRatio)/iterations;
+    double standard_deviation = sqrt(variance);
+    double acceptable_error = 3*standard_deviation/expectedRatio;
+
+    const Cell *base = *grid.begin();
+    
+    for (int k = 0; k<iterations; ++k) {
+        resetInitialValues();
+        OtherAutomaton::initializeGridWithOccupationProbability(grid, p, delegate);
+        CellSet changes = changedCells();
+        for (CellSet::iterator it = changes.begin(); it!=changes.end(); ++it) {
+            Cell *cell = *it;
+            if (cell->getValue()) {
+                ++array[cell-base];
+            }
+        }
+    }
+    
+    for (BOOST_AUTO(it,array.begin()); it!=array.end(); ++it) {
+        double actualRatio = (double)(*it)/iterations;
+        BOOST_CHECK_CLOSE_FRACTION(expectedRatio, actualRatio, acceptable_error);
+    }
+}
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(OtherAutomatonCell)
