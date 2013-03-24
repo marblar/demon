@@ -146,7 +146,9 @@ struct IsingGridTestFixture  {
     IsingGridTestFixture() : grid(6) {}
 };
 
-BOOST_FIXTURE_TEST_SUITE(ClusterMethodTest, GridOperationTestFixture<IsingGridTestFixture>)
+typedef GridOperationTestFixture<IsingGridTestFixture, Ising::Grid> IsingGridOperationFixture;
+
+BOOST_FIXTURE_TEST_SUITE(ClusterMethodTest, IsingGridOperationFixture)
 
 BOOST_AUTO_TEST_CASE( includeNoCells ) {
     Ising::Cell *startingPoint = grid[5];

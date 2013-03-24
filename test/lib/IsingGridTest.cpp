@@ -22,7 +22,7 @@ typedef std::set<Ising::Cell*> CellSet;
 
 struct EvenIsingGridFixture {
     Ising::Grid grid;
-    EvenIsingGridFixture() : grid(GRID_DIMENSION) {}
+    EvenIsingGridFixture() : grid(6) {}
 };
 
 BOOST_FIXTURE_TEST_SUITE(IsingGridTest, EvenIsingGridFixture)

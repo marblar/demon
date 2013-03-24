@@ -9,12 +9,11 @@
 #ifndef __jdemon__MeasurementTest__
 #define __jdemon__MeasurementTest__
 
-#define GRID_DIMENSION 6
-
 #include <gsl/gsl_rng.h>
 #include <set>
 #include <boost/array.hpp>
 #include <boost/iterator/zip_iterator.hpp>
+#include <boost/typeof/typeof.hpp>
 #include "Utilities.h"
 #include "Ising.h"
 
@@ -54,12 +53,11 @@ struct DefaultTransitionRuleTestFixture {
 };
 
 // This test fixture is for testing classes that perform operations on Grids. Store the initial values of the cells using resetInitialValues, perform some operation on the grid, and then call changedCells() to get a set of pointers to the cell sites that have changed.
-template <class GridFixtureBase>
+template <class GridFixtureBase, class GridClass, int dimension = 6>
 class GridOperationTestFixture : public GridFixtureBase {
-    typedef boost::array<unsigned char, GRID_DIMENSION*GRID_DIMENSION> CellValues;
+    typedef boost::array<typename GridClass::cellType::valueType, dimension*dimension> CellValues;
     CellValues initialValues;
-    typedef boost::tuple<Ising::Grid::iterator,CellValues::const_iterator> iterator_tuple;
-    typedef boost::zip_iterator<iterator_tuple> ZipIterator;
+    typedef boost::tuple<typename GridClass::iterator,typename CellValues::const_iterator> iterator_tuple;
 public:
     void resetInitialValues() {
         for (int k = 0; k<initialValues.size(); ++k) {
@@ -68,11 +66,11 @@ public:
     }
     std::set<Ising::Cell *> changedCells() {
         std::set<Ising::Cell *> changes;
-        ZipIterator begin = boost::make_zip_iterator(boost::make_tuple(GridFixtureBase::grid.begin(), initialValues.begin()));
-        ZipIterator end = boost::make_zip_iterator(boost::make_tuple(GridFixtureBase::grid.end(),initialValues.end()));
-        for (ZipIterator it = begin; it!=end; ++it) {
-            Ising::Cell *cell = it->get<0>();
-            unsigned char initialValue = it->get<1>();
+        BOOST_AUTO(begin,boost::make_zip_iterator(boost::make_tuple(GridFixtureBase::grid.begin(), initialValues.begin())));
+        BOOST_AUTO(end,boost::make_zip_iterator(boost::make_tuple(GridFixtureBase::grid.end(),initialValues.end())));
+        for (BOOST_AUTO(it,begin); it!=end; ++it) {
+            Ising::Cell *cell = boost::tuples::get<0>(*it);
+            unsigned char initialValue = boost::tuples::get<1>(*it);
             if (cell->getValue()!=initialValue) {
                 changes.insert(cell);
             }
