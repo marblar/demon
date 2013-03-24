@@ -52,12 +52,19 @@ struct DefaultTransitionRuleTestFixture {
     }
 };
 
+template <class Grid, int dimension = 6>
+struct GridFixture {
+    Grid grid;
+    GridFixture() : grid(dimension) {}
+    typedef Grid gridType;
+};
+
 // This test fixture is for testing classes that perform operations on Grids. Store the initial values of the cells using resetInitialValues, perform some operation on the grid, and then call changedCells() to get a set of pointers to the cell sites that have changed.
-template <class GridFixtureBase, class GridClass, int dimension = 6>
+template <class GridFixtureBase, int dimension = 6>
 class GridOperationTestFixture : public GridFixtureBase {
-    typedef boost::array<typename GridClass::cellType::valueType, dimension*dimension> CellValues;
+    typedef boost::array<typename GridFixtureBase::gridType::cellType::valueType, dimension*dimension> CellValues;
     CellValues initialValues;
-    typedef boost::tuple<typename GridClass::iterator,typename CellValues::const_iterator> iterator_tuple;
+    typedef boost::tuple<typename GridFixtureBase::gridType::iterator,typename CellValues::const_iterator> iterator_tuple;
 public:
     void resetInitialValues() {
         for (int k = 0; k<initialValues.size(); ++k) {

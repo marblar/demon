@@ -20,10 +20,7 @@ using namespace boost::unit_test;
 using namespace Ising;
 typedef std::set<Ising::Cell*> CellSet;
 
-struct EvenIsingGridFixture {
-    Ising::Grid grid;
-    EvenIsingGridFixture() : grid(6) {}
-};
+typedef GridFixture<Ising::Grid> EvenIsingGridFixture;
 
 BOOST_FIXTURE_TEST_SUITE(IsingGridTest, EvenIsingGridFixture)
 

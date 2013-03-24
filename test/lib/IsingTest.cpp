@@ -141,12 +141,8 @@ BOOST_AUTO_TEST_CASE( testNonbinaryParity ) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-struct IsingGridTestFixture  {
-    Ising::Grid grid;
-    IsingGridTestFixture() : grid(6) {}
-};
-
-typedef GridOperationTestFixture<IsingGridTestFixture, Ising::Grid> IsingGridOperationFixture;
+typedef GridFixture<Ising::Grid> IsingGridTestFixture;
+typedef GridOperationTestFixture<IsingGridTestFixture> IsingGridOperationFixture;
 
 BOOST_FIXTURE_TEST_SUITE(ClusterMethodTest, IsingGridOperationFixture)
 

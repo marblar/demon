@@ -13,13 +13,9 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/foreach.hpp>
 #include "OtherAutomaton.h"
+#include "TestFixtures.h"
 
-
-
-struct OATestFixture {
-    OtherAutomaton::Grid grid;
-    OATestFixture() : grid(6) {}
-};
+typedef GridFixture<OtherAutomaton::Grid> OATestFixture;
 
 typedef std::set<OtherAutomaton::Cell *> CellSet;
 
