@@ -30,24 +30,18 @@ Grid::Grid(int dim) : CATools::Grid<Cell>(dim),oddBlocks(_oddBlocks), evenBlocks
             *evenOutputIterator = Block(cellsFromCoordinates<CATools::Coordinate::CNeighbors, 4>(currentCoord.twoByTwoFromTopLeftCoordinate()));
         }
     }
-    for (int row = 0; row < getDimension()/2; ++row) {
-        for (int column = 0; column < getDimension()/2; ++column) {
-            const CATools::Coordinate blockCoordinate = CATools::Coordinate(column,row,getDimension()/2);
-            const CATools::Coordinate aboveCoordinate = CATools::Coordinate(column,row,getDimension()/2);
-            const CATools::Coordinate belowCoordinate = CATools::Coordinate(column,row+1,getDimension()/2);
-            
-            Block &middle = _evenBlocks[blockCoordinate.getGridIndex()];
-            Block &above = _oddBlocks[aboveCoordinate.getGridIndex()];
-            Block &below = _oddBlocks[belowCoordinate.getGridIndex()];
-            
-            middle.overlap[0] = &above;
-            middle.overlap[1] = &below;
-            above.overlap[1] = &middle;
-            below.overlap[0] = &middle;
-        }
-    }
 }
 
 Block::Block(const boost::array<Cell *, 4>& array) {
     std::copy(array.begin(), array.end(), begin());
+}
+
+bool Block::isAbove(const OtherAutomaton::Block &above) const {
+    return (above.bottomLeft()==this->topLeft()) &&
+                        (above.bottomRight()==this->topRight());
+}
+
+bool Block::isBelow(const OtherAutomaton::Block &below) const {
+    return (below.topLeft()==this->bottomLeft()) &&
+        (below.topRight()==this->bottomRight());
 }

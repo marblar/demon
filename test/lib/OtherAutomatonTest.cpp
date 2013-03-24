@@ -16,7 +16,9 @@
 #include "OtherAutomaton.h"
 #include "TestFixtures.h"
 
-typedef GridFixture<OtherAutomaton::Grid> OATestFixture;
+struct OATestFixture : public GridFixture<OtherAutomaton::Grid> {
+    
+};
 
 static inline OATestFixture::CellSet testOverlap(OtherAutomaton::Block left, OtherAutomaton::Block right) {
     using namespace OtherAutomaton;
@@ -47,15 +49,9 @@ BOOST_AUTO_TEST_CASE( testBlockOverlapSize ) {
                 overlap.insert(std::make_pair(&*even, sharedCells));
             }
         }
-        if (overlap.size()) {
-            BOOST_CHECK_EQUAL(overlap.size(), 2);
-            BOOST_FOREACH(pair leftItem, overlap) {
-                BOOST_CHECK_EQUAL(leftItem.second.size(),2);
-                OtherAutomaton::Block::OverlapBlocks expectedOverlap = odd->overlappingBlocks();
-                OtherAutomaton::Block::OverlapBlocks otherExpectedOverlap = leftItem.first->overlappingBlocks();
-                BOOST_CHECK(std::count(expectedOverlap.begin(), expectedOverlap.end(), leftItem.first));
-                BOOST_CHECK(std::count(otherExpectedOverlap.begin(), otherExpectedOverlap.end(), &*odd));
-            }
+        BOOST_CHECK_EQUAL(overlap.size(), 2);
+        BOOST_FOREACH(pair leftItem, overlap) {
+            BOOST_CHECK_EQUAL(leftItem.second.size(),2);
         }
     }
     
@@ -68,24 +64,52 @@ BOOST_AUTO_TEST_CASE( testBlockOverlapSize ) {
                 overlap.insert(std::make_pair(&*odd, sharedCells));
             }
         }
-        if (overlap.size()) {
-            BOOST_CHECK_EQUAL(overlap.size(), 2);
-            BOOST_FOREACH(pair leftItem, overlap) {
-                BOOST_CHECK_EQUAL(leftItem.second.size(),2);
-            }
+        BOOST_CHECK_EQUAL(overlap.size(), 2);
+        BOOST_FOREACH(pair leftItem, overlap) {
+            BOOST_CHECK_EQUAL(leftItem.second.size(),2);
         }
     }
 }
 
-BOOST_AUTO_TEST_CASE( testEvenBlockOverlap ) {
-    for (OtherAutomaton::BlockList::const_iterator it = grid.evenBlocks.begin(); it != grid.evenBlocks.end(); ++it) {
-        OtherAutomaton::Block::OverlapBlocks overlap = it->overlappingBlocks();
-        OtherAutomaton::Block &above = overlap.above();
-        OtherAutomaton::Block &below = overlap.below();
-        BOOST_CHECK(above.bottomLeft()==it->topLeft());
-        BOOST_CHECK(above.bottomRight()==it->topRight());
-        BOOST_CHECK(below.topLeft()==it->bottomLeft());
-        BOOST_CHECK(below.topRight()==it->bottomRight());
+BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
+    for (BOOST_AUTO(odd,grid.oddBlocks.begin()); odd!=grid.oddBlocks.end(); ++odd) {
+        std::map<const OtherAutomaton::Block *,CellSet> overlap;
+        for (BOOST_AUTO(even,grid.evenBlocks.begin()); even!=grid.evenBlocks.end(); ++even) {
+            CellSet sharedCells = testOverlap(*even, *odd);
+            if (sharedCells.size()>0) {
+                overlap.insert(std::make_pair(&*even, sharedCells));
+            }
+        }
+        
+        BOOST_REQUIRE_EQUAL(overlap.size(),2);
+        boost::array<const OtherAutomaton::Block *, 2> blocks;
+        int index = 0;
+        BOOST_FOREACH(typeof(*overlap.begin()) leftItem, overlap) {
+            blocks[index++] = leftItem.first;
+        }
+        const OtherAutomaton::Block &middle = *odd;
+        enum classification {
+            above,
+            below,
+            unknown
+        };
+        boost::array<classification, 2> classified;
+        for (int k = 0; k!=2; ++k) {
+            classification c = unknown;
+            if (blocks[k]->isAbove(middle)) {
+                BOOST_CHECK_EQUAL(c, unknown);
+                c = above;
+            }
+            if (blocks[k]->isBelow(middle)) {
+                BOOST_CHECK_EQUAL(c, unknown);
+                c = below;
+            }
+            classified[k]=c;
+        }
+        size_t aboveCount = std::count(classified.begin(), classified.end(), above);
+        size_t belowCount = std::count(classified.begin(), classified.end(), below);
+        BOOST_CHECK_EQUAL(aboveCount, 1);
+        BOOST_CHECK_EQUAL(belowCount, 1);
     }
 }
 

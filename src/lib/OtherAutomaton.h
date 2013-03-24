@@ -19,24 +19,20 @@ namespace OtherAutomaton {
     class Cell : public CATools::Cell<Cell, bool> {};
 
     class Block : public boost::array<Cell *, 4> {
-    public:
-        class OverlapBlocks : public boost::array<Block *, 2> {
-        public:
-            inline Block &above() { return *at(0); }
-            inline Block &below() { return *at(1); }
-        };
     private:
         friend class Grid;
-        OverlapBlocks overlap;
     public:
         explicit Block(const boost::array<Cell *, 4>& array);
-        const OverlapBlocks& overlappingBlocks() const { return overlap; }
+        
+        bool isAbove(const Block &other) const;
+        bool isBelow(const Block &other) const;
         
         inline Cell *topLeft() const { return at(0); }
         inline Cell *bottomLeft() const { return at(1); }
         inline Cell *bottomRight() const { return at(3); }
         inline Cell *topRight() const { return at(2); }
     };
+    
     
     typedef std::vector<Block> BlockList;
     
