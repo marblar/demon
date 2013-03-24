@@ -26,3 +26,7 @@ Grid::Grid(int dim) : CATools::Grid<Cell>(dim),oddBlocks(_oddBlocks), evenBlocks
         }
     }
 }
+
+void OtherAutomaton::initializeGridWithOccupationProbability(Grid &grid, double probability) {
+    
+}

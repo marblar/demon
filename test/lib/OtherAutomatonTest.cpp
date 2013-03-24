@@ -17,11 +17,9 @@
 
 typedef GridFixture<OtherAutomaton::Grid> OATestFixture;
 
-typedef std::set<OtherAutomaton::Cell *> CellSet;
-
-static inline CellSet testOverlap(OtherAutomaton::Block left, OtherAutomaton::Block right) {
+static inline OATestFixture::CellSet testOverlap(OtherAutomaton::Block left, OtherAutomaton::Block right) {
     using namespace OtherAutomaton;
-    CellSet cellSet;
+    OATestFixture::CellSet cellSet;
     BOOST_FOREACH(Cell *leftCell, left) {
         BOOST_FOREACH(Cell *rightCell, right) {
             if (leftCell==rightCell) {
@@ -32,7 +30,7 @@ static inline CellSet testOverlap(OtherAutomaton::Block left, OtherAutomaton::Bl
     return cellSet;
 }
 
-BOOST_FIXTURE_TEST_SUITE(OtherAutomatonTests, OATestFixture)
+BOOST_FIXTURE_TEST_SUITE(OtherAutomatonGridTests, OATestFixture)
 
 BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
     // Each even block should be disjoint from each other even block. Same is true for odds.
@@ -94,6 +92,17 @@ BOOST_AUTO_TEST_CASE( testNotEmpty ) {
     BOOST_CHECK_GT(grid.size(),0);
     BOOST_CHECK_GT(grid.evenBlocks.size(), 0);
     BOOST_CHECK_GT(grid.oddBlocks.size(), 0);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(OtherAutomatonGridReservoirTests)
+
+BOOST_FIXTURE_TEST_CASE(testEmptyGridInitialization, GridOperationTestFixture<OATestFixture>) {
+    double p = .35;
+    int expectedCount = floor(p*grid.size());
+    OtherAutomaton::initializeGridWithOccupationProbability(grid,p);
+    BOOST_CHECK_EQUAL(expectedCount, changedCells().size());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

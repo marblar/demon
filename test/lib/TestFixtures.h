@@ -57,6 +57,7 @@ struct GridFixture {
     Grid grid;
     GridFixture() : grid(dimension) {}
     typedef Grid gridType;
+    typedef std::set<typename Grid::cellType *> CellSet;
 };
 
 // This test fixture is for testing classes that perform operations on Grids. Store the initial values of the cells using resetInitialValues, perform some operation on the grid, and then call changedCells() to get a set of pointers to the cell sites that have changed.
@@ -71,12 +72,12 @@ public:
             initialValues[k]=GridFixtureBase::grid[k]->getValue();
         }
     }
-    std::set<Ising::Cell *> changedCells() {
-        std::set<Ising::Cell *> changes;
+    typename GridFixtureBase::CellSet changedCells() {
+        typename GridFixtureBase::CellSet changes;
         BOOST_AUTO(begin,boost::make_zip_iterator(boost::make_tuple(GridFixtureBase::grid.begin(), initialValues.begin())));
         BOOST_AUTO(end,boost::make_zip_iterator(boost::make_tuple(GridFixtureBase::grid.end(),initialValues.end())));
         for (BOOST_AUTO(it,begin); it!=end; ++it) {
-            Ising::Cell *cell = boost::tuples::get<0>(*it);
+            typename GridFixtureBase::gridType::cellType *cell = boost::tuples::get<0>(*it);
             unsigned char initialValue = boost::tuples::get<1>(*it);
             if (cell->getValue()!=initialValue) {
                 changes.insert(cell);

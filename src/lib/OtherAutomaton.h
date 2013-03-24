@@ -33,6 +33,8 @@ namespace OtherAutomaton {
         const BlockList &evenBlocks;
         const BlockList &oddBlocks;
     };
+    	
+    void initializeGridWithOccupationProbability(Grid &grid, double probability);
 }
 
 #endif /* defined(__jdemon__OtherAutomaton__) */
