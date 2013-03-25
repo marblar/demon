@@ -8,6 +8,7 @@ void performMeasurement() {
     int iterations = 10000;
     ReservoirFactory *rFactory = new DefaultArgsReservoirFactory<Stochastic::Reservoir>;
     reservoirBenchmark(rFactory,iterations);
+    delete rFactory;
 }
 
 

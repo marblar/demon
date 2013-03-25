@@ -9,6 +9,7 @@ void performMeasurement() {
     int iterations = 100;
     ReservoirFactory *rFactory = new Ising::Reservoir::Factory(20,20);
     reservoirBenchmark(rFactory,iterations);
+    delete rFactory;
 }
 
 bool init_function() {
