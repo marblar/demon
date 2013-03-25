@@ -90,6 +90,18 @@ public:
     }
 };
 
+template <class CellType, int N = 4>
+class CellTestFixture {
+    boost::array<CellType, N> concreteCells;
+public:
+    boost::array<CellType *, N> cellReferences;
+    CellTestFixture() {
+        boost::counting_iterator<CellType *> cells(concreteCells.c_array());
+        boost::counting_iterator<CellType *> end(concreteCells.c_array()+N);
+        std::copy(cells,end,cellReferences.begin());
+    }
+};
+
 template <class GridFixtureBase>
 struct RandomGridOperationTestFixture : public GridOperationTestFixture<GridFixtureBase>, public RandomNumberTestFixture {
     Randomness::GSLDelegate delegate;

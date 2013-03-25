@@ -42,7 +42,7 @@ namespace CATools {
         Cell() : value(defaultValue) {}
         const ValueType &getValue() const { return value; }
         
-        // Subclasses must implement _setValue.
+        // Subclasses can implement _setValue.
         void setValue(const ValueType& value) {
             static_cast<Subclass *>(this)->_setValue(value);
         }

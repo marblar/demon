@@ -223,3 +223,50 @@ BOOST_AUTO_TEST_CASE( defaultValue ) {
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+class OtherAutomatonBlockFixture : public CellTestFixture<OtherAutomaton::Cell> {
+public:
+    OtherAutomaton::Block block;
+    OtherAutomatonBlockFixture() : block(cellReferences) {
+        
+    }
+};
+
+
+BOOST_AUTO_TEST_SUITE(OtherAutomatonBlockStates)
+
+BOOST_FIXTURE_TEST_CASE(checkStateCount,OtherAutomatonBlockFixture) {
+    const int unique_states = 1<<block.size();
+    std::set<OtherAutomaton::StateIdentifier> identifiers;
+    for (int k = 0; k < unique_states; ++k) {
+        for (int index = 0; index<block.size(); ++index) {
+            block[index]->setValue((k>>index) & 1);
+        }
+        identifiers.insert(block.currentState().getStateIdentifier());
+    }
+    BOOST_CHECK_EQUAL(unique_states, identifiers.size());
+    for (BOOST_AUTO(it,identifiers.begin()); it!=identifiers.end(); ++it) {
+        OtherAutomaton::BlockState state(*it);
+        BOOST_CHECK_EQUAL(state.getStateIdentifier(), *it);
+    }
+
+    
+    for (int k = 0; k < unique_states; ++k) {
+        for (int index = 0; index<block.size(); ++index) {
+            block[index]->setValue((k>>index) & 1);
+        }
+        OtherAutomaton::BlockState originalState = block.currentState();
+        for (BOOST_AUTO(it,cellReferences.begin()); it!=cellReferences.end(); ++it) {
+            (*it)->setValue((*it)->getValue());
+        }
+        originalState.update(block);
+        OtherAutomaton::BlockState newState = block.currentState();
+        BOOST_CHECK_EQUAL_COLLECTIONS(originalState.begin(), originalState.end(), newState.begin(), newState.end());
+    }
+}
+
+BOOST_FIXTURE_TEST_CASE(checkStateInitialization, OtherAutomatonBlockFixture) {
+
+}
+
+BOOST_AUTO_TEST_SUITE_END()
