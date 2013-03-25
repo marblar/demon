@@ -16,6 +16,8 @@
 #include "OtherAutomaton.h"
 #include "TestFixtures.h"
 
+// todo: Make this file's organization more clear.
+
 struct OATestFixture : public GridFixture<OtherAutomaton::Grid> {
     
 };
@@ -228,8 +230,29 @@ class OtherAutomatonBlockFixture : public CellTestFixture<OtherAutomaton::Cell> 
 public:
     OtherAutomaton::Block block;
     OtherAutomatonBlockFixture() : block(cellReferences) {
-        
+        // We want a nice, nontrivial starting state.
+        int k = 0;
+        for (BOOST_AUTO(it,cellReferences.begin()); it!=cellReferences.end(); ++it) {
+            (*it)->setValue(k % 2);
+        }
     }
+    void setBlockValues_cw(bool tL, bool tR,\
+                      bool bL, bool bR) {
+        block.topLeft()->setValue(tL);
+        block.topRight()->setValue(tR);
+        block.bottomRight()->setValue(bR);
+        block.bottomLeft()->setValue(bL);
+    }
+    
+    typedef std::pair<OtherAutomaton::BlockState,OtherAutomaton::BlockState> StatePair;
+    template <class RuleClass>
+    StatePair applyRule(RuleClass rule) {
+        StatePair result;
+        result.first=block.currentState();
+        rule(block);
+        result.second=block.currentState();
+        return result;
+    };
 };
 
 
@@ -265,8 +288,208 @@ BOOST_FIXTURE_TEST_CASE(checkStateCount,OtherAutomatonBlockFixture) {
     }
 }
 
-BOOST_FIXTURE_TEST_CASE(checkStateInitialization, OtherAutomatonBlockFixture) {
+BOOST_AUTO_TEST_SUITE_END()
 
+template<class RuleClass>
+class TransitionRuleFixture : public OtherAutomatonBlockFixture {
+public:
+    RuleClass rule;
+};
+
+// Provided for testing purposes.
+class MutableEvolutionRule : public OtherAutomaton::EvolutionRule {
+public:
+    LookupTable &getTable() { return *(new LookupTable); }
+};
+
+BOOST_FIXTURE_TEST_SUITE( OtherAutomatonEvolutionRule, TransitionRuleFixture<MutableEvolutionRule> )
+
+BOOST_AUTO_TEST_CASE( testConsistentTransition ) {
+    const OtherAutomaton::BlockState &newState = rule[block.currentState()];
+    rule(block);
+    BOOST_CHECK(newState==block.currentState());
+}
+
+BOOST_AUTO_TEST_CASE( testExplicitTransition ) {
+    OtherAutomaton::BlockState nextState(1);
+    rule.getTable()[block.currentState().getStateIdentifier()] = nextState.getStateIdentifier();
+    rule(block);
+    BOOST_CHECK(nextState==block.currentState());
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_FIXTURE_TEST_SUITE(GenericEvolutionRuleImplementationTests, OtherAutomatonBlockFixture)
+
+// KEEP ME UP TO DATE
+typedef boost::mpl::list<OtherAutomaton::DefaultEvolutionRule> all_rules;
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(oneToOne, Rule, all_rules) {
+    Rule rule;
+    int unique_states = 1 << block.size();
+    std::set<OtherAutomaton::StateIdentifier> states;
+    for (int k = 0; k < unique_states; ++k) {
+        for (int index = 0; index<block.size(); ++index) {
+            block[index]->setValue((k>>index) & 1);
+        }
+        rule(block);
+        BOOST_CHECK_EQUAL(states.count(block.currentState().getStateIdentifier()), 0);
+        states.insert(block.currentState().getStateIdentifier());
+    }
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(conservationOfEnergy, Rule, all_rules) {
+    Rule rule;
+    int unique_states = 1 << block.size();
+    for (int k = 0; k < unique_states; ++k) {
+        for (int index = 0; index<block.size(); ++index) {
+            block[index]->setValue((k>>index) & 1);
+        }
+        StatePair result = applyRule(rule);
+        const OtherAutomaton::BlockState &before = result.first;
+        const OtherAutomaton::BlockState &after = result.second;
+
+        long beforeCount = std::count(before.begin(),before.end(),true);
+        long afterCount = std::count(before.begin(),before.end(),true);
+        BOOST_CHECK_EQUAL(beforeCount, afterCount);
+    }
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(notBoring_firstOrder, Rule, all_rules) {
+    Rule rule;
+    bool boring = true;
+    int unique_states = 1<<block.size();
+    for (int k = 0; k < unique_states; ++k) {
+        for (int index = 0; index<block.size(); ++index) {
+            block[index]->setValue((k>>index) & 1);
+        }
+        StatePair result = applyRule(rule);
+        boring = !(result.first == result.second);
+    }
+    BOOST_REQUIRE(!boring);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_FIXTURE_TEST_SUITE( RotatingEvolutionRuleImplementationTests, OtherAutomatonBlockFixture)
+
+typedef boost::mpl::list<OtherAutomaton::DefaultEvolutionRule> rotation_rules;
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(testDiagonal_primary, Rule, rotation_rules) {
+    Rule rule;
+    setBlockValues_cw(true, false,
+                      false, true);
+    OtherAutomaton::BlockState unchanged = block.currentState();
+    rule(block);
+    BOOST_CHECK(block.currentState()==unchanged);
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(testDiagonal_secondary, Rule, rotation_rules) {
+    Rule rule;
+    setBlockValues_cw(false,true,
+                      false,true);
+    OtherAutomaton::BlockState unchanged = block.currentState();
+    rule(block);
+    BOOST_CHECK(block.currentState()==unchanged);
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(testRotation, Rule, rotation_rules) {
+    Rule rule;
+    int unique_states = 1<<block.size();
+    for (int k = 0; k < unique_states; ++k) {
+        for (int index = 0; index<block.size(); ++index) {
+            block[index]->setValue((k>>index) & 1);
+        }
+        StatePair result = applyRule(rule);
+        OtherAutomaton::BlockState leftShift = result.second;
+        OtherAutomaton::BlockState rightShift = result.second;
+        std::rotate(result.second.begin(), result.second.begin()+1, result.second.end());
+        std::rotate(result.second.begin(), result.second.end(), result.second.end());
+        BOOST_CHECK(leftShift == result.first || rightShift ==  result.first);
+    }
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+template <int dimension = 10>
+class OAReservoirFixture : public ConstantsTestFixture, public RandomNumberTestFixture {
+public:
+    OtherAutomaton::Reservoir reservoir;
+    OAReservoirFixture() : reservoir(c,dimension,Randomness::GSLDelegate(rng)) {}
+};
+
+BOOST_FIXTURE_TEST_SUITE(OtherAutomatonReservoir, OAReservoirFixture<>)
+
+BOOST_AUTO_TEST_CASE(testReset) {
+    int iterations = 100;
+    int count = 0;
+    for (int k = 0; k<iterations; ++k) {
+        boost::array<bool,100> before,after;
+        BOOST_REQUIRE_EQUAL(before.size(),reservoir.getGrid().size());
+        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), before.begin(), OtherAutomaton::Cell::ValueTransformer());
+        reservoir.reset();
+        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), after.begin(), OtherAutomaton::Cell::ValueTransformer());
+        bool equal = std::equal(before.begin(), before.end(), after.begin());
+        count += equal ? 1 : 0;
+    }
+    // This seems like a good rule of thumb to me.
+    BOOST_CHECK_GT(count,iterations*.9);
+}
+
+BOOST_AUTO_TEST_CASE( testDoesSomething ) {
+    int iterations = 10000;
+    int somethingCount = 0;
+    for (int k = 0; k<iterations; ++k) {
+        int input = gsl_rng_get(rng) % 2;
+        OtherAutomaton::Reservoir::InteractionResult result = reservoir.interactWithBit(input);
+        somethingCount+=result.bit!=input ? 1 : 0;
+    }
+    BOOST_CHECK_GT(somethingCount, iterations*.9);
+}
+
+
+BOOST_AUTO_TEST_CASE( testWheelChangeOnReset ) {
+    int iterations = 20000;
+    double expectedRatio = 1.0/6.0;
+    double variance = expectedRatio*(1-expectedRatio)/iterations;
+    double standard_deviation = sqrt(variance);
+    double acceptable_error = 3*standard_deviation/expectedRatio;
+    BOOST_REQUIRE_LE(acceptable_error,0.05);
+    
+    std::map<DemonBase::SystemState *, int> counter;
+    for (int k = 0; k<iterations; ++k) {
+        reservoir.reset();
+        ++counter[reservoir.currentState];
+    }
+    for (BOOST_AUTO(it,counter.begin());it!=counter.end(); ++it) {
+        double actualRatio = it->second/static_cast<double>(iterations);
+        BOOST_REQUIRE_CLOSE_FRACTION(actualRatio, expectedRatio, acceptable_error);
+    }
+}
+
+BOOST_AUTO_TEST_CASE( testDeterministic ) {
+    int iterations = reservoir.getGrid().size()*reservoir.getGrid().size();
+    for (int k = 0; k<iterations; ++k) {
+        boost::array<bool,100> before,after;
+        BOOST_REQUIRE_EQUAL(before.size(),reservoir.getGrid().size());
+        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), before.begin(), OtherAutomaton::Cell::ValueTransformer());
+        reservoir.reset();
+        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), after.begin(), OtherAutomaton::Cell::ValueTransformer());
+        bool equal = std::equal(before.begin(), before.end(), after.begin());
+    }
+}
+
+BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES( testWheelChangeOnInteraction, 1 )
+BOOST_AUTO_TEST_CASE(testWheelChangeOnInteraction) {
+    int iterations = 10000;
+    int somethingCount = 0;
+    for (int k = 0; k<iterations; ++k) {
+        int input = gsl_rng_get(rng) % 2;
+        OtherAutomaton::Reservoir::InteractionResult result = reservoir.interactWithBit(input);
+        somethingCount+=result.bit!=input ? 1 : 0;
+    }
+    // Not really sure what a good number for this one is yet.
+    BOOST_CHECK_GT(somethingCount, iterations*.3);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

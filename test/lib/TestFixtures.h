@@ -39,9 +39,9 @@ struct ConstantsTestFixture {
 };
 
 struct ValidStatesTestFixture {
-    StateSet validStates;
+    DemonBase::StateSet validStates;
     ValidStatesTestFixture () {
-        validStates = getValidStates();
+        validStates = DemonBase::getValidStates();
     }
 };
 

@@ -13,10 +13,13 @@
 #include <boost/array.hpp>
 #include <exception>
 #include <string>
+#include <map>
+#include <set>
 #include <algorithm>
 
 #include "CATools.h"
 #include "RandomnessDelegate.h"
+#include "Reservoir.h"
 
 namespace OtherAutomaton {
     class Block;
@@ -33,7 +36,6 @@ namespace OtherAutomaton {
     class BlockState : public boost::array<bool,4> {
     public:
         explicit BlockState(const boost::array<Cell *,4> &) {}
-        
         explicit BlockState(const StateIdentifier &state) {}
         
         bool operator ==(const BlockState &other) const {
@@ -72,6 +74,19 @@ namespace OtherAutomaton {
         const BlockState currentState() const { return BlockState(); }
     };
     
+    class EvolutionRule {
+    protected:
+        EvolutionRule() {}
+    public:
+        typedef std::map<StateIdentifier,StateIdentifier> LookupTable;
+        const BlockState & operator[](const BlockState &block) const { return BlockState(0); }
+        void operator()(Block &block) const {}
+    };
+    
+    class DefaultEvolutionRule : public EvolutionRule {
+    public:
+        DefaultEvolutionRule() {}
+    };
     
     class Grid : public CATools::Grid<Cell> {
         BlockList _evenBlocks;
@@ -86,6 +101,14 @@ namespace OtherAutomaton {
     public:
         InvalidProbabilityError() :
         std::runtime_error(std::string("No cells will be initialized. Use larger p")) {}
+    };
+    
+    class Reservoir : public DemonBase::Reservoir {
+    public:
+        InteractionResult interactWithBit(int bit) { return InteractionResult(); }
+        void reset() {}
+        Reservoir(DemonBase::Constants c, int dimension,const Randomness::GSLDelegate &delegate) : DemonBase::Reservoir(c) {}
+        const Grid &getGrid() const { return Grid(4); }
     };
     
     template <class RandomnessDelegate>

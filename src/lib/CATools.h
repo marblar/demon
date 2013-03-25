@@ -30,6 +30,18 @@ namespace CATools {
     };
     
     
+    template <class Cell, class Value>
+    class CellToValueTransformer {
+    public:
+        Value operator()(const Cell &cell) {
+            return cell.getValue();
+        }
+        Value operator()(const Cell *cell) {
+            return cell->getValue();
+        }
+    };
+    
+    
     // This class uses the curiously recurring template pattern.
     template <class Subclass, class ValueType, ValueType defaultValue = 0>
     class Cell {
@@ -48,7 +60,9 @@ namespace CATools {
         }
         
         typedef ValueType valueType;
+        typedef CellToValueTransformer<Subclass, ValueType> ValueTransformer;
     };
+    
     
     template <class CellType>
     class Grid {

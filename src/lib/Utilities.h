@@ -14,10 +14,10 @@
 #include <set>
 #include "Reservoir.h"
 
-typedef std::set<DemonBase::SystemState *> StateSet;
-
-StateSet getValidStates();
-
+namespace DemonBase {
+    typedef std::set<DemonBase::SystemState *> StateSet;
+    StateSet getValidStates();
+}
 unsigned int randomShortIntWithBitDistribution(double ratioOfOnesToZeroes, int nbits, gsl_rng* generator);
 int bitCount(unsigned int number, int nbits);
 
