@@ -88,14 +88,14 @@ BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
             blocks[index++] = leftItem.first;
         }
         const OtherAutomaton::Block &middle = *odd;
-        enum classification {
-            above,
-            below,
-            unknown
-        };
-        boost::array<classification, 2> classified;
+        
+        const int above = 0;
+        const int below = 1;
+        const int unknown = 2;
+        
+        boost::array<int, 2> classified;
         for (int k = 0; k!=2; ++k) {
-            classification c = unknown;
+            int c = unknown;
             if (blocks[k]->isAbove(middle)) {
                 BOOST_CHECK_EQUAL(c, unknown);
                 c = above;
