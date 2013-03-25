@@ -288,6 +288,28 @@ BOOST_FIXTURE_TEST_CASE(checkStateCount,OtherAutomatonBlockFixture) {
     }
 }
 
+BOOST_FIXTURE_TEST_CASE( testStateInitialization, OtherAutomatonBlockFixture ) {
+    OtherAutomaton::BlockState state;
+    const OtherAutomaton::BlockState nullState(0);
+    for (int k = 0; k != 1<<block.size(); ++k) {
+        bool values[4];
+        for (int index = 0; index != 4; ++index) {
+            values[index] = (k>>index) & 1;
+        }
+        state.setValuesClockwise(values[0], values[1], values[2], values[3]);
+        
+        OtherAutomaton::BlockState explicitBlock(values[0],values[1],values[2],values[3]);
+        BOOST_CHECK(explicitBlock==state);
+        
+        state.update(block);
+        BOOST_CHECK(block.topLeft()->getValue() == values[0]);
+        BOOST_CHECK(block.topRight()->getValue() == values[1]);
+        BOOST_CHECK(block.bottomRight()->getValue() == values[2]);
+        BOOST_CHECK(block.bottomLeft()->getValue() == values[3]);
+        nullState.update(block);
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 template<class RuleClass>
@@ -463,7 +485,7 @@ BOOST_AUTO_TEST_CASE( testWheelChangeOnReset ) {
     }
     for (BOOST_AUTO(it,counter.begin());it!=counter.end(); ++it) {
         double actualRatio = it->second/static_cast<double>(iterations);
-        BOOST_REQUIRE_CLOSE_FRACTION(actualRatio, expectedRatio, acceptable_error);
+        BOOST_CHECK_CLOSE_FRACTION(actualRatio, expectedRatio, acceptable_error);
     }
 }
 

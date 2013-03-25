@@ -37,6 +37,7 @@ namespace OtherAutomaton {
     public:
         explicit BlockState(const boost::array<Cell *,4> &) {}
         explicit BlockState(const StateIdentifier &state) {}
+        explicit BlockState(bool,bool,bool,bool) {}
         
         bool operator ==(const BlockState &other) const {
             return std::equal(begin(), end(), other.begin(), std::equal_to<bool>());
@@ -47,6 +48,9 @@ namespace OtherAutomaton {
             return 1;
         };
         
+        
+        void setValuesClockwise(bool topLeft,    bool topRight,
+                                bool bottomLeft, bool bottomRight) {}
         
         void update(Block &block) const {}
         
