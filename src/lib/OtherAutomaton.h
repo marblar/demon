@@ -79,7 +79,7 @@ namespace OtherAutomaton {
         EvolutionRule() {}
     public:
         typedef std::map<StateIdentifier,StateIdentifier> LookupTable;
-        const BlockState & operator[](const BlockState &block) const { return BlockState(0); }
+        const BlockState & operator[](const BlockState &block) const { return *(new BlockState(3)); }
         void operator()(Block &block) const {}
     };
     
@@ -104,11 +104,12 @@ namespace OtherAutomaton {
     };
     
     class Reservoir : public DemonBase::Reservoir {
+        Grid cells;
     public:
         InteractionResult interactWithBit(int bit) { return InteractionResult(); }
         void reset() {}
-        Reservoir(DemonBase::Constants c, int dimension,const Randomness::GSLDelegate &delegate) : DemonBase::Reservoir(c) {}
-        const Grid &getGrid() const { return Grid(4); }
+        Reservoir(DemonBase::Constants c, int dimension,const Randomness::GSLDelegate &delegate) : DemonBase::Reservoir(c),cells(dimension) {}
+        const Grid &getGrid() const { return cells; }
     };
     
     template <class RandomnessDelegate>
