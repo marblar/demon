@@ -11,6 +11,8 @@
 
 #include <vector>
 #include <boost/array.hpp>
+#include <exception>
+#include <string>
 
 #include "CATools.h"
 #include "RandomnessDelegate.h"
@@ -45,6 +47,12 @@ namespace OtherAutomaton {
         const BlockList &oddBlocks;
     };
     
+    class InvalidProbabilityError : public std::runtime_error {
+    public:
+        InvalidProbabilityError() :
+        std::runtime_error(std::string("No cells will be initialized. Use larger p")) {}
+    };
+    
     template <class RandomnessDelegate>
     void initializeGridWithOccupationProbability(Grid &grid, double probability, RandomnessDelegate &delegate) {
         // Delete all cells.
@@ -58,7 +66,7 @@ namespace OtherAutomaton {
         }
         int occupiedCells = floor(probability*grid.size());
         if(probability && !occupiedCells) {
-            std::clog<<"Warning: No cells will be initialized.";
+            throw InvalidProbabilityError();
         }
         
         for (int k = 0; k<occupiedCells; ++k) {

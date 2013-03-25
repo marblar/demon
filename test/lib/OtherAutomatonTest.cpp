@@ -205,6 +205,14 @@ BOOST_FIXTURE_TEST_CASE(testDifferentGridInitialization, RandomGridOperationTest
         BOOST_CHECK_CLOSE_FRACTION(expectedRatio, actualRatio, acceptable_error);
     }
 }
+
+BOOST_FIXTURE_TEST_CASE(testTooSmallGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
+    double p = 0.001;
+    BOOST_REQUIRE_EQUAL((int)(grid.size()*p),0);
+    BOOST_REQUIRE_THROW(OtherAutomaton::initializeGridWithOccupationProbability(grid, p, delegate), OtherAutomaton::InvalidProbabilityError);
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(OtherAutomatonCell)
