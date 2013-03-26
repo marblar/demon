@@ -31,28 +31,26 @@ namespace OtherAutomaton {
     
     class Cell : public CATools::Cell<Cell, bool> {};
     
-    typedef char StateIdentifier;
+    typedef unsigned short int StateIdentifier;
     
     class BlockState : public boost::array<bool,4> {
     public:
-        explicit BlockState(const boost::array<Cell *,4> &) {}
-        explicit BlockState(const StateIdentifier &state) {}
-        explicit BlockState(bool,bool,bool,bool) {}
+        BlockState(const boost::array<Cell *,4> &);
+        BlockState(const StateIdentifier &state);
+        BlockState(bool,bool,bool,bool);
         
         bool operator ==(const BlockState &other) const {
             return std::equal(begin(), end(), other.begin(), std::equal_to<bool>());
         }
         
         BlockState() {}
-        StateIdentifier getStateIdentifier() const {
-            return 1;
-        };
+        StateIdentifier getStateIdentifier() const;
         
         
         void setValuesClockwise(bool topLeft,    bool topRight,
-                                bool bottomLeft, bool bottomRight) {}
+                                bool bottomLeft, bool bottomRight);
         
-        void update(Block &block) const {}
+        void update(Block &block) const;
         
     };
 
@@ -75,7 +73,7 @@ namespace OtherAutomaton {
         inline Cell *bottomRight() { return at(3); }
         inline Cell *topRight() { return at(2); }
         
-        const BlockState currentState() const { return BlockState(); }
+        const BlockState currentState() const;
     };
     
     class EvolutionRule {

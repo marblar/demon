@@ -10,9 +10,12 @@
 #include <boost/typeof/typeof.hpp>
 #include <boost/foreach.hpp>
 #include <map>
+#include <numeric>
+#include <bitset>
+#include <functional>
 using namespace OtherAutomaton;
 
-
+#pragma mark -- Grid Initialization --
 
 Grid::Grid(int dim) : CATools::Grid<Cell>(dim),oddBlocks(_oddBlocks), evenBlocks(_evenBlocks) {
     _oddBlocks.reserve(size());
@@ -32,6 +35,8 @@ Grid::Grid(int dim) : CATools::Grid<Cell>(dim),oddBlocks(_oddBlocks), evenBlocks
     }
 }
 
+#pragma mark -- Block Operations --
+
 Block::Block(const boost::array<Cell *, 4>& array) {
     std::copy(array.begin(), array.end(), begin());
 }
@@ -45,3 +50,53 @@ bool Block::isBelow(const OtherAutomaton::Block &below) const {
     return (below.topLeft()==this->bottomLeft()) &&
         (below.topRight()==this->bottomRight());
 }
+
+const BlockState Block::currentState() const {
+    return BlockState(*this);
+}
+
+#pragma mark -- BlockState Operations --
+
+BlockState::BlockState(const boost::array<Cell *,4> &cells) {
+    std::transform(cells.begin(), cells.end(), begin(), Cell::ValueTransformer());
+}
+
+void BlockState::setValuesClockwise(bool topLeft, bool topRight,
+                                    bool bottomLeft, bool bottomRight) {
+    at(0) = topLeft;
+    at(1) = bottomLeft;
+    at(2) = topRight;
+    at(3) = bottomRight;
+}
+
+BlockState::BlockState(const StateIdentifier &state) {
+    for (int k = 0; k!=size(); ++k) {
+        size_t offset = size() - k - 1;
+        at(k) = (state >> offset) & 1;
+    }
+}
+
+BlockState::BlockState(bool topLeft,bool topRight,bool bottomLeft,bool bottomRight) {
+    setValuesClockwise(topLeft, topRight, bottomLeft, bottomRight);
+}
+
+void BlockState::update(OtherAutomaton::Block &block) const {
+    for (int k = 0; k!=size(); ++k) {
+        block[k]->setValue(at(k));
+    }
+}
+
+class AppendBit {
+public:
+    char operator()(const char &init, const bool& next) const {
+        return (init<<1) + (next ? 1 : 0);
+    }
+};
+
+StateIdentifier BlockState::getStateIdentifier() const {
+    StateIdentifier id =  std::accumulate(begin(), end(), 0, AppendBit());
+    return id;
+}
+
+#pragma mark -- Evolution Rule --
+

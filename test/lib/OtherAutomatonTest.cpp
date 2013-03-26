@@ -265,15 +265,16 @@ BOOST_FIXTURE_TEST_CASE(checkStateCount,OtherAutomatonBlockFixture) {
         for (int index = 0; index<block.size(); ++index) {
             block[index]->setValue((k>>index) & 1);
         }
-        identifiers.insert(block.currentState().getStateIdentifier());
+        OtherAutomaton::StateIdentifier id = block.currentState().getStateIdentifier();
+        identifiers.insert(id);
     }
+    
     BOOST_CHECK_EQUAL(unique_states, identifiers.size());
     for (BOOST_AUTO(it,identifiers.begin()); it!=identifiers.end(); ++it) {
         OtherAutomaton::BlockState state(*it);
         BOOST_CHECK_EQUAL(state.getStateIdentifier(), *it);
     }
 
-    
     for (int k = 0; k < unique_states; ++k) {
         for (int index = 0; index<block.size(); ++index) {
             block[index]->setValue((k>>index) & 1);
@@ -290,22 +291,25 @@ BOOST_FIXTURE_TEST_CASE(checkStateCount,OtherAutomatonBlockFixture) {
 
 BOOST_FIXTURE_TEST_CASE( testStateInitialization, OtherAutomatonBlockFixture ) {
     OtherAutomaton::BlockState state;
-    const OtherAutomaton::BlockState nullState(0);
+    const OtherAutomaton::BlockState nullState(false,false,
+                                               false,false);
     for (int k = 0; k != 1<<block.size(); ++k) {
         bool values[4];
         for (int index = 0; index != 4; ++index) {
             values[index] = (k>>index) & 1;
         }
-        state.setValuesClockwise(values[0], values[1], values[2], values[3]);
+        state.setValuesClockwise(values[0], values[1],
+                                 values[2], values[3]);
         
-        OtherAutomaton::BlockState explicitBlock(values[0],values[1],values[2],values[3]);
+        OtherAutomaton::BlockState explicitBlock(values[0],values[1],
+                                                 values[2],values[3]);
         BOOST_CHECK(explicitBlock==state);
         
         state.update(block);
         BOOST_CHECK(block.topLeft()->getValue() == values[0]);
         BOOST_CHECK(block.topRight()->getValue() == values[1]);
-        BOOST_CHECK(block.bottomRight()->getValue() == values[2]);
-        BOOST_CHECK(block.bottomLeft()->getValue() == values[3]);
+        BOOST_CHECK(block.bottomLeft()->getValue() == values[2]);
+        BOOST_CHECK(block.bottomRight()->getValue() == values[3]);
         nullState.update(block);
     }
 }
@@ -379,16 +383,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(conservationOfEnergy, Rule, all_rules) {
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(notBoring_firstOrder, Rule, all_rules) {
     Rule rule;
-    bool boring = true;
+    bool notBoring = true;
     int unique_states = 1<<block.size();
     for (int k = 0; k < unique_states; ++k) {
         for (int index = 0; index<block.size(); ++index) {
             block[index]->setValue((k>>index) & 1);
         }
         StatePair result = applyRule(rule);
-        boring = !(result.first == result.second);
+        notBoring = notBoring || result.first != result.second;
     }
-    BOOST_REQUIRE(!boring);
+    BOOST_REQUIRE(!notBoring);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
