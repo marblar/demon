@@ -71,8 +71,4 @@ public:
     MockRandomnessDelegate(bool eventValue, bool integerValue) : event(eventValue), integer(integerValue) {}
 };
 
-class TestCell {
-    
-};
-
 #endif

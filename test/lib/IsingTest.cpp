@@ -147,13 +147,13 @@ typedef GridOperationTestFixture<IsingGridTestFixture> IsingGridOperationFixture
 BOOST_FIXTURE_TEST_SUITE(ClusterMethodTest, IsingGridOperationFixture)
 
 BOOST_AUTO_TEST_CASE( includeNoCells ) {
-    Ising::Cell *startingPoint = grid[5];
+    Ising::Cell &startingPoint = grid[5];
     MockRandomnessDelegate delegate(false,0);
     Ising::ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
     agent.performMethodAtCell(startingPoint);
     
     std::set<Ising::Cell *> expectedCells;
-    expectedCells.insert(startingPoint);
+    expectedCells.insert(&startingPoint);
     
     std::set<Ising::Cell *> actualCells = changedCells();
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expectedCells.begin(), expectedCells.end(), actualCells.begin(), actualCells.end());
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE( includeAllCells ) {
         (*it)->setValue(0);
     }
     
-    Ising::Cell *startingPoint = grid[5];
+    Ising::Cell &startingPoint = grid[5];
     MockRandomnessDelegate delegate(true,0);
     Ising::ClusterMethodAgent<MockRandomnessDelegate> agent(delegate,1);
     agent.performMethodAtCell(startingPoint);
@@ -178,10 +178,10 @@ BOOST_AUTO_TEST_CASE( includeAllCells ) {
 }
 
 BOOST_AUTO_TEST_CASE( includeSomeCells ) {
-    Ising::Cell *startingPoint = grid[5];
+    Ising::Cell &startingPoint = grid[5];
     std::set<Ising::Cell *> expectedCells;
     std::stack<Ising::Cell *> stack;
-    stack.push(startingPoint);
+    stack.push(&startingPoint);
     
     size_t size = 12;
     

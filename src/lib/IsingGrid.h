@@ -45,7 +45,7 @@ namespace Ising {
     
     class Cell : public CATools::Cell<Cell, unsigned char> {
     public:
-        typedef boost::array<Cell*, 4> Neighbors;
+        typedef boost::array<Cell *, 4> Neighbors;
     protected:
         friend class Grid;
         Neighbors neighbors;

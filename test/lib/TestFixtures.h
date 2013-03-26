@@ -68,9 +68,7 @@ class GridOperationTestFixture : public GridFixtureBase {
     typedef boost::tuple<typename GridFixtureBase::gridType::iterator,typename CellValues::const_iterator> iterator_tuple;
 public:
     void resetInitialValues() {
-        for (int k = 0; k<initialValues.size(); ++k) {
-            initialValues[k]=GridFixtureBase::grid[k]->getValue();
-        }
+        std::transform(GridFixtureBase::grid.begin(), GridFixtureBase::grid.end(), initialValues.begin(), GridFixtureBase::grid.valueTransformer());
     }
     typename GridFixtureBase::CellSet changedCells() {
         typename GridFixtureBase::CellSet changes;

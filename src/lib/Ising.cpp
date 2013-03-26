@@ -66,16 +66,16 @@ void Ising::Reservoir::reset() {
 void Ising::Reservoir::clusterMethod() {
     Randomness::GSLDelegate randomness(RNG);
     ClusterMethodAgent<Randomness::GSLDelegate> cma(randomness,clusterInclusionProbability());
-    Cell *currentCell = grid[gsl_rng_uniform_int(RNG, grid.size())];
+    Cell &currentCell = grid[gsl_rng_uniform_int(RNG, grid.size())];
     cma.performMethodAtCell(currentCell);
 }
 
 void Ising::Reservoir::metropolisAlgorithm() {
-    Cell *cell = grid[gsl_rng_uniform_int(RNG, grid.size())];
-    size_t neighborSize = cell->getNeighbors().size();
-    int dE = (int)(neighborSize - cell->getEnergy());
+    Cell &cell = grid[gsl_rng_uniform_int(RNG, grid.size())];
+    size_t neighborSize = cell.getNeighbors().size();
+    int dE = (int)(neighborSize - cell.getEnergy());
     if ( exp(constants.getBeta() * dE) < gsl_rng_uniform(RNG) ) {
-        cell->toggle();
+        cell.toggle();
     }
 }
 
@@ -135,7 +135,7 @@ DemonBase::Reservoir(constants), clusters(cls), grid(IS), RNG(RNG_) {
     parity = 0;
     transitions = rule;
     this->initializeCellsWithRNG(RNG);
-    interactionCells.first = grid[gsl_rng_uniform_int(RNG, grid.size())];
+    interactionCells.first = &grid[gsl_rng_uniform_int(RNG, grid.size())];
     Cell::Neighbors neighbors = interactionCells.first->getNeighbors();
     interactionCells.second = neighbors[gsl_rng_uniform_int(RNG, neighbors.size())];
 }

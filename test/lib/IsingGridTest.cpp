@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE( testNeighborsTransitive ) {
 }
 
 BOOST_AUTO_TEST_CASE( testSetValue ) {
-    Cell &cell = *grid[5];
+    Cell &cell = grid[5];
     cell.setValue(0);
     BOOST_CHECK_EQUAL(cell.getValue(), 0);
     cell.setValue(1);
@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE( testRandomAccess ) {
     CellSet cells;
     size_t size = grid.size();
     for (size_t k = 0; k != grid.size(); ++k) {
-        cells.insert(grid[k]);
+        cells.insert(&grid[k]);
     }
     BOOST_REQUIRE(cells.size()==size);
     BOOST_REQUIRE_THROW(grid[2*size], CATools::InvalidGridIndex);
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE( testEnergy ) {
 }
 
 BOOST_AUTO_TEST_CASE( testSpecificEnergy ) {
-    Cell &center = *grid[5];
+    Cell &center = grid[5];
     Cell::Neighbors neighbors = center.getNeighbors();
     center.setValue(1);
     neighbors[0]->setValue(0);
@@ -227,7 +227,7 @@ BOOST_AUTO_TEST_CASE( testDifferentSubsetBeginning ) {
 }
 
 BOOST_AUTO_TEST_CASE( testToggleEnergy ) {
-    Cell &cell = *grid[5];
+    Cell &cell = grid[5];
     long energy = cell.getEnergy();
     cell.toggle();
     BOOST_REQUIRE_EQUAL(cell.getEnergy(),cell.getNeighbors().size()-energy);

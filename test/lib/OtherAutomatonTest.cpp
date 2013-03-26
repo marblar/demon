@@ -164,8 +164,8 @@ BOOST_FIXTURE_TEST_CASE(testEmptyGridInitialization, RandomGridOperationTestFixt
 BOOST_FIXTURE_TEST_CASE(testNonEmptyGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
     double p = .57;
     int expectedCount = floor(p*grid.size());
-    grid[5]->setValue(true);
-    grid[20]->setValue(true);
+    grid[5].setValue(true);
+    grid[20].setValue(true);
     OtherAutomaton::initializeGridWithOccupationProbability(grid, p,delegate);
     BOOST_CHECK_EQUAL(expectedCount, changedCells().size());
 }

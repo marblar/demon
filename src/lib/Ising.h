@@ -42,7 +42,7 @@ namespace Ising {
                        TransitionRule rule = defaultTransitionRule());
         
         //The default is {IsingSide/2,IsingSide/2} and the cell to its right.
-        std::pair<Ising::Cell *, Ising::Cell*> interactionCells;
+        std::pair<Ising::Cell *, Ising::Cell *> interactionCells;
         
         virtual void initializeCellsWithRNG(gsl_rng *RNG, int N = 1<<10);
         virtual InteractionResult interactWithBit(int bit);
@@ -73,16 +73,16 @@ namespace Ising {
                 throw InvalidProbabilityError();
             }
         }
-        void performMethodAtCell(Ising::Cell *currentCell) {
+        void performMethodAtCell(Ising::Cell &firstCell) {
             //  http://link.springer.com/chapter/10.1007%2F3-540-35273-2_1?LI=true#page-1
             std::stack<Ising::Cell *> workStack;
-            unsigned char clusterBit = currentCell->getValue();
-            currentCell->toggle();
-            workStack.push(currentCell);
+            unsigned char clusterBit = firstCell.getValue();
+            firstCell.toggle();
+            workStack.push(&firstCell);
             
             //Basic BFT
             while (!workStack.empty()) {
-                currentCell = workStack.top();
+                Ising::Cell *currentCell = workStack.top();
                 workStack.pop();
                 Ising::Cell::Neighbors neighbors = currentCell->getNeighbors();
                 for (Ising::Cell::Neighbors::iterator it = neighbors.begin(); it!=neighbors.end(); ++it) {

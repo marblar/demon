@@ -14,6 +14,10 @@
 #include <algorithm>
 #include <map>
 
+class TestCell : public CATools::Cell<TestCell, bool> {
+    
+};
+
 BOOST_AUTO_TEST_SUITE(CoordinateTest)
 
 BOOST_AUTO_TEST_CASE( testCoordinateNeighbors ) {
@@ -78,17 +82,6 @@ BOOST_AUTO_TEST_CASE( testTwoByTwo ) {
     
 }
 
-BOOST_AUTO_TEST_CASE( testRandomAccess ) {
-    for (int lhs = 0; lhs < grid.size(); ++lhs) {
-        for (int rhs = 0; rhs < grid.size(); ++rhs) {
-            if (lhs!=rhs) {
-                BOOST_REQUIRE_NE(rhs, lhs);
-            }
-        }
-    }
-    BOOST_REQUIRE_NE(grid[0],grid[1]);
-}
-
 class RandomCellTestFixture : public RandomNumberTestFixture, public TestGridFixture {
 };
 
@@ -97,7 +90,7 @@ BOOST_FIXTURE_TEST_CASE(testGetRandomCell, RandomCellTestFixture) {
     std::map<TestCell *, int> counter;
     Randomness::GSLDelegate delegate(rng);
     for (size_t k = 0; k<iterations; ++k) {
-        ++counter[grid[delegate]];
+        ++counter[&grid[delegate]];
     }
     double expectedRatio = 1.0f/grid.size();
     double variance = expectedRatio*(1-expectedRatio)/iterations;
@@ -119,6 +112,19 @@ BOOST_FIXTURE_TEST_CASE(testGetRandomCell, RandomCellTestFixture) {
 BOOST_AUTO_TEST_CASE( testCount ) {
     std::set<TestCell *> cells(grid.begin(),grid.end());
     BOOST_REQUIRE_EQUAL(cells.size(), grid.size());
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(CellTestSuite)
+
+BOOST_AUTO_TEST_CASE(cellTransformer) {
+    TestCell::ValueTransformer vt;
+    TestCell cell;
+    cell.setValue(false);
+    BOOST_CHECK(vt(cell)==false);
+    cell.setValue(true);
+    BOOST_CHECK(vt(cell)==true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

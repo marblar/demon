@@ -78,19 +78,21 @@ namespace CATools {
         }
         size_t size() const { return dimension*dimension; }
         
-        CellType * const operator[](size_t gridIndex) {
+        CellType & operator[](size_t gridIndex) {
             if (gridIndex > size()) {
                 throw InvalidGridIndex();
             }
-            return cells.get()+gridIndex;
+            return cells[gridIndex];
         }
-        CellType * const operator[](int gridIndex) { return (*this)[(size_t)gridIndex]; }
-        
+        CellType & operator[](const int &gridIndex) { return (*this)[(size_t)gridIndex]; }
+        const CellType & operator[](const int &gridIndex) const { return (*this)[(size_t)gridIndex]; }
         template <class RandomnessDelegate>
-        CellType * const operator[](RandomnessDelegate &delegate) {
+        CellType & operator[](RandomnessDelegate &delegate) {
             size_t index = delegate.randomIntegerFromInclusiveRange(0,(int)size());
             return (*this)[index];
         }
+        
+        typename CellType::ValueTransformer valueTransformer() const { return typename CellType::ValueTransformer(); }
         
         typedef CellType cellType;
         

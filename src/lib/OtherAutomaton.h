@@ -15,6 +15,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <boost/multi_array.hpp>
 #include <algorithm>
 
 #include "CATools.h"
@@ -134,11 +135,12 @@ namespace OtherAutomaton {
             throw InvalidProbabilityError();
         }
         
+        
+        Cell *cell = &grid[delegate];
         for (int k = 0; k<occupiedCells; ++k) {
-            Cell *cell = grid[delegate];
             while (cell->getValue()) {
                 // FIXME: This is inefficient.
-                cell = grid[delegate];
+                cell = &grid[delegate];
             }
             cell->setValue(true);
         }
