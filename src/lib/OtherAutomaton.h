@@ -52,6 +52,8 @@ namespace OtherAutomaton {
         
         void update(Block &block) const;
         
+        BlockState operator!() const;
+        bool isDiagonal() const;
     };
 
     class Block : public boost::array<Cell *, 4> {
@@ -77,17 +79,19 @@ namespace OtherAutomaton {
     };
     
     class EvolutionRule {
-    protected:
-        EvolutionRule() {}
     public:
         typedef std::map<StateIdentifier,StateIdentifier> LookupTable;
-        const BlockState & operator[](const BlockState &block) const { return *(new BlockState(3)); }
-        void operator()(Block &block) const {}
+    protected:
+        LookupTable table;
+        EvolutionRule() {}
+    public:
+        const BlockState operator[](const BlockState &block) const;
+        void operator()(Block &block) const;
     };
     
     class DefaultEvolutionRule : public EvolutionRule {
     public:
-        DefaultEvolutionRule() {}
+        DefaultEvolutionRule();
     };
     
     class Grid : public CATools::Grid<Cell> {

@@ -98,5 +98,93 @@ StateIdentifier BlockState::getStateIdentifier() const {
     return id;
 }
 
+BlockState BlockState::operator!() const {
+    BlockState invertedState;
+    std::transform(begin(), end(), invertedState.begin(), std::logical_not<bool>());
+    return invertedState;
+}
+
+bool BlockState::isDiagonal() const {
+    OtherAutomaton::BlockState primaryDiagonal(true,false,
+                                               false,true);
+    OtherAutomaton::BlockState secondaryDiagonal(false,true,
+                                                 true,false);
+    return *this==primaryDiagonal || *this == secondaryDiagonal;
+}
+
 #pragma mark -- Evolution Rule --
 
+const BlockState EvolutionRule::operator[](const BlockState &block) const {
+    StateIdentifier id = table.at(block.getStateIdentifier());
+    return BlockState(id);
+}
+
+void EvolutionRule::operator()(Block &block) const {
+    StateIdentifier id = table.at(block.currentState().getStateIdentifier());
+    BlockState newState(id);
+    newState.update(block);
+}
+
+DefaultEvolutionRule::DefaultEvolutionRule() {
+    BlockState start;
+    BlockState end;
+    
+    start.setValuesClockwise(true, false,
+                             false, false);
+    
+    end.setValuesClockwise(false, true,
+                             false, false);
+    
+    table[start.getStateIdentifier()]=end.getStateIdentifier();
+    table[(!start).getStateIdentifier()]=(!end).getStateIdentifier();
+    
+    start.setValuesClockwise(false,true,
+                             false,false);
+    end.setValuesClockwise(false, false,
+                           false, true);
+    table[start.getStateIdentifier()]=end.getStateIdentifier();
+    table[(!start).getStateIdentifier()]=(!end).getStateIdentifier();
+    
+    start.setValuesClockwise(false, false,
+                             false, true);
+    end.setValuesClockwise(false, false,
+                             true, false);
+    table[start.getStateIdentifier()]=end.getStateIdentifier();
+    table[(!start).getStateIdentifier()]=(!end).getStateIdentifier();
+    
+    start.setValuesClockwise(false,false,
+                             true,false);
+    end.setValuesClockwise(true, false,
+                           false, false);
+    
+    table[start.getStateIdentifier()]=end.getStateIdentifier();
+    table[(!start).getStateIdentifier()]=(!end).getStateIdentifier();
+    
+    start.setValuesClockwise(false, false,
+                             false, false);
+    end = start;
+    table[start.getStateIdentifier()]=end.getStateIdentifier();
+    table[(!start).getStateIdentifier()]=(!end).getStateIdentifier();
+    
+    start.setValuesClockwise(false, true,
+                             true, false);
+    end = start;
+    table[start.getStateIdentifier()]=end.getStateIdentifier();
+    table[(!start).getStateIdentifier()]=(!end).getStateIdentifier();
+    
+    start.setValuesClockwise(true, false,
+                             true, false);
+    end.setValuesClockwise(true, true,
+                           false, false);
+    table[start.getStateIdentifier()]=end.getStateIdentifier();
+    table[(!start).getStateIdentifier()]=(!end).getStateIdentifier();
+    
+    
+    start.setValuesClockwise(true,  true,
+                             false, false);
+    end.setValuesClockwise(false, true,
+                           false, true);
+    table[start.getStateIdentifier()]=end.getStateIdentifier();
+    table[(!start).getStateIdentifier()]=(!end).getStateIdentifier();
+    
+}

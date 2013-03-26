@@ -256,9 +256,9 @@ public:
 };
 
 
-BOOST_AUTO_TEST_SUITE(OtherAutomatonBlockStates)
+BOOST_FIXTURE_TEST_SUITE(OtherAutomatonBlockStates, OtherAutomatonBlockFixture)
 
-BOOST_FIXTURE_TEST_CASE(checkStateCount,OtherAutomatonBlockFixture) {
+BOOST_AUTO_TEST_CASE( checkStateCount ) {
     const int unique_states = 1<<block.size();
     std::set<OtherAutomaton::StateIdentifier> identifiers;
     for (int k = 0; k < unique_states; ++k) {
@@ -289,7 +289,7 @@ BOOST_FIXTURE_TEST_CASE(checkStateCount,OtherAutomatonBlockFixture) {
     }
 }
 
-BOOST_FIXTURE_TEST_CASE( testStateInitialization, OtherAutomatonBlockFixture ) {
+BOOST_AUTO_TEST_CASE( testStateInitialization ) {
     OtherAutomaton::BlockState state;
     const OtherAutomaton::BlockState nullState(false,false,
                                                false,false);
@@ -314,6 +314,58 @@ BOOST_FIXTURE_TEST_CASE( testStateInitialization, OtherAutomatonBlockFixture ) {
     }
 }
 
+BOOST_AUTO_TEST_CASE( stateInversion ) {
+    OtherAutomaton::BlockState blockState;
+    OtherAutomaton::BlockState invertedState;
+    OtherAutomaton::BlockState manuallyInverted;
+    for (int k = 0; k != 1<<blockState.size(); ++k) {
+        for (int index = 0; index<blockState.size(); ++index) {
+            bool value = (k>>index) & 1;
+            block[index]->setValue(value);
+        }
+        blockState = block.currentState();
+        for (int index = 0; index<blockState.size(); ++index) {
+            bool value = !((k>>index) & 1);
+            block[index]->setValue(value);
+        }
+        invertedState = block.currentState();
+        BOOST_CHECK((!blockState)==invertedState);
+    }
+}
+
+BOOST_AUTO_TEST_CASE( stateInvolution ) {
+    OtherAutomaton::BlockState blockState;
+    OtherAutomaton::BlockState invertedState;
+    OtherAutomaton::BlockState manuallyInverted;
+    for (int k = 0; k != 1<<blockState.size(); ++k) {
+        for (int index = 0; index<blockState.size(); ++index) {
+            bool value = (k>>index) & 1;
+            block[index]->setValue(value);
+        }
+        blockState = block.currentState();
+        OtherAutomaton::BlockState invertedState = !blockState;
+        BOOST_CHECK(blockState==!invertedState);
+    }
+}
+
+BOOST_AUTO_TEST_CASE( isDiagonal ) {
+    OtherAutomaton::BlockState primaryDiagonal(true,false,
+                                               false,true);
+    OtherAutomaton::BlockState secondaryDiagonal(false,true,
+                                                 true,false);
+    for (int k = 0; k != 1<<primaryDiagonal.size(); ++k) {
+        for (int index = 0; index<primaryDiagonal.size(); ++index) {
+            bool value = (k>>index) & 1;
+            block[index]->setValue(value);
+        }
+        if (primaryDiagonal == block.currentState() || secondaryDiagonal == block.currentState()) {
+            BOOST_CHECK(block.currentState().isDiagonal());
+        } else {
+            BOOST_CHECK(!block.currentState().isDiagonal());
+        }
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 template<class RuleClass>
@@ -325,7 +377,18 @@ public:
 // Provided for testing purposes.
 class MutableEvolutionRule : public OtherAutomaton::EvolutionRule {
 public:
-    LookupTable &getTable() { return *(new LookupTable); }
+    LookupTable &getTable() { return table; }
+    MutableEvolutionRule() {
+        OtherAutomaton::BlockState blockState;
+        OtherAutomaton::BlockState nullState = OtherAutomaton::BlockState(0).getStateIdentifier();
+        for (int k = 0; k != 1<<blockState.size(); ++k) {
+            for (int index = 0; index<blockState.size(); ++index) {
+                blockState[index]=((k>>index) & 1);
+            }
+            OtherAutomaton::StateIdentifier id = blockState.getStateIdentifier();
+            table[id] = nullState.getStateIdentifier();
+        }
+    }
 };
 
 BOOST_FIXTURE_TEST_SUITE( OtherAutomatonEvolutionRule, TransitionRuleFixture<MutableEvolutionRule> )
@@ -392,7 +455,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(notBoring_firstOrder, Rule, all_rules) {
         StatePair result = applyRule(rule);
         notBoring = notBoring || result.first != result.second;
     }
-    BOOST_REQUIRE(!notBoring);
+    BOOST_REQUIRE(notBoring);
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE( testInvertability, Rule, all_rules) {
+    Rule rule;
+    for (int k = 0; k != 1<<block.size(); ++k) {
+        for (int index = 0; index<block.size(); ++index) {
+            block[index]->setValue((k>>index) & 1);
+        }
+        StatePair result = applyRule(rule);
+        (!result.first).update(block);
+        StatePair invertedResult = applyRule(rule);
+        BOOST_REQUIRE(!result.first == invertedResult.first);
+        BOOST_CHECK(!result.second == invertedResult.second);
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -413,7 +490,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(testDiagonal_primary, Rule, rotation_rules) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(testDiagonal_secondary, Rule, rotation_rules) {
     Rule rule;
     setBlockValues_cw(false,true,
-                      false,true);
+                      true,false);
     OtherAutomaton::BlockState unchanged = block.currentState();
     rule(block);
     BOOST_CHECK(block.currentState()==unchanged);
@@ -427,11 +504,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(testRotation, Rule, rotation_rules) {
             block[index]->setValue((k>>index) & 1);
         }
         StatePair result = applyRule(rule);
-        OtherAutomaton::BlockState leftShift = result.second;
-        OtherAutomaton::BlockState rightShift = result.second;
-        std::rotate(result.second.begin(), result.second.begin()+1, result.second.end());
-        std::rotate(result.second.begin(), result.second.end(), result.second.end());
-        BOOST_CHECK(leftShift == result.first || rightShift ==  result.first);
+        OtherAutomaton::BlockState leftShift;
+        OtherAutomaton::BlockState rightShift;
+        rightShift.setValuesClockwise(block.bottomLeft()->getValue(), block.topLeft()->getValue(),
+                                     block.bottomRight()->getValue(), block.topRight()->getValue());
+        leftShift.setValuesClockwise(block.topRight()->getValue(), block.bottomRight()->getValue(),
+                                     block.topLeft()->getValue(), block.bottomLeft()->getValue());
+        BOOST_CHECK(leftShift == result.first || rightShift == result.first || result.first.isDiagonal());
     }
 }
 
@@ -462,6 +541,7 @@ BOOST_AUTO_TEST_CASE(testReset) {
     BOOST_CHECK_GT(count,iterations*.9);
 }
 
+BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(testDoesSomething, 1)
 BOOST_AUTO_TEST_CASE( testDoesSomething ) {
     int iterations = 10000;
     int somethingCount = 0;
@@ -493,7 +573,9 @@ BOOST_AUTO_TEST_CASE( testWheelChangeOnReset ) {
     }
 }
 
+BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(testDeterministic, 1)
 BOOST_AUTO_TEST_CASE( testDeterministic ) {
+    BOOST_FAIL("Implement this test before writing the reservoir.");
     int iterations = reservoir.getGrid().size()*reservoir.getGrid().size();
     for (int k = 0; k<iterations; ++k) {
         boost::array<bool,100> before,after;
