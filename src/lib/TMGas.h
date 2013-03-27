@@ -16,6 +16,7 @@
 #include <map>
 #include <set>
 #include <boost/multi_array.hpp>
+#include <boost/unordered_map.hpp>
 #include <algorithm>
 
 #include "CATools.h"
@@ -81,7 +82,7 @@ namespace TMGas {
     
     class EvolutionRule {
     public:
-        typedef std::map<StateIdentifier,StateIdentifier> LookupTable;
+        typedef boost::unordered_map<BlockState,BlockState> LookupTable;
     protected:
         LookupTable table;
         EvolutionRule() {}

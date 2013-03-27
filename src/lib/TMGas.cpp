@@ -115,13 +115,11 @@ bool BlockState::isDiagonal() const {
 #pragma mark -- Evolution Rule --
 
 const BlockState EvolutionRule::operator[](const BlockState &block) const {
-    StateIdentifier id = table.at(block.getStateIdentifier());
-    return BlockState(id);
+    return table.at(block);
 }
 
 void EvolutionRule::operator()(Block &block) const {
-    StateIdentifier id = table.at(block.currentState().getStateIdentifier());
-    BlockState newState(id);
+    BlockState newState = table.at(block.currentState());
     newState.update(block);
 }
 
