@@ -1,19 +1,19 @@
 //
-//  OtherAutomaton.cpp
+//  TMGas.cpp
 //  jdemon
 //
 //  Created by Mark Larus on 3/22/13.
 //  Copyright (c) 2013 Kenyon College. All rights reserved.
 //
 
-#include "OtherAutomaton.h"
+#include "TMGas.h"
 #include <boost/typeof/typeof.hpp>
 #include <boost/foreach.hpp>
 #include <map>
 #include <numeric>
 #include <bitset>
 #include <functional>
-using namespace OtherAutomaton;
+using namespace TMGas;
 
 #pragma mark -- Grid Initialization --
 
@@ -41,12 +41,12 @@ Block::Block(const boost::array<Cell *, 4>& array) {
     std::copy(array.begin(), array.end(), begin());
 }
 
-bool Block::isAbove(const OtherAutomaton::Block &above) const {
+bool Block::isAbove(const TMGas::Block &above) const {
     return (above.bottomLeft()==this->topLeft()) &&
                         (above.bottomRight()==this->topRight());
 }
 
-bool Block::isBelow(const OtherAutomaton::Block &below) const {
+bool Block::isBelow(const TMGas::Block &below) const {
     return (below.topLeft()==this->bottomLeft()) &&
         (below.topRight()==this->bottomRight());
 }
@@ -80,7 +80,7 @@ BlockState::BlockState(bool topLeft,bool topRight,bool bottomLeft,bool bottomRig
     setValuesClockwise(topLeft, topRight, bottomLeft, bottomRight);
 }
 
-void BlockState::update(OtherAutomaton::Block &block) const {
+void BlockState::update(TMGas::Block &block) const {
     for (int k = 0; k!=size(); ++k) {
         block[k]->setValue(at(k));
     }
@@ -105,9 +105,9 @@ BlockState BlockState::operator!() const {
 }
 
 bool BlockState::isDiagonal() const {
-    OtherAutomaton::BlockState primaryDiagonal(true,false,
+    TMGas::BlockState primaryDiagonal(true,false,
                                                false,true);
-    OtherAutomaton::BlockState secondaryDiagonal(false,true,
+    TMGas::BlockState secondaryDiagonal(false,true,
                                                  true,false);
     return *this==primaryDiagonal || *this == secondaryDiagonal;
 }

@@ -19,9 +19,9 @@
 		4D46949416F8B7B40038FEA3 /* stoch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA3763016E54C2A00599AA1 /* stoch.cpp */; };
 		4D46949916F8BFCD0038FEA3 /* RandomnessDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D46949816F8BFAA0038FEA3 /* RandomnessDelegate.h */; };
 		4D4F4DD816E662CA00B7F5A4 /* StochTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D4F4DD616E662CA00B7F5A4 /* StochTest.cpp */; };
-		4D6C8F9316FD3624005C411E /* OtherAutomaton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D6C8F9116FD3624005C411E /* OtherAutomaton.cpp */; };
-		4D6C8F9416FD3624005C411E /* OtherAutomaton.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D6C8F9216FD3624005C411E /* OtherAutomaton.h */; };
-		4D6C8F9716FD46FC005C411E /* OtherAutomatonTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D6C8F9516FD46FB005C411E /* OtherAutomatonTest.cpp */; };
+		4D6C8F9316FD3624005C411E /* TMGas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D6C8F9116FD3624005C411E /* TMGas.cpp */; };
+		4D6C8F9416FD3624005C411E /* TMGas.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D6C8F9216FD3624005C411E /* TMGas.h */; };
+		4D6C8F9716FD46FC005C411E /* TMGasTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D6C8F9516FD46FB005C411E /* TMGasTest.cpp */; };
 		4D8B4B3E16E3FFCD008ECF75 /* InstrumentFactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */; };
 		4D8B4B3F16E3FFD0008ECF75 /* InstrumentFactories.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */; };
 		4D917D6F16E08268002ADE1E /* SystemTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D917D6D16E081B4002ADE1E /* SystemTest.cpp */; };
@@ -75,9 +75,9 @@
 		4D611D0016406A2F008FB029 /* System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = System.h; sourceTree = "<group>"; };
 		4D611D0316406ADE008FB029 /* Utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
 		4D611D0416406ADE008FB029 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
-		4D6C8F9116FD3624005C411E /* OtherAutomaton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OtherAutomaton.cpp; sourceTree = "<group>"; };
-		4D6C8F9216FD3624005C411E /* OtherAutomaton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherAutomaton.h; sourceTree = "<group>"; };
-		4D6C8F9516FD46FB005C411E /* OtherAutomatonTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OtherAutomatonTest.cpp; sourceTree = "<group>"; };
+		4D6C8F9116FD3624005C411E /* TMGas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TMGas.cpp; sourceTree = "<group>"; };
+		4D6C8F9216FD3624005C411E /* TMGas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMGas.h; sourceTree = "<group>"; };
+		4D6C8F9516FD46FB005C411E /* TMGasTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TMGasTest.cpp; sourceTree = "<group>"; };
 		4D8B4B3C16E3FDF8008ECF75 /* InstrumentFactories.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentFactories.cpp; sourceTree = "<group>"; };
 		4D8B4B3D16E3FDF8008ECF75 /* InstrumentFactories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentFactories.h; sourceTree = "<group>"; };
 		4D917D6D16E081B4002ADE1E /* SystemTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemTest.cpp; sourceTree = "<group>"; };
@@ -123,7 +123,7 @@
 				4DB2EE1116E8273B00D24443 /* MockObjects.h */,
 				4D17BCCA16FD1DBB00B26B53 /* CAToolsTest.cpp */,
 				4DA8D48816E3A9ED00D659CF /* MeasurementTest.cpp */,
-				4D6C8F9516FD46FB005C411E /* OtherAutomatonTest.cpp */,
+				4D6C8F9516FD46FB005C411E /* TMGasTest.cpp */,
 				4D917D6D16E081B4002ADE1E /* SystemTest.cpp */,
 				4D4F4DD616E662CA00B7F5A4 /* StochTest.cpp */,
 				4DA3762B16E53B8300599AA1 /* IsingTest.cpp */,
@@ -247,8 +247,8 @@
 				4DA8B74516EEC9C80072B82A /* IsingGrid.cpp */,
 				4DE1438316D143C400F8B816 /* Ising.h */,
 				4DE1438216D143C400F8B816 /* Ising.cpp */,
-				4D6C8F9216FD3624005C411E /* OtherAutomaton.h */,
-				4D6C8F9116FD3624005C411E /* OtherAutomaton.cpp */,
+				4D6C8F9216FD3624005C411E /* TMGas.h */,
+				4D6C8F9116FD3624005C411E /* TMGas.cpp */,
 			);
 			name = Reservoirs;
 			sourceTree = "<group>";
@@ -266,7 +266,7 @@
 				4DA6055A16EA4399000DC72A /* cli.h in Headers */,
 				4D46949916F8BFCD0038FEA3 /* RandomnessDelegate.h in Headers */,
 				4D17BCC916FD190400B26B53 /* CATools.h in Headers */,
-				4D6C8F9416FD3624005C411E /* OtherAutomaton.h in Headers */,
+				4D6C8F9416FD3624005C411E /* TMGas.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,8 +377,8 @@
 				4DA12FE216FA08FF00D49834 /* RandomnessDelegateTest.cpp in Sources */,
 				4D17BCC816FD190400B26B53 /* CATools.cpp in Sources */,
 				4D17BCCC16FD1DBB00B26B53 /* CAToolsTest.cpp in Sources */,
-				4D6C8F9316FD3624005C411E /* OtherAutomaton.cpp in Sources */,
-				4D6C8F9716FD46FC005C411E /* OtherAutomatonTest.cpp in Sources */,
+				4D6C8F9316FD3624005C411E /* TMGas.cpp in Sources */,
+				4D6C8F9716FD46FC005C411E /* TMGasTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

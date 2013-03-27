@@ -1,5 +1,5 @@
 //
-//  OtherAutomatonTest.cpp
+//  TMGasTest.cpp
 //  jdemon
 //
 //  Created by Mark Larus on 3/22/13.
@@ -13,18 +13,18 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/foreach.hpp>
 #include <boost/math/tools/fraction.hpp>
-#include "OtherAutomaton.h"
+#include "TMGas.h"
 #include "TestFixtures.h"
 
 // todo: Make this file's organization more clear.
 
-struct OATestFixture : public GridFixture<OtherAutomaton::Grid> {
+struct TMGasGridFixture : public GridFixture<TMGas::Grid> {
     
 };
 
-static inline OATestFixture::CellSet testOverlap(OtherAutomaton::Block left, OtherAutomaton::Block right) {
-    using namespace OtherAutomaton;
-    OATestFixture::CellSet cellSet;
+static inline TMGasGridFixture::CellSet testOverlap(TMGas::Block left, TMGas::Block right) {
+    using namespace TMGas;
+    TMGasGridFixture::CellSet cellSet;
     BOOST_FOREACH(Cell *leftCell, left) {
         BOOST_FOREACH(Cell *rightCell, right) {
             if (leftCell==rightCell) {
@@ -35,16 +35,16 @@ static inline OATestFixture::CellSet testOverlap(OtherAutomaton::Block left, Oth
     return cellSet;
 }
 
-BOOST_FIXTURE_TEST_SUITE(OtherAutomatonGridTests, OATestFixture)
+BOOST_FIXTURE_TEST_SUITE(TMGasGridTests, TMGasGridFixture)
 
 BOOST_AUTO_TEST_CASE( testBlockOverlapSize ) {
     // Each even block should be disjoint from each other even block. Same is true for odds.
     
-    typedef OtherAutomaton::BlockList::const_iterator iterator;
-    typedef std::pair<const OtherAutomaton::Block *, CellSet> pair;
+    typedef TMGas::BlockList::const_iterator iterator;
+    typedef std::pair<const TMGas::Block *, CellSet> pair;
     
     for (iterator odd=grid.oddBlocks.begin(); odd!=grid.oddBlocks.end(); ++odd) {
-        std::map<const OtherAutomaton::Block *,CellSet> overlap;
+        std::map<const TMGas::Block *,CellSet> overlap;
         for (iterator even=grid.evenBlocks.begin(); even!=grid.evenBlocks.end(); ++even) {
             CellSet sharedCells = testOverlap(*even, *odd);
             if (sharedCells.size()>0) {
@@ -57,9 +57,9 @@ BOOST_AUTO_TEST_CASE( testBlockOverlapSize ) {
         }
     }
     
-    typedef OtherAutomaton::BlockList::const_iterator iterator;
+    typedef TMGas::BlockList::const_iterator iterator;
     for (iterator even=grid.evenBlocks.begin(); even!=grid.evenBlocks.end(); ++even) {
-        std::map<const OtherAutomaton::Block *,CellSet> overlap;
+        std::map<const TMGas::Block *,CellSet> overlap;
         for (iterator odd=grid.oddBlocks.begin(); odd!=grid.oddBlocks.end(); ++odd) {
             CellSet sharedCells = testOverlap(*odd, *even);
             if (sharedCells.size()>0) {
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE( testBlockOverlapSize ) {
 
 BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
     for (BOOST_AUTO(odd,grid.oddBlocks.begin()); odd!=grid.oddBlocks.end(); ++odd) {
-        std::map<const OtherAutomaton::Block *,CellSet> overlap;
+        std::map<const TMGas::Block *,CellSet> overlap;
         for (BOOST_AUTO(even,grid.evenBlocks.begin()); even!=grid.evenBlocks.end(); ++even) {
             CellSet sharedCells = testOverlap(*even, *odd);
             if (sharedCells.size()>0) {
@@ -84,12 +84,12 @@ BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
         }
         
         BOOST_REQUIRE_EQUAL(overlap.size(),2);
-        boost::array<const OtherAutomaton::Block *, 2> blocks;
+        boost::array<const TMGas::Block *, 2> blocks;
         int index = 0;
         BOOST_FOREACH(typeof(*overlap.begin()) leftItem, overlap) {
             blocks[index++] = leftItem.first;
         }
-        const OtherAutomaton::Block &middle = *odd;
+        const TMGas::Block &middle = *odd;
         
         const int above = 0;
         const int below = 1;
@@ -119,8 +119,8 @@ BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
 BOOST_AUTO_TEST_CASE( testDisjoint ) {
     int leftCount = 0;
     int rightCount = 0;
-    BOOST_FOREACH(const OtherAutomaton::Block &left, grid.oddBlocks) {
-        BOOST_FOREACH(const OtherAutomaton::Block &right, grid.oddBlocks) {
+    BOOST_FOREACH(const TMGas::Block &left, grid.oddBlocks) {
+        BOOST_FOREACH(const TMGas::Block &right, grid.oddBlocks) {
             if (left != right) {
                 CellSet shouldBeEmpty = testOverlap(left,right);
                 BOOST_CHECK(shouldBeEmpty.empty());
@@ -146,32 +146,32 @@ BOOST_AUTO_TEST_CASE( testNumberOfBlocks ) {
 }
 
 BOOST_AUTO_TEST_CASE( testBadDimensions ) {
-    BOOST_REQUIRE_THROW(OtherAutomaton::Grid tooSmall(2), CATools::InvalidGridSize);
-    BOOST_REQUIRE_THROW(OtherAutomaton::Grid odd(15),CATools::InvalidGridSize);
+    BOOST_REQUIRE_THROW(TMGas::Grid tooSmall(2), CATools::InvalidGridSize);
+    BOOST_REQUIRE_THROW(TMGas::Grid odd(15),CATools::InvalidGridSize);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(OtherAutomatonGridReservoirTests)
+BOOST_AUTO_TEST_SUITE(TMGasGridReservoirTests)
 
-BOOST_FIXTURE_TEST_CASE(testEmptyGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
+BOOST_FIXTURE_TEST_CASE(testEmptyGridInitialization, RandomGridOperationTestFixture<TMGasGridFixture>) {
     double p = .35;
     int expectedCount = floor(p*grid.size());
-    OtherAutomaton::initializeGridWithOccupationProbability(grid,p,delegate);
+    TMGas::initializeGridWithOccupationProbability(grid,p,delegate);
     BOOST_CHECK_EQUAL(expectedCount, changedCells().size());
 }
 
-BOOST_FIXTURE_TEST_CASE(testNonEmptyGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
+BOOST_FIXTURE_TEST_CASE(testNonEmptyGridInitialization, RandomGridOperationTestFixture<TMGasGridFixture>) {
     double p = .57;
     int expectedCount = floor(p*grid.size());
     grid[5].setValue(true);
     grid[20].setValue(true);
-    OtherAutomaton::initializeGridWithOccupationProbability(grid, p,delegate);
+    TMGas::initializeGridWithOccupationProbability(grid, p,delegate);
     BOOST_CHECK_EQUAL(expectedCount, changedCells().size());
 }
 
-BOOST_FIXTURE_TEST_CASE(testDifferentGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
-    using namespace OtherAutomaton;
+BOOST_FIXTURE_TEST_CASE(testDifferentGridInitialization, RandomGridOperationTestFixture<TMGasGridFixture>) {
+    using namespace TMGas;
     const int iterations = 1000*grid.size();
     
     boost::array<int, 36> array;
@@ -189,9 +189,9 @@ BOOST_FIXTURE_TEST_CASE(testDifferentGridInitialization, RandomGridOperationTest
     const Cell *base = *grid.begin();
     
     for (int k = 0; k<iterations; ++k) {
-        OtherAutomaton::initializeGridWithOccupationProbability(grid, 0, delegate);
+        TMGas::initializeGridWithOccupationProbability(grid, 0, delegate);
         resetInitialValues();
-        OtherAutomaton::initializeGridWithOccupationProbability(grid, p, delegate);
+        TMGas::initializeGridWithOccupationProbability(grid, p, delegate);
         CellSet changes = changedCells();
         BOOST_REQUIRE_EQUAL(changes.size(), cellCount);
         for (CellSet::iterator it = changes.begin(); it!=changes.end(); ++it) {
@@ -208,28 +208,28 @@ BOOST_FIXTURE_TEST_CASE(testDifferentGridInitialization, RandomGridOperationTest
     }
 }
 
-BOOST_FIXTURE_TEST_CASE(testTooSmallGridInitialization, RandomGridOperationTestFixture<OATestFixture>) {
+BOOST_FIXTURE_TEST_CASE(testTooSmallGridInitialization, RandomGridOperationTestFixture<TMGasGridFixture>) {
     double p = 0.001;
     BOOST_REQUIRE_EQUAL((int)(grid.size()*p),0);
-    BOOST_REQUIRE_THROW(OtherAutomaton::initializeGridWithOccupationProbability(grid, p, delegate), OtherAutomaton::InvalidProbabilityError);
+    BOOST_REQUIRE_THROW(TMGas::initializeGridWithOccupationProbability(grid, p, delegate), TMGas::InvalidProbabilityError);
 }
 
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(OtherAutomatonCell)
+BOOST_AUTO_TEST_SUITE(TMGasCell)
 
 BOOST_AUTO_TEST_CASE( defaultValue ) {
-    OtherAutomaton::Cell cell;
+    TMGas::Cell cell;
     BOOST_REQUIRE(!cell.getValue());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-class OtherAutomatonBlockFixture : public CellTestFixture<OtherAutomaton::Cell> {
+class TMGasBlockFixture : public CellTestFixture<TMGas::Cell> {
 public:
-    OtherAutomaton::Block block;
-    OtherAutomatonBlockFixture() : block(cellReferences) {
+    TMGas::Block block;
+    TMGasBlockFixture() : block(cellReferences) {
         // We want a nice, nontrivial starting state.
         int k = 0;
         for (BOOST_AUTO(it,cellReferences.begin()); it!=cellReferences.end(); ++it) {
@@ -244,7 +244,7 @@ public:
         block.bottomLeft()->setValue(bL);
     }
     
-    typedef std::pair<OtherAutomaton::BlockState,OtherAutomaton::BlockState> StatePair;
+    typedef std::pair<TMGas::BlockState,TMGas::BlockState> StatePair;
     template <class RuleClass>
     StatePair applyRule(RuleClass rule) {
         StatePair result;
@@ -256,22 +256,22 @@ public:
 };
 
 
-BOOST_FIXTURE_TEST_SUITE(OtherAutomatonBlockStates, OtherAutomatonBlockFixture)
+BOOST_FIXTURE_TEST_SUITE(TMGasBlockStates, TMGasBlockFixture)
 
 BOOST_AUTO_TEST_CASE( checkStateCount ) {
     const int unique_states = 1<<block.size();
-    std::set<OtherAutomaton::StateIdentifier> identifiers;
+    std::set<TMGas::StateIdentifier> identifiers;
     for (int k = 0; k < unique_states; ++k) {
         for (int index = 0; index<block.size(); ++index) {
             block[index]->setValue((k>>index) & 1);
         }
-        OtherAutomaton::StateIdentifier id = block.currentState().getStateIdentifier();
+        TMGas::StateIdentifier id = block.currentState().getStateIdentifier();
         identifiers.insert(id);
     }
     
     BOOST_CHECK_EQUAL(unique_states, identifiers.size());
     for (BOOST_AUTO(it,identifiers.begin()); it!=identifiers.end(); ++it) {
-        OtherAutomaton::BlockState state(*it);
+        TMGas::BlockState state(*it);
         BOOST_CHECK_EQUAL(state.getStateIdentifier(), *it);
     }
 
@@ -279,19 +279,19 @@ BOOST_AUTO_TEST_CASE( checkStateCount ) {
         for (int index = 0; index<block.size(); ++index) {
             block[index]->setValue((k>>index) & 1);
         }
-        OtherAutomaton::BlockState originalState = block.currentState();
+        TMGas::BlockState originalState = block.currentState();
         for (BOOST_AUTO(it,cellReferences.begin()); it!=cellReferences.end(); ++it) {
             (*it)->setValue((*it)->getValue());
         }
         originalState.update(block);
-        OtherAutomaton::BlockState newState = block.currentState();
+        TMGas::BlockState newState = block.currentState();
         BOOST_CHECK_EQUAL_COLLECTIONS(originalState.begin(), originalState.end(), newState.begin(), newState.end());
     }
 }
 
 BOOST_AUTO_TEST_CASE( testStateInitialization ) {
-    OtherAutomaton::BlockState state;
-    const OtherAutomaton::BlockState nullState(false,false,
+    TMGas::BlockState state;
+    const TMGas::BlockState nullState(false,false,
                                                false,false);
     for (int k = 0; k != 1<<block.size(); ++k) {
         bool values[4];
@@ -301,7 +301,7 @@ BOOST_AUTO_TEST_CASE( testStateInitialization ) {
         state.setValuesClockwise(values[0], values[1],
                                  values[2], values[3]);
         
-        OtherAutomaton::BlockState explicitBlock(values[0],values[1],
+        TMGas::BlockState explicitBlock(values[0],values[1],
                                                  values[2],values[3]);
         BOOST_CHECK(explicitBlock==state);
         
@@ -315,9 +315,9 @@ BOOST_AUTO_TEST_CASE( testStateInitialization ) {
 }
 
 BOOST_AUTO_TEST_CASE( stateInversion ) {
-    OtherAutomaton::BlockState blockState;
-    OtherAutomaton::BlockState invertedState;
-    OtherAutomaton::BlockState manuallyInverted;
+    TMGas::BlockState blockState;
+    TMGas::BlockState invertedState;
+    TMGas::BlockState manuallyInverted;
     for (int k = 0; k != 1<<blockState.size(); ++k) {
         for (int index = 0; index<blockState.size(); ++index) {
             bool value = (k>>index) & 1;
@@ -334,24 +334,24 @@ BOOST_AUTO_TEST_CASE( stateInversion ) {
 }
 
 BOOST_AUTO_TEST_CASE( stateInvolution ) {
-    OtherAutomaton::BlockState blockState;
-    OtherAutomaton::BlockState invertedState;
-    OtherAutomaton::BlockState manuallyInverted;
+    TMGas::BlockState blockState;
+    TMGas::BlockState invertedState;
+    TMGas::BlockState manuallyInverted;
     for (int k = 0; k != 1<<blockState.size(); ++k) {
         for (int index = 0; index<blockState.size(); ++index) {
             bool value = (k>>index) & 1;
             block[index]->setValue(value);
         }
         blockState = block.currentState();
-        OtherAutomaton::BlockState invertedState = !blockState;
+        TMGas::BlockState invertedState = !blockState;
         BOOST_CHECK(blockState==!invertedState);
     }
 }
 
 BOOST_AUTO_TEST_CASE( isDiagonal ) {
-    OtherAutomaton::BlockState primaryDiagonal(true,false,
+    TMGas::BlockState primaryDiagonal(true,false,
                                                false,true);
-    OtherAutomaton::BlockState secondaryDiagonal(false,true,
+    TMGas::BlockState secondaryDiagonal(false,true,
                                                  true,false);
     for (int k = 0; k != 1<<primaryDiagonal.size(); ++k) {
         for (int index = 0; index<primaryDiagonal.size(); ++index) {
@@ -369,38 +369,38 @@ BOOST_AUTO_TEST_CASE( isDiagonal ) {
 BOOST_AUTO_TEST_SUITE_END()
 
 template<class RuleClass>
-class TransitionRuleFixture : public OtherAutomatonBlockFixture {
+class TransitionRuleFixture : public TMGasBlockFixture {
 public:
     RuleClass rule;
 };
 
 // Provided for testing purposes.
-class MutableEvolutionRule : public OtherAutomaton::EvolutionRule {
+class MutableEvolutionRule : public TMGas::EvolutionRule {
 public:
     LookupTable &getTable() { return table; }
     MutableEvolutionRule() {
-        OtherAutomaton::BlockState blockState;
-        OtherAutomaton::BlockState nullState = OtherAutomaton::BlockState(0).getStateIdentifier();
+        TMGas::BlockState blockState;
+        TMGas::BlockState nullState = TMGas::BlockState(0).getStateIdentifier();
         for (int k = 0; k != 1<<blockState.size(); ++k) {
             for (int index = 0; index<blockState.size(); ++index) {
                 blockState[index]=((k>>index) & 1);
             }
-            OtherAutomaton::StateIdentifier id = blockState.getStateIdentifier();
+            TMGas::StateIdentifier id = blockState.getStateIdentifier();
             table[id] = nullState.getStateIdentifier();
         }
     }
 };
 
-BOOST_FIXTURE_TEST_SUITE( OtherAutomatonEvolutionRule, TransitionRuleFixture<MutableEvolutionRule> )
+BOOST_FIXTURE_TEST_SUITE( TMGasEvolutionRule, TransitionRuleFixture<MutableEvolutionRule> )
 
 BOOST_AUTO_TEST_CASE( testConsistentTransition ) {
-    const OtherAutomaton::BlockState &newState = rule[block.currentState()];
+    const TMGas::BlockState &newState = rule[block.currentState()];
     rule(block);
     BOOST_CHECK(newState==block.currentState());
 }
 
 BOOST_AUTO_TEST_CASE( testExplicitTransition ) {
-    OtherAutomaton::BlockState nextState(1);
+    TMGas::BlockState nextState(1);
     rule.getTable()[block.currentState().getStateIdentifier()] = nextState.getStateIdentifier();
     rule(block);
     BOOST_CHECK(nextState==block.currentState());
@@ -408,15 +408,15 @@ BOOST_AUTO_TEST_CASE( testExplicitTransition ) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_FIXTURE_TEST_SUITE(GenericEvolutionRuleImplementationTests, OtherAutomatonBlockFixture)
+BOOST_FIXTURE_TEST_SUITE(GenericEvolutionRuleImplementationTests, TMGasBlockFixture)
 
 // KEEP ME UP TO DATE
-typedef boost::mpl::list<OtherAutomaton::DefaultEvolutionRule> all_rules;
+typedef boost::mpl::list<TMGas::DefaultEvolutionRule> all_rules;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(oneToOne, Rule, all_rules) {
     Rule rule;
     int unique_states = 1 << block.size();
-    std::set<OtherAutomaton::StateIdentifier> states;
+    std::set<TMGas::StateIdentifier> states;
     for (int k = 0; k < unique_states; ++k) {
         for (int index = 0; index<block.size(); ++index) {
             block[index]->setValue((k>>index) & 1);
@@ -435,8 +435,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(conservationOfEnergy, Rule, all_rules) {
             block[index]->setValue((k>>index) & 1);
         }
         StatePair result = applyRule(rule);
-        const OtherAutomaton::BlockState &before = result.first;
-        const OtherAutomaton::BlockState &after = result.second;
+        const TMGas::BlockState &before = result.first;
+        const TMGas::BlockState &after = result.second;
 
         long beforeCount = std::count(before.begin(),before.end(),true);
         long afterCount = std::count(before.begin(),before.end(),true);
@@ -474,15 +474,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE( testInvertability, Rule, all_rules) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_FIXTURE_TEST_SUITE( RotatingEvolutionRuleImplementationTests, OtherAutomatonBlockFixture)
+BOOST_FIXTURE_TEST_SUITE( RotatingEvolutionRuleImplementationTests, TMGasBlockFixture)
 
-typedef boost::mpl::list<OtherAutomaton::DefaultEvolutionRule> rotation_rules;
+typedef boost::mpl::list<TMGas::DefaultEvolutionRule> rotation_rules;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(testDiagonal_primary, Rule, rotation_rules) {
     Rule rule;
     setBlockValues_cw(true, false,
                       false, true);
-    OtherAutomaton::BlockState unchanged = block.currentState();
+    TMGas::BlockState unchanged = block.currentState();
     rule(block);
     BOOST_CHECK(block.currentState()==unchanged);
 }
@@ -491,7 +491,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(testDiagonal_secondary, Rule, rotation_rules) {
     Rule rule;
     setBlockValues_cw(false,true,
                       true,false);
-    OtherAutomaton::BlockState unchanged = block.currentState();
+    TMGas::BlockState unchanged = block.currentState();
     rule(block);
     BOOST_CHECK(block.currentState()==unchanged);
 }
@@ -504,8 +504,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(testRotation, Rule, rotation_rules) {
             block[index]->setValue((k>>index) & 1);
         }
         StatePair result = applyRule(rule);
-        OtherAutomaton::BlockState leftShift;
-        OtherAutomaton::BlockState rightShift;
+        TMGas::BlockState leftShift;
+        TMGas::BlockState rightShift;
         rightShift.setValuesClockwise(block.bottomLeft()->getValue(), block.topLeft()->getValue(),
                                      block.bottomRight()->getValue(), block.topRight()->getValue());
         leftShift.setValuesClockwise(block.topRight()->getValue(), block.bottomRight()->getValue(),
@@ -519,11 +519,11 @@ BOOST_AUTO_TEST_SUITE_END()
 template <int dimension = 10>
 class OAReservoirFixture : public ConstantsTestFixture, public RandomNumberTestFixture {
 public:
-    OtherAutomaton::Reservoir reservoir;
+    TMGas::Reservoir reservoir;
     OAReservoirFixture() : reservoir(c,dimension,Randomness::GSLDelegate(rng)) {}
 };
 
-BOOST_FIXTURE_TEST_SUITE(OtherAutomatonReservoir, OAReservoirFixture<>)
+BOOST_FIXTURE_TEST_SUITE(TMGasReservoir, OAReservoirFixture<>)
 
 BOOST_AUTO_TEST_CASE(testReset) {
     int iterations = 100;
@@ -531,9 +531,9 @@ BOOST_AUTO_TEST_CASE(testReset) {
     for (int k = 0; k<iterations; ++k) {
         boost::array<bool,100> before,after;
         BOOST_REQUIRE_EQUAL(before.size(),reservoir.getGrid().size());
-        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), before.begin(), OtherAutomaton::Cell::ValueTransformer());
+        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), before.begin(), TMGas::Cell::ValueTransformer());
         reservoir.reset();
-        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), after.begin(), OtherAutomaton::Cell::ValueTransformer());
+        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), after.begin(), TMGas::Cell::ValueTransformer());
         bool equal = std::equal(before.begin(), before.end(), after.begin());
         count += equal ? 1 : 0;
     }
@@ -547,7 +547,7 @@ BOOST_AUTO_TEST_CASE( testDoesSomething ) {
     int somethingCount = 0;
     for (int k = 0; k<iterations; ++k) {
         int input = gsl_rng_get(rng) % 2;
-        OtherAutomaton::Reservoir::InteractionResult result = reservoir.interactWithBit(input);
+        TMGas::Reservoir::InteractionResult result = reservoir.interactWithBit(input);
         somethingCount+=result.bit!=input ? 1 : 0;
     }
     BOOST_CHECK_GT(somethingCount, iterations*.9);
@@ -580,9 +580,9 @@ BOOST_AUTO_TEST_CASE( testDeterministic ) {
     for (int k = 0; k<iterations; ++k) {
         boost::array<bool,100> before,after;
         BOOST_REQUIRE_EQUAL(before.size(),reservoir.getGrid().size());
-        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), before.begin(), OtherAutomaton::Cell::ValueTransformer());
+        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), before.begin(), TMGas::Cell::ValueTransformer());
         reservoir.reset();
-        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), after.begin(), OtherAutomaton::Cell::ValueTransformer());
+        std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), after.begin(), TMGas::Cell::ValueTransformer());
         bool equal = std::equal(before.begin(), before.end(), after.begin());
     }
 }
@@ -593,7 +593,7 @@ BOOST_AUTO_TEST_CASE(testWheelChangeOnInteraction) {
     int somethingCount = 0;
     for (int k = 0; k<iterations; ++k) {
         int input = gsl_rng_get(rng) % 2;
-        OtherAutomaton::Reservoir::InteractionResult result = reservoir.interactWithBit(input);
+        TMGas::Reservoir::InteractionResult result = reservoir.interactWithBit(input);
         somethingCount+=result.bit!=input ? 1 : 0;
     }
     // Not really sure what a good number for this one is yet.

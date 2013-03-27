@@ -15,7 +15,7 @@ noinst_HEADERS = Stochastic.h \
 			IsingGrid.h \
 			RandomnessDelegate.h \
 			CATools.h \
-			OtherAutomaton.h
+			TMGas.h
 
 __top_builddir__src_libdemon_la_SOURCES = Stochastic.cpp \
                         Ising.cpp \
@@ -27,7 +27,7 @@ __top_builddir__src_libdemon_la_SOURCES = Stochastic.cpp \
 			cli.cpp \
 			IsingGrid.cpp \
 			CATools.cpp \
-			OtherAutomaton.cpp
+			TMGas.cpp
 
 __top_builddir__src_libdemon_la_CPPFLAGS = $(BOOST_CPPFLAGS)
 

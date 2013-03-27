@@ -1,13 +1,13 @@
 //
-//  OtherAutomaton.h
+//  TMGas.h
 //  jdemon
 //
 //  Created by Mark Larus on 3/22/13.
 //  Copyright (c) 2013 Kenyon College. All rights reserved.
 //
 
-#ifndef __jdemon__OtherAutomaton__
-#define __jdemon__OtherAutomaton__
+#ifndef __jdemon__TMGas__
+#define __jdemon__TMGas__
 
 #include <vector>
 #include <boost/array.hpp>
@@ -22,7 +22,7 @@
 #include "RandomnessDelegate.h"
 #include "Reservoir.h"
 
-namespace OtherAutomaton {
+namespace TMGas {
     class Block;
     class Cell;
     class BlockState;
@@ -147,4 +147,4 @@ namespace OtherAutomaton {
     }
 }
 
-#endif /* defined(__jdemon__OtherAutomaton__) */
+#endif /* defined(__jdemon__TMGas__) */
