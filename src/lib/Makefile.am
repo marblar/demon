@@ -1,5 +1,6 @@
 # This is a convenience library that implements the core functionality
 # of the demon.
+AM_CXXFLAGS=-O3 -g3
 
 noinst_LTLIBRARIES = ${top_builddir}/src/libdemon.la
 
