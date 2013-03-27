@@ -5,4 +5,4 @@ cd build
 ../configure --enable-performance-tests --cache-file=$HOME/demon-cache
 make check
 PERFORMANCE_DIR=build/test/performance
-test $PERFORMANCE_DIR/ising.stats $PERFORMANCE_DIR/stoch.stats
+test [$PERFORMANCE_DIR/ising.stats -a $PERFORMANCE_DIR/stoch.stats]
