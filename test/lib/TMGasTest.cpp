@@ -603,6 +603,7 @@ BOOST_AUTO_TEST_CASE( testDeterministic ) {
 
 BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES( testWheelChangeOnInteraction, 1 )
 BOOST_AUTO_TEST_CASE(testWheelChangeOnInteraction) {
+    BOOST_FAIL("Please decide what a good requirement for the wheel change is.");
     int iterations = 10000;
     int somethingCount = 0;
     for (int k = 0; k<iterations; ++k) {
