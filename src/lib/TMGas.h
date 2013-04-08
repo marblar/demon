@@ -66,6 +66,8 @@ namespace TMGas {
         
         bool isAbove(const Block &other) const;
         bool isBelow(const Block &other) const;
+        bool isLeft (const Block &other) const;
+        bool isRight(const Block &other) const;
         
         inline const Cell *topLeft() const { return at(0); }
         inline const Cell *bottomLeft() const { return at(1); }

@@ -42,13 +42,21 @@ Block::Block(const boost::array<Cell *, 4>& array) {
 }
 
 bool Block::isAbove(const TMGas::Block &above) const {
-    return (above.bottomLeft()==this->topLeft()) &&
-                        (above.bottomRight()==this->topRight());
+    return !isBelow(above);
 }
 
 bool Block::isBelow(const TMGas::Block &below) const {
-    return (below.topLeft()==this->bottomLeft()) &&
+    return (below.topLeft()==this->bottomLeft()) ||
         (below.topRight()==this->bottomRight());
+}
+
+bool Block::isLeft(const TMGas::Block &other) const {
+    // This is a stub so that tests will fail.
+    return false;
+}
+
+bool Block::isRight(const TMGas::Block &other) const {
+    return !isLeft(other);
 }
 
 const BlockState Block::currentState() const {

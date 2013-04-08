@@ -14,6 +14,8 @@
 #include <boost/foreach.hpp>
 #include <boost/math/tools/fraction.hpp>
 #include <boost/mpl/list.hpp>
+#include <boost/mpl/for_each.hpp>
+#include <boost/iterator/indirect_iterator.hpp>
 #include "TMGas.h"
 #include "TestFixtures.h"
 
@@ -56,62 +58,74 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(testBlockOverlapSize, BlockListGetter_t, BlockList
     typedef TMGas::BlockList::const_iterator iterator;
     typedef std::pair<const TMGas::Block *, CellSet> pair;
     
-    BlockListGetter_t grid_blocks = BlockListGetter_t(grid);
+    BlockListGetter_t block_lists = BlockListGetter_t(grid);
     
-    for (iterator outer=grid_blocks.outer.begin(); outer!=grid_blocks.outer.end(); ++outer) {
+    for (iterator outer=block_lists.outer.begin(); outer!=block_lists.outer.end(); ++outer) {
         std::map<const TMGas::Block *,CellSet> overlappingBlock_with_sharedCellSet;
-        for (iterator inner=grid_blocks.inner.begin(); inner!=grid_blocks.inner.end(); ++inner) {
+        for (iterator inner=block_lists.inner.begin(); inner!=block_lists.inner.end(); ++inner) {
             CellSet sharedCells = testOverlap(*inner, *outer);
             if (sharedCells.size()>0) {
                 overlappingBlock_with_sharedCellSet.insert(std::make_pair(&*inner, sharedCells));
             }
         }
-        BOOST_CHECK_EQUAL(overlappingBlock_with_sharedCellSet.size(), 1);
+        BOOST_CHECK_EQUAL(overlappingBlock_with_sharedCellSet.size(), 4);
         BOOST_FOREACH(pair otherBlock_with_sharedCells, overlappingBlock_with_sharedCellSet) {
-            BOOST_CHECK_EQUAL(otherBlock_with_sharedCells.second.size(),4);
+            BOOST_CHECK_EQUAL(otherBlock_with_sharedCells.second.size(),1);
         }
     }
 }
 
-BOOST_AUTO_TEST_CASE( testBlockOverlap ) {
-    for (BOOST_AUTO(odd,grid.oddBlocks.begin()); odd!=grid.oddBlocks.end(); ++odd) {
+bool relativePosition(const TMGas::Block &lhs, const TMGas::Block &rhs, bool isAbove, bool isLeft) {
+    return  (lhs.isAbove(rhs) == isAbove) && (lhs.isLeft(rhs) == isLeft);
+}
+
+class RelativePositionPredicate {
+    bool isAbove;
+    bool isLeft;
+    const TMGas::Block &lhs;
+public:
+    RelativePositionPredicate(bool _isAbove, bool _isLeft, const TMGas::Block &_lhs) : isAbove(_isAbove), isLeft(_isLeft), lhs(_lhs) {
+        
+    }
+    bool operator()(const TMGas::Block &rhs) const {
+        return relativePosition(lhs, rhs,isAbove,isLeft);
+    }
+};
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(testBlockOverlap, BlockListGetter_t, BlockListGetters) {
+    BlockListGetter_t block_lists(grid);
+    for (BOOST_AUTO(outer,block_lists.outer.begin()); outer!=block_lists.outer.end(); ++outer) {
         std::map<const TMGas::Block *,CellSet> overlap;
-        for (BOOST_AUTO(even,grid.evenBlocks.begin()); even!=grid.evenBlocks.end(); ++even) {
-            CellSet sharedCells = testOverlap(*even, *odd);
+        for (BOOST_AUTO(inner,block_lists.inner.begin()); inner!=block_lists.inner.end(); ++inner) {
+            CellSet sharedCells = testOverlap(*inner, *outer);
             if (sharedCells.size()>0) {
-                overlap.insert(std::make_pair(&*even, sharedCells));
+                overlap.insert(std::make_pair(&*inner, sharedCells));
             }
         }
         
-        BOOST_REQUIRE_EQUAL(overlap.size(),2);
-        boost::array<const TMGas::Block *, 2> blocks;
+        BOOST_REQUIRE_EQUAL(overlap.size(),4);
+        boost::array<const TMGas::Block *, 4> overlapping_blocks;
         int index = 0;
         BOOST_FOREACH(typeof(*overlap.begin()) leftItem, overlap) {
-            blocks[index++] = leftItem.first;
+            overlapping_blocks[index++] = leftItem.first;
         }
-        const TMGas::Block &middle = *odd;
         
-        const int above = 0;
-        const int below = 1;
-        const int unknown = 2;
+        const TMGas::Block &middle = *outer;
+        typedef boost::array<RelativePositionPredicate, 4> predicateList_t;
+        predicateList_t predicates = {{
+            RelativePositionPredicate(false, false, middle),
+            RelativePositionPredicate(false, true, middle),
+            RelativePositionPredicate(true, false, middle),
+            RelativePositionPredicate(true, true, middle)
+        }};
         
-        boost::array<int, 2> classified;
-        for (int k = 0; k!=2; ++k) {
-            int c = unknown;
-            if (blocks[k]->isAbove(middle)) {
-                BOOST_CHECK_EQUAL(c, unknown);
-                c = above;
-            }
-            if (blocks[k]->isBelow(middle)) {
-                BOOST_CHECK_EQUAL(c, unknown);
-                c = below;
-            }
-            classified[k]=c;
+        for (predicateList_t::iterator it = predicates.begin(); it!=predicates.end(); ++it) {
+            BOOST_CHECK_EQUAL(1,
+                              std::count_if(boost::make_indirect_iterator(overlapping_blocks.begin()),
+                                               boost::make_indirect_iterator(overlapping_blocks.end()),
+                                               *it)
+                              );
         }
-        size_t aboveCount = std::count(classified.begin(), classified.end(), above);
-        size_t belowCount = std::count(classified.begin(), classified.end(), below);
-        BOOST_CHECK_EQUAL(aboveCount, 1);
-        BOOST_CHECK_EQUAL(belowCount, 1);
     }
 }
 
