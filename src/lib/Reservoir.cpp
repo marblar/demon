@@ -55,7 +55,7 @@ void DemonBase::setupStates() {
 
 SystemState *DemonBase::randomState() {
     int index = rand()%6;
-    SystemState *randomState[] = {&StateA0,&StateA1,&StateB0,&StateB1,&StateB0,&StateC0,&StateC1};
+    SystemState *randomState[] = {&StateA0,&StateA1,&StateB0,&StateB1,&StateC0,&StateC1};
     return randomState[index];
 }
 

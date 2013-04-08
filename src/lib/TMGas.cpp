@@ -13,6 +13,7 @@
 #include <numeric>
 #include <bitset>
 #include <functional>
+#include "Utilities.h"
 using namespace TMGas;
 
 #pragma mark -- Grid Initialization --
@@ -214,6 +215,7 @@ DemonBase::Reservoir(c), cells(dimension), randomness(delegate) {
 
 void Reservoir::reset() {
     initializeGridWithOccupationProbability(cells, constants.getEpsilon()/2, randomness);
+    currentState = DemonBase::randomState();
 }
 
 Reservoir::InteractionResult Reservoir::interactWithBit(int bit) {

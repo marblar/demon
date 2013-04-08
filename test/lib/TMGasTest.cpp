@@ -18,6 +18,7 @@
 #include <boost/iterator/indirect_iterator.hpp>
 #include "TMGas.h"
 #include "TestFixtures.h"
+#include "Utilities.h"
 
 // todo: Make this file's organization more clear.
 
