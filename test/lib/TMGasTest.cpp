@@ -130,11 +130,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(testBlockOverlap, BlockListGetter_t, BlockListGett
 }
 
 
-BOOST_AUTO_TEST_CASE( testDisjoint ) {
+BOOST_AUTO_TEST_CASE_TEMPLATE( testDisjoint, BlockListGetter_t, BlockListGetters ) {
+    BlockListGetter_t block_lists(grid);
     int leftCount = 0;
     int rightCount = 0;
-    BOOST_FOREACH(const TMGas::Block &left, grid.oddBlocks) {
-        BOOST_FOREACH(const TMGas::Block &right, grid.oddBlocks) {
+    BOOST_FOREACH(const TMGas::Block &left, block_lists.outer) {
+        BOOST_FOREACH(const TMGas::Block &right, block_lists.outer) {
             if (left != right) {
                 CellSet shouldBeEmpty = testOverlap(left,right);
                 BOOST_CHECK(shouldBeEmpty.empty());
