@@ -10,6 +10,7 @@
 #include "MockObjects.h"
 #include "TestFixtures.h"
 #include "CATools.h"
+#include "Utilities.h"
 
 #include <algorithm>
 #include <map>
@@ -125,6 +126,28 @@ BOOST_AUTO_TEST_CASE(cellTransformer) {
     BOOST_CHECK(vt(cell)==false);
     cell.setValue(true);
     BOOST_CHECK(vt(cell)==true);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(UtilitiesTestSuite)
+
+BOOST_AUTO_TEST_CASE(testRandomState) {
+    int iterations = 20000;
+    double expectedRatio = 1.0/6.0;
+    double variance = expectedRatio*(1-expectedRatio)/iterations;
+    double standard_deviation = sqrt(variance);
+    double acceptable_error = 3*standard_deviation/expectedRatio;
+    BOOST_REQUIRE_LE(acceptable_error,0.05);
+    
+    std::map<DemonBase::SystemState *, int> counter;
+    for (int k = 0; k<iterations; ++k) {
+        ++counter[DemonBase::randomState()];
+    }
+    for (BOOST_AUTO(it,counter.begin());it!=counter.end(); ++it) {
+        double actualRatio = it->second/static_cast<double>(iterations);
+        BOOST_CHECK_CLOSE_FRACTION(actualRatio, expectedRatio, acceptable_error);
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
