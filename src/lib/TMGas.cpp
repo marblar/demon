@@ -186,3 +186,18 @@ DefaultEvolutionRule::DefaultEvolutionRule() {
     table[(!start).getStateIdentifier()]=(!end).getStateIdentifier();
     
 }
+
+#pragma mark -- Reservoir --
+
+Reservoir::Reservoir(DemonBase::Constants c, int dimension,Randomness::GSLDelegate &delegate) :
+DemonBase::Reservoir(c), cells(dimension), randomness(delegate) {
+    initializeGridWithOccupationProbability(cells, c.getEpsilon()/2, delegate);
+}
+
+void Reservoir::reset() {
+    initializeGridWithOccupationProbability(cells, constants.getEpsilon()/2, randomness);
+}
+
+Reservoir::InteractionResult Reservoir::interactWithBit(int bit) {
+    return Reservoir::InteractionResult();
+}

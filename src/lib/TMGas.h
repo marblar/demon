@@ -111,12 +111,13 @@ namespace TMGas {
         std::runtime_error(std::string("No cells will be initialized. Use larger p")) {}
     };
     
-    class Reservoir : public DemonBase::Reservoir {
+    class Reservoir : public DemonBase::Reservoir{
         Grid cells;
+        Randomness::GSLDelegate &randomness;
     public:
-        InteractionResult interactWithBit(int bit) { return InteractionResult(); }
-        void reset() {}
-        Reservoir(DemonBase::Constants c, int dimension,const Randomness::GSLDelegate &delegate) : DemonBase::Reservoir(c),cells(dimension) {}
+        InteractionResult interactWithBit(int bit);
+        void reset();
+        Reservoir(DemonBase::Constants c, int dimension,Randomness::GSLDelegate &delegate);
         const Grid &getGrid() const { return cells; }
     };
     

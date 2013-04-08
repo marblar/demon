@@ -519,8 +519,9 @@ BOOST_AUTO_TEST_SUITE_END()
 template <int dimension = 10>
 class OAReservoirFixture : public ConstantsTestFixture, public RandomNumberTestFixture {
 public:
+    Randomness::GSLDelegate delegate;
     TMGas::Reservoir reservoir;
-    OAReservoirFixture() : reservoir(c,dimension,Randomness::GSLDelegate(rng)) {}
+    OAReservoirFixture() : delegate(rng), reservoir(c,dimension,delegate) {}
 };
 
 BOOST_FIXTURE_TEST_SUITE(TMGasReservoir, OAReservoirFixture<>)
