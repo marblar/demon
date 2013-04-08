@@ -68,6 +68,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(testBlockOverlapSize, BlockListGetter_t, BlockList
                 overlappingBlock_with_sharedCellSet.insert(std::make_pair(&*inner, sharedCells));
             }
         }
+        
         BOOST_CHECK_EQUAL(overlappingBlock_with_sharedCellSet.size(), 4);
         BOOST_FOREACH(pair otherBlock_with_sharedCells, overlappingBlock_with_sharedCellSet) {
             BOOST_CHECK_EQUAL(otherBlock_with_sharedCells.second.size(),1);
@@ -120,11 +121,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(testBlockOverlap, BlockListGetter_t, BlockListGett
         }};
         
         for (predicateList_t::iterator it = predicates.begin(); it!=predicates.end(); ++it) {
-            BOOST_CHECK_EQUAL(1,
-                              std::count_if(boost::make_indirect_iterator(overlapping_blocks.begin()),
-                                               boost::make_indirect_iterator(overlapping_blocks.end()),
-                                               *it)
-                              );
+            BOOST_CHECK_EQUAL(1,std::count_if(boost::make_indirect_iterator(overlapping_blocks.begin()), boost::make_indirect_iterator(overlapping_blocks.end()),*it));
         }
     }
 }

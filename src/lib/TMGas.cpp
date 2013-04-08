@@ -23,14 +23,17 @@ Grid::Grid(int dim) : CATools::Grid<Cell>(dim),oddBlocks(_oddBlocks), evenBlocks
     std::insert_iterator<BlockList> oddOutputIterator = std::inserter(_oddBlocks,_oddBlocks.begin());
     std::insert_iterator<BlockList> evenOutputIterator = std::inserter(_evenBlocks,_evenBlocks.begin());
     std::multimap<Cell *, Block *> cellsToBlocks;
-    for (int column = 0; column < getDimension(); column+=2) {
-        for (int row = 0; row < getDimension(); row+=2 ) {
-            const CATools::Coordinate currentCellCoord(column,row,getDimension());
-            *oddOutputIterator = Block(cellsFromCoordinates<CATools::Coordinate::CNeighbors, 4>(currentCellCoord.twoByTwoFromTopLeftCoordinate()));
-        }
-        for (int row = 1; row < getDimension(); row+=2) {
-            CATools::Coordinate currentCoord(column,row,getDimension());
-            *evenOutputIterator = Block(cellsFromCoordinates<CATools::Coordinate::CNeighbors, 4>(currentCoord.twoByTwoFromTopLeftCoordinate()));
+    for (int column = 0; column < getDimension(); ++column) {
+        for (int row = 0; row < getDimension(); ++row ) {
+            if (row % 2 == column % 2) {
+                if (row % 2) {
+                    const CATools::Coordinate currentCellCoord(column,row,getDimension());
+                    *oddOutputIterator = Block(cellsFromCoordinates<CATools::Coordinate::CNeighbors, 4>(currentCellCoord.twoByTwoFromTopLeftCoordinate()));
+                } else {
+                    CATools::Coordinate currentCoord(column,row,getDimension());
+                    *evenOutputIterator = Block(cellsFromCoordinates<CATools::Coordinate::CNeighbors, 4>(currentCoord.twoByTwoFromTopLeftCoordinate()));
+                }
+            }
         }
     }
 }
@@ -46,13 +49,20 @@ bool Block::isAbove(const TMGas::Block &above) const {
 }
 
 bool Block::isBelow(const TMGas::Block &below) const {
-    return (below.topLeft()==this->bottomLeft()) ||
-        (below.topRight()==this->bottomRight());
+    return
+        this->topLeft() == below.bottomRight() ||
+        this->topLeft() == below.bottomLeft() ||
+        this->topRight() == below.bottomLeft() ||
+        this->topRight() == below.bottomRight();
 }
 
 bool Block::isLeft(const TMGas::Block &other) const {
     // This is a stub so that tests will fail.
-    return false;
+    return
+        this->bottomRight() == other.topLeft() ||
+        this->bottomRight() == other.bottomLeft() ||
+        this->topRight() == other.bottomLeft() ||
+        this->topRight() == other.bottomRight();
 }
 
 bool Block::isRight(const TMGas::Block &other) const {
