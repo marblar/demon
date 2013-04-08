@@ -13,6 +13,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/foreach.hpp>
 #include <boost/math/tools/fraction.hpp>
+#include <boost/mpl/list.hpp>
 #include "TMGas.h"
 #include "TestFixtures.h"
 
@@ -37,38 +38,37 @@ static inline TMGasGridFixture::CellSet testOverlap(TMGas::Block left, TMGas::Bl
 
 BOOST_FIXTURE_TEST_SUITE(TMGasGridTests, TMGasGridFixture)
 
-BOOST_AUTO_TEST_CASE( testBlockOverlapSize ) {
+template <bool kind>
+class BlockListGetter {
+public:
+    const TMGas::BlockList &outer;
+    const TMGas::BlockList &inner;
+    BlockListGetter(const TMGas::Grid &grid) :
+        outer(kind ? grid.evenBlocks : grid.oddBlocks),
+        inner(kind ? grid.oddBlocks : grid.evenBlocks)
+    {}
+};
+
+typedef boost::mpl::list<BlockListGetter<true>,BlockListGetter<false> > BlockListGetters;
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(testBlockOverlapSize, BlockListGetter_t, BlockListGetters) {
     // Each even block should be disjoint from each other even block. Same is true for odds.
-    
     typedef TMGas::BlockList::const_iterator iterator;
     typedef std::pair<const TMGas::Block *, CellSet> pair;
     
-    for (iterator odd=grid.oddBlocks.begin(); odd!=grid.oddBlocks.end(); ++odd) {
-        std::map<const TMGas::Block *,CellSet> overlap;
-        for (iterator even=grid.evenBlocks.begin(); even!=grid.evenBlocks.end(); ++even) {
-            CellSet sharedCells = testOverlap(*even, *odd);
-            if (sharedCells.size()>0) {
-                overlap.insert(std::make_pair(&*even, sharedCells));
-            }
-        }
-        BOOST_CHECK_EQUAL(overlap.size(), 2);
-        BOOST_FOREACH(pair leftItem, overlap) {
-            BOOST_CHECK_EQUAL(leftItem.second.size(),2);
-        }
-    }
+    BlockListGetter_t grid_blocks = BlockListGetter_t(grid);
     
-    typedef TMGas::BlockList::const_iterator iterator;
-    for (iterator even=grid.evenBlocks.begin(); even!=grid.evenBlocks.end(); ++even) {
-        std::map<const TMGas::Block *,CellSet> overlap;
-        for (iterator odd=grid.oddBlocks.begin(); odd!=grid.oddBlocks.end(); ++odd) {
-            CellSet sharedCells = testOverlap(*odd, *even);
+    for (iterator outer=grid_blocks.outer.begin(); outer!=grid_blocks.outer.end(); ++outer) {
+        std::map<const TMGas::Block *,CellSet> overlappingBlock_with_sharedCellSet;
+        for (iterator inner=grid_blocks.inner.begin(); inner!=grid_blocks.inner.end(); ++inner) {
+            CellSet sharedCells = testOverlap(*inner, *outer);
             if (sharedCells.size()>0) {
-                overlap.insert(std::make_pair(&*odd, sharedCells));
+                overlappingBlock_with_sharedCellSet.insert(std::make_pair(&*inner, sharedCells));
             }
         }
-        BOOST_CHECK_EQUAL(overlap.size(), 2);
-        BOOST_FOREACH(pair leftItem, overlap) {
-            BOOST_CHECK_EQUAL(leftItem.second.size(),2);
+        BOOST_CHECK_EQUAL(overlappingBlock_with_sharedCellSet.size(), 1);
+        BOOST_FOREACH(pair otherBlock_with_sharedCells, overlappingBlock_with_sharedCellSet) {
+            BOOST_CHECK_EQUAL(otherBlock_with_sharedCells.second.size(),4);
         }
     }
 }
