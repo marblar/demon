@@ -212,7 +212,7 @@ DefaultEvolutionRule::DefaultEvolutionRule() {
 #pragma mark -- Reservoir --
 
 Reservoir::Reservoir(DemonBase::Constants c, int dimension,Randomness::GSLDelegate &delegate) :
-DemonBase::Reservoir(c), cells(dimension), randomness(delegate) {
+DemonBase::Reservoir(c), cells(dimension), randomness(delegate), interactionCell(&cells[dimension/2]) {
     initializeGridWithOccupationProbability(cells, c.getEpsilon()/2, delegate);
 }
 

@@ -116,8 +116,10 @@ namespace TMGas {
     class Reservoir : public DemonBase::Reservoir {
         Grid cells;
         Randomness::GSLDelegate &randomness;
+        const Cell *interactionCell;
     public:
         InteractionResult interactWithBit(int bit);
+        
         void reset();
         Reservoir(DemonBase::Constants c, int dimension,Randomness::GSLDelegate &delegate);
         std::pair<bool,bool> hashBits();
