@@ -32,7 +32,7 @@ struct ConstantsTestFixture {
     DemonBase::Constants c;
     ConstantsTestFixture() {
         c.setDelta(.5);
-        c.setEpsilon(0);
+        c.setEpsilon(.4);
         c.setTau(1);
         c.setNbits(8);
     }

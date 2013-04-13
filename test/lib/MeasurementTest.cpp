@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE( testOutput ) {
     result.averageJ = 1;
     
     std::string actualResultString = outputString(result);
-    std::string expectedResultString = "0.5,0,1,1000.93";
+    std::string expectedResultString = "0.5,0.4,1,1000.93";
     BOOST_CHECK_EQUAL(actualResultString, expectedResultString);
 }
 

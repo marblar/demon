@@ -549,7 +549,7 @@ BOOST_AUTO_TEST_CASE(testReset) {
         reservoir.reset();
         std::transform(reservoir.getGrid().begin(), reservoir.getGrid().end(), after.begin(), TMGas::Cell::ValueTransformer());
         bool equal = std::equal(before.begin(), before.end(), after.begin());
-        count += equal ? 1 : 0;
+        count += equal ? 0 : 1;
     }
     // This seems like a good rule of thumb to me.
     BOOST_CHECK_GT(count,iterations*.9);
