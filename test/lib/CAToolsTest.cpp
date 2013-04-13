@@ -164,4 +164,25 @@ BOOST_AUTO_TEST_CASE(testRandomState) {
     }
 }
 
+BOOST_AUTO_TEST_CASE(testBitStringUnpack_fullBytes) {
+    typedef boost::array<bool,80> charray;
+    charray values;
+    char str[9] = "abcdefgh";
+    charray::iterator input = values.begin();
+    for (char * letter = str; letter!=str+9; ++letter) {
+        char c = *letter;
+        for (int index = 0; index != 8; ++index) {
+            (*input) = c & 1;
+            c = (c >> 1);
+            ++input;
+        }
+    }
+    PackedBooleanIterator<charray::iterator> begin(values.begin(),values.end());
+    PackedBooleanIterator<charray::iterator> end(values.end(),values.end());
+    
+    std::string other_string(begin,end);
+    
+    BOOST_CHECK_EQUAL_COLLECTIONS(begin, end, str, str+9);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
