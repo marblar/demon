@@ -66,6 +66,16 @@ namespace CATools {
         typedef ValueType valueType;
         typedef CellToValueTransformer<Subclass> ValueTransformer;
     };
+    
+    template <class Grid>
+    class Values {
+        Grid &grid;
+    public:
+        Values(Grid &_grid) : grid(_grid) {}
+        typedef boost::transform_iterator<typename Grid::cellType::ValueTransformer, typename Grid::iterator> iterator;
+        iterator begin() const { return iterator(grid.begin()); }
+        iterator end() const { return boost::make_transform_iterator(grid.end(),grid.valueTransformer()); }
+    };
 
     template <class CellType>
     class Grid {
@@ -112,18 +122,8 @@ namespace CATools {
         iterator begin() const { return iterator(cells.get()); }
         iterator end() const { return iterator(cells.get()+dimension*dimension); }
         
-        class Values {
-            Grid &grid;
-        protected:
-            Values(Grid &_grid) : grid(_grid) {}
-            friend class Grid;
-        public:
-            typedef boost::transform_iterator<typename CellType::ValueTransformer, iterator> iterator;
-            iterator begin() const { return iterator(grid.begin()); }
-            iterator end() const { return boost::make_transform_iterator(grid.end(),grid.valueTransformer()); }
-        };
-        
-        Values values;
+        Values<Grid> values;
+        typedef Values<Grid> Values;
     };
     
     
