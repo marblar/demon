@@ -126,7 +126,11 @@ namespace CATools {
         typedef Values<Grid> Values;
     };
     
-    
+    template <class CellType>
+    std::size_t hash_value(Grid<CellType> const& grid)
+    {
+        return boost::hash_range(grid.values.begin(), grid.values.end());
+    }
     
     class Coordinate {
     protected:

@@ -555,6 +555,29 @@ BOOST_AUTO_TEST_CASE(testReset) {
     BOOST_CHECK_GT(count,iterations*.9);
 }
 
+BOOST_AUTO_TEST_CASE(testHashBits) {
+    const int iterations = 10000;
+    int sum_first = 0;
+    int sum_second = 0;
+    
+    for (int k = 0; k<iterations; ++k) {
+        BOOST_AUTO(bits,reservoir.hashBits());
+        sum_first += bits.first ? 1 : 0;
+        sum_second += bits.second ? 1 : 0;
+        reservoir.reset();
+    }
+    
+    double expectedRatio = .5;
+    double variance = expectedRatio*(1-expectedRatio)/iterations;
+    double standard_deviation = sqrt(variance);
+    
+    double acceptable_error = 3*standard_deviation/expectedRatio;
+    BOOST_REQUIRE_LE(acceptable_error,0.05);
+    
+    BOOST_CHECK_CLOSE_FRACTION(static_cast<double>(sum_first)/iterations, expectedRatio, acceptable_error);
+    BOOST_CHECK_CLOSE_FRACTION(static_cast<double>(sum_second)/iterations, expectedRatio, acceptable_error);
+}
+
 BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(testDoesSomething, 1)
 BOOST_AUTO_TEST_CASE( testDoesSomething ) {
     int iterations = 10000;

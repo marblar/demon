@@ -9,6 +9,9 @@
 #include "TMGas.h"
 #include <boost/typeof/typeof.hpp>
 #include <boost/foreach.hpp>
+#include <boost/iterator/transform_iterator.hpp>
+#include <boost/iterator/indirect_iterator.hpp>
+#include <boost/functional.hpp>
 #include <map>
 #include <numeric>
 #include <bitset>
@@ -220,4 +223,14 @@ void Reservoir::reset() {
 
 Reservoir::InteractionResult Reservoir::interactWithBit(int bit) {
     return Reservoir::InteractionResult();
+}
+
+std::pair<bool, bool> Reservoir::hashBits() {
+    boost::hash<Grid> hasher;
+    
+    size_t hash = hasher(cells);
+    
+    bool first = hash & 1;
+    bool second = (hash >> 1) & 1;
+    return std::make_pair(first,second);
 }
