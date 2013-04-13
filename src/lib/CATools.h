@@ -11,6 +11,7 @@
 
 #include <boost/smart_ptr.hpp>
 #include <boost/iterator/counting_iterator.hpp>
+#include <boost/iterator/transform_iterator.hpp>
 #include <boost/array.hpp>
 
 namespace CATools {
@@ -30,15 +31,18 @@ namespace CATools {
     };
     
     
-    template <class Cell, class Value>
-    class CellToValueTransformer {
+    template <class Cell>
+    class CellToValueTransformer : public std::unary_function<const Cell &, const typename Cell::valueType &>,
+                                          std::unary_function<const Cell *, const typename Cell::valueType &>
+    {
     public:
-        Value operator()(const Cell &cell) {
+        const typename Cell::valueType& operator()(const Cell &cell) const {
             return cell.getValue();
         }
-        Value operator()(const Cell *cell) {
+        const typename Cell::valueType& operator()(const Cell *cell) const {
             return cell->getValue();
         }
+        typedef const typename Cell::valueType& result_type;
     };
     
     
@@ -60,10 +64,9 @@ namespace CATools {
         }
         
         typedef ValueType valueType;
-        typedef CellToValueTransformer<Subclass, ValueType> ValueTransformer;
+        typedef CellToValueTransformer<Subclass> ValueTransformer;
     };
-    
-    
+
     template <class CellType>
     class Grid {
         int dimension;
@@ -71,7 +74,7 @@ namespace CATools {
         boost::scoped_array<CellType> cells;
     public:
         const int &getDimension() const { return dimension; }
-        Grid(int dim) : dimension(dim), cells(new CellType[dim*dim]) {
+        Grid(int dim) : dimension(dim), cells(new CellType[dim*dim]), values(*this) {
             if (dimension % 2 || dimension < 4) {
                 throw InvalidGridSize();
             }
@@ -104,11 +107,26 @@ namespace CATools {
             }
             return result;
         }
-        
+       
         typedef boost::counting_iterator<CellType *> iterator;
         iterator begin() const { return iterator(cells.get()); }
         iterator end() const { return iterator(cells.get()+dimension*dimension); }
+        
+        class Values {
+            Grid &grid;
+        protected:
+            Values(Grid &_grid) : grid(_grid) {}
+            friend class Grid;
+        public:
+            typedef boost::transform_iterator<typename CellType::ValueTransformer, iterator> iterator;
+            iterator begin() const { return iterator(grid.begin()); }
+            iterator end() const { return boost::make_transform_iterator(grid.end(),grid.valueTransformer()); }
+        };
+        
+        Values values;
     };
+    
+    
     
     class Coordinate {
     protected:

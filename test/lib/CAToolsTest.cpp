@@ -53,7 +53,8 @@ BOOST_AUTO_TEST_SUITE_END()
 
 class TestGridFixture {
 public:
-    CATools::Grid<TestCell> grid;
+    typedef CATools::Grid<TestCell> Grid;
+    Grid grid;
     TestGridFixture() : grid(6) {}
 };
 
@@ -115,6 +116,18 @@ BOOST_AUTO_TEST_CASE( testCount ) {
     BOOST_REQUIRE_EQUAL(cells.size(), grid.size());
 }
 
+
+BOOST_AUTO_TEST_CASE( testValuesIterators ) {
+    Grid::iterator cell = grid.begin();
+    for (Grid::Values::iterator value = grid.values.begin(); value!=grid.values.end(); ++value) {
+        BOOST_REQUIRE(cell!=grid.end());
+        bool cellValue = (*cell)->getValue();
+        bool iteratorValue = *value;
+        BOOST_CHECK(iteratorValue==cellValue);
+        ++cell;
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(CellTestSuite)
@@ -127,6 +140,7 @@ BOOST_AUTO_TEST_CASE(cellTransformer) {
     cell.setValue(true);
     BOOST_CHECK(vt(cell)==true);
 }
+
 
 BOOST_AUTO_TEST_SUITE_END()
 
