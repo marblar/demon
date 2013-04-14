@@ -11,6 +11,7 @@
 #include <boost/foreach.hpp>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/iterator/indirect_iterator.hpp>
+#include <boost/iterator/filter_iterator.hpp>
 #include <boost/functional.hpp>
 #include <map>
 #include <numeric>
@@ -222,13 +223,20 @@ void Reservoir::reset() {
 }
 
 Reservoir::InteractionResult Reservoir::interactWithBit(int bit) {
+    interactionCell.setValue(bit);
     return Reservoir::InteractionResult();
 }
 
 std::pair<bool, bool> Reservoir::hashBits() {
-    boost::hash<Grid> hasher;
-    
-    size_t hash = hasher(cells);
+    using namespace boost;
+    typedef std::binder1st< std::not_equal_to<Cell *> > CellFilter;
+    CellFilter filter = std::bind1st(std::not_equal_to<Cell *>(),&interactionCell);
+    Cell::ValueTransformer transform;
+
+    BOOST_AUTO(begin, make_transform_iterator(make_filter_iterator(filter, cells.begin()), transform));
+    BOOST_AUTO(end, make_transform_iterator(make_filter_iterator(filter, cells.end()), transform));
+
+    size_t hash = boost::hash_range(begin,end);
     
     bool first = hash & 1;
     bool second = (hash >> 1) & 1;
