@@ -709,6 +709,9 @@ BOOST_AUTO_TEST_CASE( testProbability ) {
     
     boost::unordered_map<DemonBase::SystemState *, double> outgoingProbablities; // These should all be 1.
     
+    double stepDown_probability = 0;
+    double stepUp_probability = 0;
+    
     for (BOOST_AUTO(it,map.begin()); it!=map.end(); ++it) {
         DemonBase::SystemState *inputState = it->first.first;
         DemonBase::SystemState *outputState = it->first.second;
@@ -720,12 +723,18 @@ BOOST_AUTO_TEST_CASE( testProbability ) {
             continue;
         }
         
+        // More generally, this should check for detailed balance. Oh well.
         if (inputState->bit == outputState->bit) {
             BOOST_CHECK_CLOSE(probability, .25,.05);
-        } else {
-            BOOST_CHECK_CLOSE(probability, (inputState->bit < outputState->bit ? 1 + epsilon : 1 - epsilon)/4 , .05);
+        } else if (inputState->bit < outputState->bit) {
+            stepUp_probability += probability;
+            
+        } else if (inputState->bit > outputState->bit) {
+            stepDown_probability += probability;
         }
     }
+    
+    BOOST_CHECK_CLOSE(stepUp_probability/stepDown_probability,(1-epsilon)/(1+epsilon),.05);
     
     for (BOOST_AUTO(it,outgoingProbablities.begin()); it!=outgoingProbablities.end(); ++it) {
         BOOST_CHECK_CLOSE(it->second,1.0,.05);
