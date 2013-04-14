@@ -265,6 +265,12 @@ std::pair<bool, bool> Reservoir::hashBits() {
     return std::make_pair(first,second);
 }
 
+
+std::size_t TMGas::hash_value(const TMGas::BlockState& input) {
+    boost::hash<TMGas::StateIdentifier> hasher;
+    return hasher(input.getStateIdentifier());
+}
+
 std::size_t TMGas::hash_value(InteractionStateMachine::InputType const& input)
 {
     std::size_t hash = 0;

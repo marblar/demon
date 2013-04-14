@@ -18,6 +18,8 @@
 #include <boost/multi_array.hpp>
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
+#include <boost/tuple/tuple.hpp>
+#include <boost/functional/hash.hpp>
 #include <algorithm>
 
 #include "CATools.h"
@@ -104,6 +106,8 @@ namespace TMGas {
     public:
         DefaultEvolutionRule();
     };
+    
+    std::size_t hash_value(const BlockState& input);
     
     class InteractionStateMachine {
     public:
