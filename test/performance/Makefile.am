@@ -1,6 +1,6 @@
-check_PROGRAMS = ising stoch
+check_PROGRAMS = ising stoch tmgas
 
-TESTS = ising-wrapper.sh stoch-wrapper.sh
+TESTS = ising-wrapper.sh stoch-wrapper.sh tmgas-wrapper.sh
 EXTRA_DIST = $(TESTS) junit.xslt
 
 AM_DEFAULT_SOURCE_EXT = .cpp
