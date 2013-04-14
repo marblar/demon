@@ -66,6 +66,7 @@
 		4D17BCC716FD190400B26B53 /* CATools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CATools.h; sourceTree = "<group>"; };
 		4D17BCCA16FD1DBB00B26B53 /* CAToolsTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CAToolsTest.cpp; path = test/lib/CAToolsTest.cpp; sourceTree = SOURCE_ROOT; };
 		4D28A4A316D66DC40019141B /* liblibjdemon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibjdemon.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D298104171A71BF00B4FD4F /* tmgas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tmgas.cpp; sourceTree = "<group>"; };
 		4D46888916B5C549009143D0 /* Stochastic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stochastic.cpp; sourceTree = "<group>"; };
 		4D46888A16B5C549009143D0 /* Stochastic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Stochastic.h; sourceTree = "<group>"; };
 		4D46888C16B5C58C009143D0 /* Reservoir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reservoir.h; sourceTree = "<group>"; };
@@ -186,6 +187,7 @@
 		4DBF803116E44A52002EB147 /* Perfomance */ = {
 			isa = PBXGroup;
 			children = (
+				4D298104171A71BF00B4FD4F /* tmgas.cpp */,
 				4DB2EE1416E8EEF500D24443 /* ReservoirBenchmark.h */,
 				4DBF803216E44A6F002EB147 /* ising.cpp */,
 				4DA3763016E54C2A00599AA1 /* stoch.cpp */,
