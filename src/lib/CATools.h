@@ -13,6 +13,7 @@
 #include <boost/iterator/counting_iterator.hpp>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/array.hpp>
+#include <boost/functional/hash.hpp>
 
 namespace CATools {
     class InvalidGridSize : public std::runtime_error {
