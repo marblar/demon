@@ -23,6 +23,7 @@
 #include "CATools.h"
 #include "RandomnessDelegate.h"
 #include "Reservoir.h"
+#include "InstrumentFactories.h"
 
 namespace TMGas {
     class Block;
@@ -176,6 +177,15 @@ namespace TMGas {
         std::pair<bool,bool> hashBits();
         const Grid &getGrid() const { return cells; }
         void gridStep();
+        
+        class Factory : public DemonBase::ReservoirFactory {
+            int dimension;
+        public:
+            Factory(int dim = 16) : dimension(dim) {}
+            Reservoir *create(gsl_rng *RNG, DemonBase::Constants constants) {
+                return new Reservoir(constants,dimension,*(new Randomness::GSLDelegate(RNG)));
+            }
+        };
     };
 
     std::size_t hash_value(InteractionStateMachine::InputType const& input);

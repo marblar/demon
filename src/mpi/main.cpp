@@ -7,6 +7,7 @@
 #include "InstrumentFactories.h"
 #include "Stochastic.h"
 #include "Ising.h"
+#include "TMGas.h"
 #include "Measurement.h"
 #include "cli.h"
 
@@ -52,6 +53,14 @@ int main(int argc, char* argv[]) {
         int dim = vmap["dimension"].as<int>();
         int clst = vmap["clusters"].as<int>();
         rFactory = new Ising::Reservoir::Factory(dim,clst);
+    } else if ( vmap.count("tmgas") ){
+        if (!vmap.count("dimension")) {
+            std::clog << "Option --tmgas requires -d\n";
+            exit(1);
+        }
+        
+        int dim = vmap["dimension"].as<int>();
+        rFactory = new TMGas::Reservoir::Factory(dim);
     } else {
         //Assume stochastic
         rFactory = new DemonBase::DefaultArgsReservoirFactory<Stochastic::Reservoir>;
