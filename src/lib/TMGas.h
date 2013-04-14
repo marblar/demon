@@ -31,7 +31,12 @@ namespace TMGas {
     class InvalidProbabilityError;
     typedef std::vector<Block> BlockList;
     
-    class Cell : public CATools::Cell<Cell, bool> {};
+    class Cell : public CATools::Cell<Cell, bool> {
+    public:
+        void toggle() {
+            setValue(!getValue());
+        }
+    };
     
     typedef unsigned short int StateIdentifier;
     
@@ -116,9 +121,9 @@ namespace TMGas {
     class Reservoir : public DemonBase::Reservoir {
         Grid cells;
         Randomness::GSLDelegate &randomness;
-        const Cell *interactionCell;
     public:
         InteractionResult interactWithBit(int bit);
+        Cell &interactionCell;
         
         void reset();
         Reservoir(DemonBase::Constants c, int dimension,Randomness::GSLDelegate &delegate);

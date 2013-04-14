@@ -237,6 +237,13 @@ BOOST_AUTO_TEST_CASE( defaultValue ) {
     BOOST_REQUIRE(!cell.getValue());
 }
 
+BOOST_AUTO_TEST_CASE( toggle ) {
+    TMGas::Cell cell;
+    bool value = cell.getValue();
+    cell.toggle();
+    BOOST_CHECK_NE(value, cell.getValue());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 class TMGasBlockFixture : public CellTestFixture<TMGas::Cell> {
@@ -564,6 +571,10 @@ BOOST_AUTO_TEST_CASE(testHashBits) {
         BOOST_AUTO(bits,reservoir.hashBits());
         sum_first += bits.first ? 1 : 0;
         sum_second += bits.second ? 1 : 0;
+        reservoir.interactionCell.toggle();
+        BOOST_AUTO(shouldBeTheSameBits,reservoir.hashBits());
+        BOOST_REQUIRE(bits==shouldBeTheSameBits);
+        
         reservoir.reset();
     }
     
