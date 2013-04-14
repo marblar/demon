@@ -18,7 +18,7 @@ opt::options_description optionsDescription() {
      "Number of iterations.")
     ("help","Show help message")
     ("verbose,v", "Show extensive debugging info")
-    ("ising", "Use Ising reservoir. Requires -d. Overrides --stoch")
+    ("ising", "Use Ising reservoir. Requires -d.")
     ("stoch", "Use Stochastic reservoir. This is set by default, and overridden"
      " by --ising.")
     ("dimension,d", opt::value<int>()->default_value(10),
@@ -27,6 +27,7 @@ opt::options_description optionsDescription() {
     ("distribution","Output the energy distribution of the ising reservoir.")
     ("clusters,c",opt::value<int>()->default_value(10),
      "The number of cluster steps used by the ising model.")
+    ("tmgas", "Use TMGas reservoir. Requires -d.")
     ;
     return desc;
 }
