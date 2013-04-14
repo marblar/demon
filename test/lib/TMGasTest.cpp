@@ -767,7 +767,44 @@ BOOST_AUTO_TEST_CASE( testValidTransitions ) {
         DemonBase::SystemState *outputState = output.get<0>();
         BOOST_CHECK_MESSAGE((inputState->nextState1 == outputState || inputState->nextState2 == outputState || inputState == outputState),"Invalid transtion "<<print_state(inputState)<<" -> "<<print_state(outputState));
     }
+}
+
+BOOST_AUTO_TEST_CASE( testAllTransitions ) {
+    // All transitions permitted by the stochastic reservoir must have a corresponding transition in the TMGas
+    using namespace DemonBase;
     
+    typedef std::set< std::pair<DemonBase::SystemState *, DemonBase::SystemState *> >  TransitionSet;
+    TransitionSet stochTransitions;
+    TransitionSet tmTransitions;
+    
+    SystemState *state;
+    
+    #define StochTransition(XX) \
+        state = &State##XX;\
+        if (state!=state->nextState1) \
+            stochTransitions.insert(std::make_pair(state,state->nextState1));\
+        if (state!=state->nextState2) \
+            stochTransitions.insert(std::make_pair(state, state->nextState2));
+    
+    StochTransition(A1);
+    StochTransition(B1);
+    StochTransition(C1);
+    StochTransition(A0);
+    StochTransition(B0);
+    StochTransition(C0);
+    
+    for (BOOST_AUTO(input, inputStates.begin()); input!=inputStates.end(); ++input) {
+        OutputType output(rule(*input));
+        
+        DemonBase::SystemState *inputState = input->get<0>();
+        DemonBase::SystemState *outputState = output.get<0>();
+        tmTransitions.insert(std::make_pair(inputState, outputState));
+    }
+    
+    for (BOOST_AUTO(it,stochTransitions.begin()); it!=stochTransitions.end(); ++it) {
+        BOOST_CHECK_MESSAGE(tmTransitions.count(*it),"No corresponding transition for "<<print_state(it->first)<<"->"<<print_state(it->second));
+    }
+    #undef StochTransition
 }
 
 BOOST_AUTO_TEST_SUITE_END()
