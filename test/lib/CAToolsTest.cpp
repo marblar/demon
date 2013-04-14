@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE( testCount ) {
 
 BOOST_AUTO_TEST_CASE( testValuesIterators ) {
     Grid::iterator cell = grid.begin();
-    for (Grid::Values::iterator value = grid.values.begin(); value!=grid.values.end(); ++value) {
+    for (BOOST_AUTO(value,grid.values.begin()); value!=grid.values.end(); ++value) {
         BOOST_REQUIRE(cell!=grid.end());
         bool cellValue = (*cell)->getValue();
         bool iteratorValue = *value;

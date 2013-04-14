@@ -59,7 +59,7 @@ namespace CATools {
         const ValueType &getValue() const { return value; }
         
         // Subclasses can implement _setValue.
-        const ValueType& setValue(const ValueType& value) {
+        ValueType setValue(const ValueType& value) {
             return static_cast<Subclass *>(this)->_setValue(value);
         }
         
@@ -123,7 +123,6 @@ namespace CATools {
         iterator end() const { return iterator(cells.get()+dimension*dimension); }
         
         Values<Grid> values;
-        typedef Values<Grid> Values;
     };
     
     template <class CellType>
