@@ -3,7 +3,7 @@ using namespace DemonBase;
 
 SystemState DemonBase::StateA1, DemonBase::StateB1, DemonBase::StateC1, DemonBase::StateA0, DemonBase::StateB0, DemonBase::StateC0;
 
-std::string print_state(SystemState *state) {
+std::string DemonBase::print_state(SystemState *state) {
     std::string theString = "";
     theString.push_back(state->letter);
     theString.push_back('0'+state->bit);

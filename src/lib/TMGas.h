@@ -17,6 +17,7 @@
 #include <set>
 #include <boost/multi_array.hpp>
 #include <boost/unordered_map.hpp>
+#include <boost/unordered_set.hpp>
 #include <algorithm>
 
 #include "CATools.h"
@@ -130,6 +131,51 @@ namespace TMGas {
         std::pair<bool,bool> hashBits();
         const Grid &getGrid() const { return cells; }
     };
+    
+    class InteractionStateMachine {
+    public:
+        // This class maps the wheel state, the boltzmann bit, and the two hash bits
+        // to a new wheel state and boltzmann bit.
+        // See the diagram at https://github.com/marblar/demon/issues/10 for the spec
+        
+        class InputType : public boost::tuple<DemonBase::SystemState *, // Wheel
+                                            bool,// Boltzmann
+                                            bool,// First hash bit
+                                            bool>// Second hash bit
+        {
+        public:
+            InputType(DemonBase::SystemState *wheel, bool boltzmann, bool hash1, bool hash2);
+            bool operator==(const InputType & other) const;
+        };
+        
+        class OutputType : public boost::tuple<DemonBase::SystemState *,// Wheel
+                                                bool>//Boltzmann
+        {
+        public:
+            OutputType(DemonBase::SystemState *wheel, bool boltzmann);
+            bool operator==(const OutputType & other) const;
+            OutputType() {}
+        };
+        
+        typedef boost::unordered_map<InputType, OutputType> LookupTable;
+    protected:
+        InteractionStateMachine() {}
+        LookupTable table;
+    public:
+        boost::unordered_set<InputType> possibleInputs() const;
+        
+        OutputType operator()(const InputType &input) {
+            return table.at(input);
+        }
+    };
+    
+    class DefaultInteractionMachine : public InteractionStateMachine {
+    public:
+        DefaultInteractionMachine();
+    };
+    
+    std::size_t hash_value(InteractionStateMachine::InputType const& input);
+    std::size_t hash_value(InteractionStateMachine::OutputType const& input);
     
     template <class RandomnessDelegate>
     void initializeGridWithOccupationProbability(Grid &grid, double probability, RandomnessDelegate &delegate) {

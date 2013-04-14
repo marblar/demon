@@ -242,3 +242,116 @@ std::pair<bool, bool> Reservoir::hashBits() {
     bool second = (hash >> 1) & 1;
     return std::make_pair(first,second);
 }
+
+std::size_t TMGas::hash_value(InteractionStateMachine::InputType const& input)
+{
+    std::size_t hash = 0;
+    boost::hash_combine(hash, input.get<0>());
+    boost::hash_combine(hash, input.get<1>());
+    boost::hash_combine(hash, input.get<2>());
+    boost::hash_combine(hash, input.get<3>());
+    return hash;
+}
+
+std::size_t TMGas::hash_value(InteractionStateMachine::OutputType const& input)
+{
+    std::size_t hash = 0;
+    boost::hash_combine(hash, input.get<0>());
+    boost::hash_combine(hash, input.get<1>());
+    return hash;
+}
+
+bool TMGas::InteractionStateMachine::InputType::operator==(const TMGas::InteractionStateMachine::InputType &other) const {
+    return (get<0>() == other.get<0>()) &&
+    (get<1>() == other.get<1>()) &&
+    (get<2>() == other.get<2>()) &&
+    (get<3>() == other.get<3>());
+}
+
+bool TMGas::InteractionStateMachine::OutputType::operator==(const TMGas::InteractionStateMachine::OutputType &other) const {
+    return (get<0>() == other.get<0>()) &&
+    (get<1>() == other.get<1>());
+}
+
+TMGas::InteractionStateMachine::InputType::InputType(DemonBase::SystemState *wheel, bool boltzmann, bool hash1, bool hash2) : boost::tuple<DemonBase::SystemState *, bool, bool, bool>(boost::make_tuple(wheel,boltzmann,hash1,hash2)) {
+    
+}
+
+TMGas::InteractionStateMachine::OutputType::OutputType(DemonBase::SystemState *wheel, bool boltzmann) : boost::tuple<DemonBase::SystemState *, bool>(boost::make_tuple(wheel,boltzmann)) {
+    
+}
+
+boost::unordered_set<InteractionStateMachine::InputType> InteractionStateMachine::possibleInputs() const {
+    using namespace DemonBase;
+    boost::unordered_set<InputType> inputs;
+    #define HighAndLowInputs(XX,hash1,hash2) \
+        inputs.insert(InputType(&State##XX,hash1,hash2,0));\
+        inputs.insert(InputType(&State##XX,hash1,hash2,1));
+    
+    #define AllStatesFor(XX) \
+        HighAndLowInputs(XX,0,0);\
+        HighAndLowInputs(XX,0,1);\
+        HighAndLowInputs(XX,1,0);\
+        HighAndLowInputs(XX,1,1);
+    
+    AllStatesFor(A1);
+    AllStatesFor(B1);
+    AllStatesFor(C1);
+    AllStatesFor(A0);
+    AllStatesFor(B0);
+    AllStatesFor(C0);
+    
+    return inputs;
+}
+
+DefaultInteractionMachine::DefaultInteractionMachine() {
+    using namespace DemonBase;
+    using namespace boost;
+    
+    #define CommuteRule(XX,a,b,c,YY) \
+        table[InputType(&State##XX,a,b,c)]=OutputType(&State##YY,a);\
+        table[InputType(&State##YY,a,b,c)]=OutputType(&State##XX,a);
+
+    #define HighAndLowRule(XX,hash1,hash2,YY) \
+        CommuteRule(XX,1,hash1,hash2,YY) \
+        CommuteRule(XX,0,hash1,hash2,YY)
+    
+    #define FixedPoints(XX) \
+        HighAndLowRule(XX,0,0,XX) \
+        HighAndLowRule(XX,0,1,XX) \
+        HighAndLowRule(XX,1,0,XX) \
+        HighAndLowRule(XX,1,1,XX)
+    
+    FixedPoints(A1);
+    FixedPoints(B1);
+    FixedPoints(C1);
+    FixedPoints(A0);
+    FixedPoints(B0);
+    FixedPoints(C0);
+    
+    // High States:
+    //C1 <-> B1
+    HighAndLowRule(C1,0, 1,B1);
+    
+    //B1 <-> A1
+    HighAndLowRule(B1, 0, 0, A1);
+    
+    // A1 -> C0
+    table[InputType(&StateA1,0,1,0)] = OutputType(&StateC0,1);
+    table[InputType(&StateA1,0,1,1)] = OutputType(&StateC0,1);
+    
+    // Low states:
+    // C0 -> A1
+    table[InputType(&StateC0,1,1,1)] = OutputType(&StateA1,0);
+    table[InputType(&StateC0,1,1,0)] = OutputType(&StateA1,0);
+    
+    // A0 <-> B0
+    HighAndLowRule(C0, 0, 0, B0);
+    
+    // B0 <-> C0
+    HighAndLowRule(B0, 0, 1, A0);
+    
+    #undef CommuteRule
+    #undef HighAndLowRule
+    #undef FixedPoints
+}

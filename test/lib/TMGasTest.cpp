@@ -650,3 +650,140 @@ BOOST_AUTO_TEST_CASE(testWheelChangeOnInteraction) {
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+struct TMGasInteractionFixture {
+    TMGas::DefaultInteractionMachine rule;
+    
+    typedef boost::unordered_set<TMGas::DefaultInteractionMachine::InputType> InputSet;
+    
+    InputSet inputStates;
+    
+    typedef TMGas::DefaultInteractionMachine::InputType InputType;
+    typedef TMGas::DefaultInteractionMachine::OutputType OutputType;
+    
+    TMGasInteractionFixture() {
+        inputStates = rule.possibleInputs();
+    }
+    
+    std::string printInput(const InputType &input) {
+        typedef std::string s;
+        std::stringstream stream;
+        stream << DemonBase::print_state(input.get<0>()) << ","
+                << input.get<1>() << ","
+                << input.get<2>() << ","
+                << input.get<3>();
+        return stream.str();
+    }
+    
+    std::string printOutput(const OutputType &output) {
+        typedef std::string s;
+        std::stringstream stream;
+        stream << DemonBase::print_state(output.get<0>()) << ","
+                << output.get<1>();
+        return stream.str();
+    }
+};
+
+BOOST_FIXTURE_TEST_SUITE(TMGasInteractionMachine, TMGasInteractionFixture)
+
+BOOST_AUTO_TEST_CASE( testReversibility ) {
+    boost::unordered_map<OutputType, InputType> results;
+    for (BOOST_AUTO(input, inputStates.begin()); input!=inputStates.end(); ++input) {
+        OutputType output(rule(*input));
+        
+        bool differentHashBits = false;
+        std::string failure_string = "";
+        if (results.count(output) != 0) {
+            InputType input1 = *input;
+            InputType input2 = results.at(output);
+            failure_string = "Both " + printInput(input1) + " and " + printInput(input2) + " end up at " + printOutput(output);
+            differentHashBits = (input1.get<2>() != input2.get<2>()) || (input1.get<3>() != input2.get<3>());
+        }
+        
+        BOOST_CHECK_MESSAGE( results.count(output)==0 || differentHashBits , failure_string );
+        results.insert(std::make_pair(output, *input));
+    }
+}
+
+BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(testProbability, 1)
+BOOST_AUTO_TEST_CASE( testProbability ) {
+//    BOOST_FAIL("I'm not confident in this test yet.");
+    // Test that the transition probabilities are as expected.
+    
+    boost::unordered_map<std::pair<DemonBase::SystemState *,DemonBase::SystemState *>,double> map;
+    
+    double epsilon = .1;
+    
+    for (BOOST_AUTO(input, inputStates.begin()); input!=inputStates.end(); ++input) {
+        OutputType output(rule(*input));
+        
+        double probabilityOfHashBits = .5*.5; // Hash bits are guaranteed to be uniformly distributed by another test.
+        double probabilityOfBoltzmannBit = input->get<1>() ? (1 - epsilon)/2 : (1 + epsilon)/2; // Boltzmann bit is guaranteed to be boltzmann distributed by another test.
+        
+        map[std::make_pair(input->get<0>(), output.get<0>())] += probabilityOfBoltzmannBit*probabilityOfHashBits;
+    }
+    
+    boost::unordered_map<DemonBase::SystemState *, double> outgoingProbablities; // These should all be 1.
+    
+    for (BOOST_AUTO(it,map.begin()); it!=map.end(); ++it) {
+        DemonBase::SystemState *inputState = it->first.first;
+        DemonBase::SystemState *outputState = it->first.second;
+        double probability = it->second;
+        
+        outgoingProbablities[inputState]+=probability;
+        
+        if (inputState == outputState) {
+            continue;
+        }
+        
+        if (inputState->bit == outputState->bit) {
+            BOOST_CHECK_CLOSE(probability, .25,.05);
+        } else {
+            BOOST_CHECK_CLOSE(probability, (inputState->bit > outputState->bit ? 1 + epsilon : 1 - epsilon)/4 , .05);
+        }
+    }
+    
+    for (BOOST_AUTO(it,outgoingProbablities.begin()); it!=outgoingProbablities.end(); ++it) {
+        BOOST_CHECK_CLOSE(it->second,1.0,.05);
+    }
+}
+
+BOOST_AUTO_TEST_CASE( testConservationOfEnergy ) {
+    // The system should only touch the reservoir if it's also writing data to the tape.
+    // Here, that means that the boltzmann bit can only change if the tape state changes.
+    for (BOOST_AUTO(input, inputStates.begin()); input!=inputStates.end(); ++input) {
+        OutputType output(rule(*input));
+        
+        DemonBase::SystemState *inputState = input->get<0>();
+        DemonBase::SystemState *outputState = output.get<0>();
+        
+        bool inputBoltzmann = input->get<1>();
+        bool outputBoltzmann = output.get<1>();
+        
+        if (inputBoltzmann == outputBoltzmann ) {
+            BOOST_CHECK_MESSAGE(inputState->bit==outputState->bit,
+                                "Boltzmann: " << inputBoltzmann << "->" << outputBoltzmann <<
+                                " with " << DemonBase::print_state(inputState) << "->" << DemonBase::print_state(outputState));
+        } else {
+            BOOST_CHECK_MESSAGE(inputState->bit!=outputState->bit,
+                                "Boltzmann: " << inputBoltzmann << "->" << outputBoltzmann <<
+                                " with " << DemonBase::print_state(inputState) << "->" << DemonBase::print_state(outputState));
+        }
+    }
+}
+
+BOOST_AUTO_TEST_CASE( testValidTransitions ) {
+    // The transitions must correspond to those permitted by the stochastic reservoir.
+    using namespace DemonBase;
+    
+    for (BOOST_AUTO(input, inputStates.begin()); input!=inputStates.end(); ++input) {
+        OutputType output(rule(*input));
+        
+        DemonBase::SystemState *inputState = input->get<0>();
+        DemonBase::SystemState *outputState = output.get<0>();
+        BOOST_CHECK_MESSAGE((inputState->nextState1 == outputState || inputState->nextState2 == outputState || inputState == outputState),"Invalid transtion "<<print_state(inputState)<<" -> "<<print_state(outputState));
+    }
+    
+}
+
+BOOST_AUTO_TEST_SUITE_END()
