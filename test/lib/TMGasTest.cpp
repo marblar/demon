@@ -723,7 +723,7 @@ BOOST_AUTO_TEST_CASE( testProbability ) {
         if (inputState->bit == outputState->bit) {
             BOOST_CHECK_CLOSE(probability, .25,.05);
         } else {
-            BOOST_CHECK_CLOSE(probability, (inputState->bit > outputState->bit ? 1 + epsilon : 1 - epsilon)/4 , .05);
+            BOOST_CHECK_CLOSE(probability, (inputState->bit < outputState->bit ? 1 + epsilon : 1 - epsilon)/4 , .05);
         }
     }
     
