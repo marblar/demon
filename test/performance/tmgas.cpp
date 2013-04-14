@@ -5,7 +5,7 @@
 using namespace boost::unit_test;
 
 void performMeasurement() {
-    int iterations = 1000;
+    int iterations = 100;
     ReservoirFactory *rFactory = new TMGas::Reservoir::Factory(16);
     reservoirBenchmark(rFactory,iterations);
     delete rFactory;
