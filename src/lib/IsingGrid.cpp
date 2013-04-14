@@ -16,11 +16,11 @@ using namespace detail;
 const Kind Ising::detail::even = false;
 const Kind Ising::detail::odd = true;
 
-void Cell::_setValue(const char &c) {
+const char &Cell::_setValue(const char &c) {
     if (c < 0 || c > 1) {
         throw InvalidCellValue();
     }
-    value = c;
+    return value = c;
 }
 
 Grid::Grid(int dim) : CATools::Grid<Cell>(dim), evens(*this,even), odds(*this,odd) {

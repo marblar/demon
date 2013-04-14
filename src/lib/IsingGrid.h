@@ -51,7 +51,7 @@ namespace Ising {
         Neighbors neighbors;
         
         friend class CATools::Cell<Cell, unsigned char>;
-        void _setValue(const char &c);
+        const char& _setValue(const char &c);
     public:
         void toggle() { setValue(value ^ 1); }
         Neighbors getNeighbors() { return neighbors; }

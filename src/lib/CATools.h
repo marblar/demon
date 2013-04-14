@@ -51,16 +51,16 @@ namespace CATools {
     class Cell {
     protected:
         ValueType value;
-        void _setValue(const ValueType& val) {
-            value = val;
+        const ValueType& _setValue(const ValueType& val) {
+            return value = val;
         }
     public:
         Cell() : value(defaultValue) {}
         const ValueType &getValue() const { return value; }
         
         // Subclasses can implement _setValue.
-        void setValue(const ValueType& value) {
-            static_cast<Subclass *>(this)->_setValue(value);
+        const ValueType& setValue(const ValueType& value) {
+            return static_cast<Subclass *>(this)->_setValue(value);
         }
         
         typedef ValueType valueType;

@@ -14,6 +14,13 @@ namespace DemonBase {
         SystemState *bitFlipState;
         int bit;
         char letter;
+        SystemState *stateForBit(const int &_bit) {
+            if (_bit==bit) {
+                return this;
+            } else {
+                return bitFlipState;
+            }
+        }
     };
     
     class Reservoir {

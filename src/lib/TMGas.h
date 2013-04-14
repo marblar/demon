@@ -58,7 +58,7 @@ namespace TMGas {
         void setValuesClockwise(bool topLeft,    bool topRight,
                                 bool bottomLeft, bool bottomRight);
         
-        void update(Block &block) const;
+        void update(const Block &block) const;
         
         BlockState operator!() const;
         bool isDiagonal() const;
@@ -90,46 +90,18 @@ namespace TMGas {
     
     class EvolutionRule {
     public:
-        typedef boost::unordered_map<BlockState,BlockState> LookupTable;
+        typedef boost::unordered_map<const BlockState,BlockState> LookupTable;
     protected:
         LookupTable table;
         EvolutionRule() {}
     public:
         const BlockState operator[](const BlockState &block) const;
-        void operator()(Block &block) const;
+        void operator()(const Block &block) const;
     };
     
     class DefaultEvolutionRule : public EvolutionRule {
     public:
         DefaultEvolutionRule();
-    };
-    
-    class Grid : public CATools::Grid<Cell> {
-        BlockList _evenBlocks;
-        BlockList _oddBlocks;
-    public:
-        Grid(int dimension);
-        const BlockList &evenBlocks;
-        const BlockList &oddBlocks;
-    };
-    
-    class InvalidProbabilityError : public std::runtime_error {
-    public:
-        InvalidProbabilityError() :
-        std::runtime_error(std::string("No cells will be initialized. Use larger p")) {}
-    };
-    
-    class Reservoir : public DemonBase::Reservoir {
-        Grid cells;
-        Randomness::GSLDelegate &randomness;
-    public:
-        InteractionResult interactWithBit(int bit);
-        Cell &interactionCell;
-        
-        void reset();
-        Reservoir(DemonBase::Constants c, int dimension,Randomness::GSLDelegate &delegate);
-        std::pair<bool,bool> hashBits();
-        const Grid &getGrid() const { return cells; }
     };
     
     class InteractionStateMachine {
@@ -139,9 +111,9 @@ namespace TMGas {
         // See the diagram at https://github.com/marblar/demon/issues/10 for the spec
         
         class InputType : public boost::tuple<DemonBase::SystemState *, // Wheel
-                                            bool,// Boltzmann
-                                            bool,// First hash bit
-                                            bool>// Second hash bit
+        bool,// Boltzmann
+        bool,// First hash bit
+        bool>// Second hash bit
         {
         public:
             InputType(DemonBase::SystemState *wheel, bool boltzmann, bool hash1, bool hash2);
@@ -149,7 +121,7 @@ namespace TMGas {
         };
         
         class OutputType : public boost::tuple<DemonBase::SystemState *,// Wheel
-                                                bool>//Boltzmann
+        bool>//Boltzmann
         {
         public:
             OutputType(DemonBase::SystemState *wheel, bool boltzmann);
@@ -174,6 +146,38 @@ namespace TMGas {
         DefaultInteractionMachine();
     };
     
+    
+    class Grid : public CATools::Grid<Cell> {
+        BlockList _evenBlocks;
+        BlockList _oddBlocks;
+    public:
+        Grid(int dimension);
+        const BlockList &evenBlocks;
+        const BlockList &oddBlocks;
+    };
+    
+    class InvalidProbabilityError : public std::runtime_error {
+    public:
+        InvalidProbabilityError() :
+        std::runtime_error(std::string("No cells will be initialized. Use larger p")) {}
+    };
+    
+    class Reservoir : public DemonBase::Reservoir {
+        Grid cells;
+        Randomness::GSLDelegate &randomness;
+        DefaultInteractionMachine machine;
+        DefaultEvolutionRule rule;
+    public:
+        InteractionResult interactWithBit(int bit);
+        Cell &interactionCell;
+        
+        void reset();
+        Reservoir(DemonBase::Constants c, int dimension,Randomness::GSLDelegate &delegate);
+        std::pair<bool,bool> hashBits();
+        const Grid &getGrid() const { return cells; }
+        void gridStep();
+    };
+
     std::size_t hash_value(InteractionStateMachine::InputType const& input);
     std::size_t hash_value(InteractionStateMachine::OutputType const& input);
     

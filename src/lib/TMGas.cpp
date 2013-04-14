@@ -103,7 +103,7 @@ BlockState::BlockState(bool topLeft,bool topRight,bool bottomLeft,bool bottomRig
     setValuesClockwise(topLeft, topRight, bottomLeft, bottomRight);
 }
 
-void BlockState::update(TMGas::Block &block) const {
+void BlockState::update(const TMGas::Block &block) const {
     for (int k = 0; k!=size(); ++k) {
         block[k]->setValue(at(k));
     }
@@ -141,7 +141,7 @@ const BlockState EvolutionRule::operator[](const BlockState &block) const {
     return table.at(block);
 }
 
-void EvolutionRule::operator()(Block &block) const {
+void EvolutionRule::operator()(const Block &block) const {
     BlockState newState = table.at(block.currentState());
     newState.update(block);
 }
@@ -223,8 +223,26 @@ void Reservoir::reset() {
 }
 
 Reservoir::InteractionResult Reservoir::interactWithBit(int bit) {
-    interactionCell.setValue(bit);
-    return Reservoir::InteractionResult();
+    const int stepCount = 2;
+    for (int k = 0; k != stepCount; ++k) {
+        gridStep();
+    }
+    InteractionResult result;
+    
+    currentState = currentState->stateForBit(bit);
+    std::pair<bool, bool> bits = hashBits();
+    InteractionStateMachine::InputType input(currentState,interactionCell.getValue(),bits.first,bits.second);
+    InteractionStateMachine::OutputType output = machine(input);
+    currentState = output.get<0>();
+    
+    result.work -= interactionCell.getValue() - interactionCell.setValue(output.get<1>());
+    result.bit = currentState->bit;
+    return result;
+}
+
+void Reservoir::gridStep() {
+    std::for_each(cells.evenBlocks.begin(), cells.evenBlocks.end(), rule);
+    std::for_each(cells.oddBlocks.begin(), cells.oddBlocks.end(), rule);
 }
 
 std::pair<bool, bool> Reservoir::hashBits() {
