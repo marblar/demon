@@ -116,7 +116,7 @@ namespace TMGas {
     class Reservoir : public DemonBase::Reservoir {
         Grid cells;
         Randomness::GSLDelegate &randomness;
-        Cell *const interactionCell;
+        const Cell *interactionCell;
     public:
         InteractionResult interactWithBit(int bit);
         
