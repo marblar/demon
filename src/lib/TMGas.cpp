@@ -233,19 +233,20 @@ void Reservoir::reset() {
 
 Reservoir::InteractionResult Reservoir::interactWithBit(int bit) {
     const int stepCount = 2;
-    for (int k = 0; k != stepCount; ++k) {
-        gridStep();
-    }
     InteractionResult result;
     
-    currentState = currentState->stateForBit(bit);
-    std::pair<bool, bool> bits = hashBits();
-    InteractionStateMachine::InputType input(currentState,interactionCell.getValue(),bits.first,bits.second);
-    InteractionStateMachine::OutputType output = machine(input);
-    currentState = output.get<0>();
-    
-    result.work -= interactionCell.getValue() - interactionCell.setValue(output.get<1>());
-    result.bit = currentState->bit;
+    for (int k = 0; k != stepCount; ++k) {
+        gridStep();
+        currentState = currentState->stateForBit(bit);
+        std::pair<bool, bool> bits = hashBits();
+        InteractionStateMachine::InputType input(currentState,interactionCell.getValue(),bits.first,bits.second);
+        InteractionStateMachine::OutputType output = machine(input);
+        currentState = output.get<0>();
+        
+        result.work -= interactionCell.getValue() - interactionCell.setValue(output.get<1>());
+        result.bit = currentState->bit;
+    }
+
     return result;
 }
 
