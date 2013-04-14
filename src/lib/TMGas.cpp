@@ -215,6 +215,15 @@ DefaultEvolutionRule::DefaultEvolutionRule() {
 Reservoir::Reservoir(DemonBase::Constants c, int dimension,Randomness::GSLDelegate &delegate) :
 DemonBase::Reservoir(c), cells(dimension), randomness(delegate), interactionCell(cells[dimension/2]) {
     initializeGridWithOccupationProbability(cells, c.getEpsilon()/2, delegate);
+    
+    using namespace boost;
+    typedef std::binder1st< std::not_equal_to<Cell *> > CellFilter;
+    CellFilter filter = std::bind1st(std::not_equal_to<Cell *>(),&interactionCell);
+    
+    BOOST_AUTO(begin, make_filter_iterator(filter, cells.begin()));
+    BOOST_AUTO(end, make_filter_iterator(filter, cells.end()));
+    
+    cellsExcludingInteractionCell.insert(cellsExcludingInteractionCell.begin(), begin, end);
 }
 
 void Reservoir::reset() {
@@ -247,15 +256,10 @@ void Reservoir::gridStep() {
 
 std::pair<bool, bool> Reservoir::hashBits() {
     using namespace boost;
-    typedef std::binder1st< std::not_equal_to<Cell *> > CellFilter;
-    CellFilter filter = std::bind1st(std::not_equal_to<Cell *>(),&interactionCell);
-    Cell::ValueTransformer transform;
-
-    BOOST_AUTO(begin, make_transform_iterator(make_filter_iterator(filter, cells.begin()), transform));
-    BOOST_AUTO(end, make_transform_iterator(make_filter_iterator(filter, cells.end()), transform));
-
-    size_t hash = boost::hash_range(begin,end);
-    
+    Cell::ValueTransformer transformer;
+    BOOST_AUTO(begin, make_transform_iterator(cellsExcludingInteractionCell.begin(), transformer));
+    BOOST_AUTO(end, make_transform_iterator(cellsExcludingInteractionCell.end(), transformer));
+    std::size_t hash = hash_range(begin, end);
     bool first = hash & 1;
     bool second = (hash >> 1) & 1;
     return std::make_pair(first,second);

@@ -168,6 +168,7 @@ namespace TMGas {
         Randomness::GSLDelegate &randomness;
         DefaultInteractionMachine machine;
         DefaultEvolutionRule rule;
+        std::vector<Cell *> cellsExcludingInteractionCell;
     public:
         InteractionResult interactWithBit(int bit);
         Cell &interactionCell;
