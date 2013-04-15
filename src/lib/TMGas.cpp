@@ -251,7 +251,9 @@ void Reservoir::wheelStep(Reservoir::InteractionResult &result) {
     
     currentState = output.get<0>();
     
-    result.work -= interactionCell.getValue() - interactionCell.setValue(output.get<1>());
+    result.work -= interactionCell.getValue() - output.get<1>();
+
+    interactionCell.setValue(output.get<1>());
     result.bit = currentState->bit;
 }
 
