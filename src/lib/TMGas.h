@@ -182,6 +182,7 @@ namespace TMGas {
         std::pair<bool,bool> hashBits();
         const Grid &getGrid() const { return cells; }
         void gridStep();
+        void wheelStep(DemonBase::Reservoir::InteractionResult &result);
         
         class Factory : public DemonBase::ReservoirFactory {
             int dimension;

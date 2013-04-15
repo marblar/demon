@@ -621,6 +621,58 @@ BOOST_AUTO_TEST_CASE( testWheelChangeOnReset ) {
     }
 }
 
+class DetailedBalanceTestFixture :
+    public ValidStatesTestFixture,
+    public OAReservoirFixture<>
+{};
+
+BOOST_FIXTURE_TEST_CASE( testDetailedBalance, DetailedBalanceTestFixture ) {
+    using namespace DemonBase;
+    TMGas::Reservoir::InteractionResult result;
+    reservoir.constants.setEpsilon(0);
+    reservoir.reset();
+    int iterations = 100000;
+    for (StateSet::iterator startingState_iterator = validStates.begin(); startingState_iterator!=validStates.end(); ++startingState_iterator) {
+        SystemState *startingState = *startingState_iterator;
+        std::map<SystemState *,int> forwardTransitions;
+        StateSet targets;
+        targets.insert(startingState->nextState1);
+        targets.insert(startingState->nextState2);
+        
+        for (int k = 0; k<iterations; ++k) {
+            reservoir.currentState = startingState;
+            reservoir.wheelStep(result);
+            ++forwardTransitions[reservoir.currentState];
+            reservoir.reset();
+        }
+        
+        for (StateSet::iterator targetState_iterator = targets.begin(); targetState_iterator != targets.end(); ++targetState_iterator) {
+            SystemState *targetState = *targetState_iterator;
+            
+            int forwardCount = forwardTransitions[targetState];
+            int reverseCount = 0;
+            
+            for (int k = 0; k != iterations; ++k) {
+                reservoir.currentState = targetState;
+                reservoir.wheelStep(result);
+                if (reservoir.currentState == startingState) {
+                    ++reverseCount;
+                }
+                reservoir.reset();
+            }
+            
+            double variance = static_cast<double>(forwardCount)/iterations; // The variance of a poisson distribution is just lambda.
+            double standard_deviation = sqrt(variance);
+            double acceptable_error = 3*standard_deviation/forwardCount;
+            
+            BOOST_REQUIRE_MESSAGE(acceptable_error<0.05, "Acceptable Error: "<<acceptable_error<<" Transition: "<< print_state(startingState) << "->" << print_state(targetState));
+            
+            BOOST_CHECK_CLOSE_FRACTION((double)reverseCount,(double)forwardCount, acceptable_error);
+        }
+    }
+    
+}
+
 BOOST_AUTO_TEST_CASE(testWheelChangeOnInteraction) {
     int iterations = 10000;
     int somethingCount = 0;
