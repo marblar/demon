@@ -257,9 +257,25 @@ void Reservoir::wheelStep(Reservoir::InteractionResult &result) {
     result.bit = currentState->bit;
 }
 
+class EvolutionRuleRef {
+    // For some reason, uses for_each directly on the rule causes the member to be optimized out.
+    // instead, a new rule is instantiated at every call to grid step
+    // --expensive! Adding an extra level of indirection satisfies the compiler's need to delete deallocate something at the end of that function and ensures that only one rule gets created.
+    EvolutionRule &rule;
+public:
+    EvolutionRuleRef(EvolutionRule &_rule) : rule(_rule) {
+        
+    }
+    void operator()(const Block &block) const {
+        rule(block);
+    }
+};
+
+
 void Reservoir::gridStep() {
-    std::for_each(cells.evenBlocks.begin(), cells.evenBlocks.end(), rule);
-    std::for_each(cells.oddBlocks.begin(), cells.oddBlocks.end(), rule);
+    EvolutionRuleRef evolver(rule);
+    std::for_each(cells.evenBlocks.begin(), cells.evenBlocks.end(), evolver);
+    std::for_each(cells.oddBlocks.begin(), cells.oddBlocks.end(), evolver);
 }
 
 std::pair<bool, bool> Reservoir::hashBits() {
