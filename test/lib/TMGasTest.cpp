@@ -816,4 +816,13 @@ BOOST_AUTO_TEST_CASE( testAllTransitions ) {
     #undef StochTransition
 }
 
+BOOST_AUTO_TEST_CASE( testRaisesOnInvalidTransition ) {
+    // If we try to make a transition using a state not in a reservoir.
+    using namespace DemonBase;
+    SystemState NotARealState;
+    InputType badInput(&NotARealState,false,false,false);
+    
+    BOOST_CHECK_THROW(rule(badInput), std::out_of_range);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
