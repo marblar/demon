@@ -240,6 +240,9 @@ Reservoir::InteractionResult Reservoir::interactWithBit(int bit) {
         gridStep();
         wheelStep(result);
     }
+    
+    result.bit = currentState->bit;
+    result.work = currentState->bit - bit;
 
     return result;
 }
@@ -250,11 +253,8 @@ void Reservoir::wheelStep(Reservoir::InteractionResult &result) {
     InteractionStateMachine::OutputType output = machine(input);
     
     currentState = output.get<0>();
-    
-    result.work -= interactionCell.getValue() - output.get<1>();
 
     interactionCell.setValue(output.get<1>());
-    result.bit = currentState->bit;
 }
 
 class EvolutionRuleRef {
