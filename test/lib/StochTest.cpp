@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE ( testInvalidTau ) {
 
 BOOST_AUTO_TEST_CASE( testInvalidDelta ) {
     c.setEpsilon(.5);
-    c.setDelta(.47);
+    c.setDelta(-.01);
     Stochastic::Reservoir res(rng,c);
     BOOST_CHECK_THROW(res.interactWithBit(1), InvalidDeltaError);
     
