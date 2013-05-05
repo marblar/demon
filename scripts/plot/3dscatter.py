@@ -58,7 +58,7 @@ m = cm.ScalarMappable(cmap=RYB)
 m.set_array(col)
 fig.colorbar(m,boundaries=numpy.arange(0,2,.01),values=numpy.array(map(colorBy,drange(0,2,.01))[:-1]))
 
-ax.set_xlim3d(.5,1)
+ax.set_xlim3d(0,1)
 ax.set_ylim3d(0,1)
 ax.set_zlim3d(0,5)
 

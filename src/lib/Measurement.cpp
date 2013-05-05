@@ -129,7 +129,7 @@ void Experiment::performWork(Experiment::range work) {
 MeasurementResult Experiment::performIteration(int k) {
     Constants constants;
     constants.setEpsilon((k % dimension)/(double)(dimension));
-    constants.setDelta(.5 + .5*(k / dimension)/(double)(dimension));
+    constants.setDelta((k / dimension)/(double)(dimension));
     constants.setTau(1);
     constants.setNbits(10);
     Measurement measurement(constants,iterations,rfactory,sfactory);

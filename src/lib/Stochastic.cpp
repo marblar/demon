@@ -20,8 +20,8 @@ Stochastic::Reservoir::InteractionResult Stochastic::Reservoir::interactWithBit(
     if (constants.getEpsilon()< 0 || constants.getEpsilon()>1) {
         throw DemonBase::InvalidEpsilonError("Epsilon \\not\\in [0,1]");
     }
-    if (constants.getDelta()<.50 || constants.getDelta()>1.0) {
-        throw DemonBase::InvalidDeltaError("Delta must be \\in [.5,1]");
+    if (constants.getDelta()<0 || constants.getDelta()>1.0) {
+        throw DemonBase::InvalidDeltaError("Delta must be \\in [0,1]");
     }
     
     if (Stochastic::Reservoir::currentState->bit != oldBit) {
